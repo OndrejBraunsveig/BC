@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Sign in</title>
+</head>
+<body>
+    <h1 class="title">💀 Bonee 💀</h1>
+    <main>
+        <div class="main-layout">
+            <img src="../static/images/bone.jpg" alt="bone img" class="title-img">
+            <div class="login-container">
+                <div class="form-container">
+                    <h2 class="form-title">Sign in</h2>
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+
+                        {{ form.username(autocomplete="off", class="form-control") }}
+                        <br>
+                        {{ form.password(class="form-control") }}
+                        <br>
+                        {{ form.submit(class="primary-button") }}
+                    </form>
+                    <p class="form-info">Don't have an account?</p>
+                    <form action="{{ url_for('register') }}">
+                        <input class="secondary-button" type="submit" value="Sign up" />
+                    </form>
+                    {% for message in get_flashed_messages() %}
+                        <p class="flash">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>🦴 2024 Ondřej Braunšveig 🦴</p>
+    </footer>
+</body>
+</html>

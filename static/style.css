@@ -1,0 +1,112 @@
+body{
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0a0a09;
+    min-height: 100vh;
+    margin: 0;
+}
+.title{
+    text-align: center;
+    color: #ffffff;
+    font-size: 40px;
+    margin-bottom: 5vh;
+}
+.main-layout{
+    display: flex;
+    justify-content: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    align-items: center;
+}
+.title-img{
+    border-radius: 10px;
+    height: max-content;
+    width: 1000px;
+    margin-right: 50px;
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 400px;
+    margin-right: 50px;
+    padding: 30px;
+    background-color: #292828;
+    border: solid 2px #ffffff;
+    border-radius: 10px;
+}
+.form-title{
+    font-size: 30px;
+    color: #ffffff;
+}
+.form-control{
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.primary-button{
+    width: 100%;
+    background-color: #3387cc;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border: solid 2px #000000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.form-info{
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.secondary-button{
+    position: relative;
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+    width: 50%;
+    background-color: #1eaa29;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border: solid 2px #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.centered{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+.flash{
+    color: #b71803;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;    
+}
+main{
+    flex: 1;
+    margin-bottom: 30px;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    margin-bottom: 0;
+    background-color: #1d1d1d;
+    text-align: center;
+    color: #ffffff;
+    border-top: 1px solid #c0c0c0;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 10px;
+}
