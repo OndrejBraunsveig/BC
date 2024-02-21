@@ -30,7 +30,6 @@ body{
     flex-direction: column;
     width: 300px;
     height: 400px;
-    margin-right: 50px;
     padding: 30px;
     background-color: #292828;
     border: solid 2px #ffffff;
@@ -82,13 +81,11 @@ body{
 .centered{
     display: flex;
     justify-content: center;
-    margin-top: 100px;
+    margin-top: 20px;
 }
 .flash{
     color: #b71803;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;    
+    text-align: center;   
 }
 main{
     flex: 1;

@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
@@ -7,7 +9,7 @@ from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SECRET_KEY'] = 'abcd'
 
 db = SQLAlchemy(app)
@@ -19,7 +21,7 @@ login_manager.login_view = "login"
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
-    password = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(160), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -56,9 +58,9 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
-            if bcrypt.checkpw(form.password.data.encode("utf8"), user.password):
+            if bcrypt.checkpw(form.password.data.encode('utf8'), user.password.encode('utf8')):
                 login_user(user)
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('dashboard', username=user.username))
         flash('Wrong username or password!')
         return redirect(url_for('login'))
     
@@ -70,7 +72,7 @@ def register():
 
     if form.validate_on_submit():
         if form.password.data == form.control_password.data:
-            hashed_password = bcrypt.hashpw(form.password.data.encode("utf8"), bcrypt.gensalt())
+            hashed_password = bcrypt.hashpw(form.password.data.encode("utf8"), bcrypt.gensalt()).decode('utf8')
             new_user = User(username=form.username.data, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
@@ -88,10 +90,10 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard/<username>', methods=['GET', 'POST'])
 @login_required
-def dashboard():
-    return render_template('dashboard.html')
+def dashboard(username):
+    return render_template('dashboard.html', username=username)
 
 if __name__ == '__main__':
     app.run(debug=True)

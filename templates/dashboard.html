@@ -8,8 +8,8 @@
 </head>
 <body>
     <header>
-        <h1 class="title">💀 Bonee 💀</h1>
-        <form action="{{ url_for('register') }}">
+        <h1 class="title">{{ username }}</h1>
+        <form action="{{ url_for('login') }}">
             <input class="primary-button" type="submit" value="Logout" />
         </form>
     </header>
