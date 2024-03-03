@@ -95,5 +95,11 @@ def logout():
 def dashboard(username):
     return render_template('dashboard.html', username=username)
 
+@app.route('/editor', methods=['GET', 'POST'])
+@login_required
+def editor():
+    
+    return render_template('editor.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
