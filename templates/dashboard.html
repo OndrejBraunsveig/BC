@@ -26,7 +26,9 @@
                     </svg>
                 </button>
             </div>
-            <button id="logout-button" class="primary-button">Logout</button>
+            <form action="{{ url_for('logout') }}" class="logout-form">
+                <button id="logout-button" class="primary-button">Logout</button>
+            </form>
         </div>
     </header>
     <main id="dashboard-main">
@@ -36,7 +38,7 @@
                     <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
                     <div class="title-card">
                         <h1>{{ project["name"] }}</h1>
-                        <p>0 MB</p>
+                        <p>{{ project["updated_at"] }}</p>
                     </div>
                     <form action="{{ url_for('editor') }}">
                         <div class="button-row">
@@ -49,21 +51,8 @@
             <div class="project-container">
                 <img src="../static/images/sacrum.jpg" alt="editor1" width="200" height="200">
                 <div class="title-card">
-                    <h1>Sacrum 1</h1>
-                    <p>14 MB</p>
-                </div>
-                <form action="{{ url_for('editor') }}">
-                    <div class="button-row">
-                        <input class="secondary-button" type="submit" value="Editor" />
-                        <button class="delete-button danger-button" type="button">Delete</button>
-                    </div>
-                </form> 
-            </div>
-            <div class="project-container">
-                <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
-                <div class="title-card">
-                    <h1>Empty Project</h1>
-                    <p>0 MB</p>
+                    <h1>Example</h1>
+                    <p>15:15 | 25.04.2024</p>
                 </div>
                 <form action="{{ url_for('editor') }}">
                     <div class="button-row">

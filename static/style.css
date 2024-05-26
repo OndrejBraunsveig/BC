@@ -109,10 +109,6 @@ body{
     color: #ffffff;
     text-align: center;   
 }
-.index-main{
-    flex: 1;
-    margin-bottom: 30px;
-}
 .index-footer{
     display: flex;
     justify-content: center;
@@ -157,6 +153,9 @@ body{
     align-items: center;
 }
 #dashboard-header-right .primary-button{
+    margin: 0;
+}
+.logout-form{
     margin: 0;
     margin-left: 12px;
 }
