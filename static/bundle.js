@@ -192,7 +192,7 @@
    * @returns {mat3} out
    */
 
-  function identity$4(out) {
+  function identity$5(out) {
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -732,7 +732,7 @@
    * @returns {mat3} out
    */
 
-  function multiplyScalar$1(out, a, b) {
+  function multiplyScalar$2(out, a, b) {
     out[0] = a[0] * b;
     out[1] = a[1] * b;
     out[2] = a[2] * b;
@@ -837,11 +837,11 @@
     fromScaling: fromScaling$1,
     fromTranslation: fromTranslation$1,
     fromValues: fromValues$4,
-    identity: identity$4,
+    identity: identity$5,
     invert: invert$1,
     mul: mul$1,
     multiply: multiply$2,
-    multiplyScalar: multiplyScalar$1,
+    multiplyScalar: multiplyScalar$2,
     multiplyScalarAndAdd: multiplyScalarAndAdd$1,
     normalFromMat4: normalFromMat4,
     projection: projection,
@@ -1035,7 +1035,7 @@
    * @returns {mat4} out
    */
 
-  function identity$3(out) {
+  function identity$4(out) {
     out[0] = 1;
     out[1] = 0;
     out[2] = 0;
@@ -2446,7 +2446,7 @@
     var centerz = center[2];
 
     if (Math.abs(eyex - centerx) < EPSILON$3 && Math.abs(eyey - centery) < EPSILON$3 && Math.abs(eyez - centerz) < EPSILON$3) {
-      return identity$3(out);
+      return identity$4(out);
     }
 
     z0 = eyex - centerx;
@@ -2650,7 +2650,7 @@
    * @returns {mat4} out
    */
 
-  function multiplyScalar(out, a, b) {
+  function multiplyScalar$1(out, a, b) {
     out[0] = a[0] * b;
     out[1] = a[1] * b;
     out[2] = a[2] * b;
@@ -2792,12 +2792,12 @@
     getRotation: getRotation,
     getScaling: getScaling,
     getTranslation: getTranslation,
-    identity: identity$3,
+    identity: identity$4,
     invert: invert,
     lookAt: lookAt,
     mul: mul,
     multiply: multiply$1,
-    multiplyScalar: multiplyScalar,
+    multiplyScalar: multiplyScalar$1,
     multiplyScalarAndAdd: multiplyScalarAndAdd,
     ortho: ortho,
     orthoNO: orthoNO,
@@ -3021,6 +3021,24 @@
     out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w;
     out[1] = (m[1] * x + m[5] * y + m[9] * z + m[13]) / w;
     out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w;
+    return out;
+  }
+  /**
+   * Transforms the vec3 with a mat3.
+   *
+   * @param {vec3} out the receiving vector
+   * @param {ReadonlyVec3} a the vector to transform
+   * @param {ReadonlyMat3} m the 3x3 matrix to transform with
+   * @returns {vec3} out
+   */
+
+  function transformMat3(out, a, m) {
+    var x = a[0],
+        y = a[1],
+        z = a[2];
+    out[0] = x * m[0] + y * m[3] + z * m[6];
+    out[1] = x * m[1] + y * m[4] + z * m[7];
+    out[2] = x * m[2] + y * m[5] + z * m[8];
     return out;
   }
   /**
@@ -4646,13 +4664,13 @@
   function vtkInfoMacro() {
     loggerFunctions.info(...arguments);
   }
-  function vtkDebugMacro$9() {
+  function vtkDebugMacro$a() {
     loggerFunctions.debug(...arguments);
   }
-  function vtkErrorMacro$v() {
+  function vtkErrorMacro$A() {
     loggerFunctions.error(...arguments);
   }
-  function vtkWarningMacro$7() {
+  function vtkWarningMacro$9() {
     loggerFunctions.warn(...arguments);
   }
   const ERROR_ONCE_MAP = {};
@@ -4855,7 +4873,7 @@
     publicAPI.isDeleted = () => !!model.deleted;
     publicAPI.modified = otherMTime => {
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       if (otherMTime && otherMTime < publicAPI.getMTime()) {
@@ -4866,7 +4884,7 @@
     };
     publicAPI.onModified = callback => {
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return null;
       }
       const index = callbacks.length;
@@ -4903,7 +4921,7 @@
         } else {
           // Set data on model directly
           if (['mtime'].indexOf(name) === -1 && !noWarning) {
-            vtkWarningMacro$7(`Warning: Set value to model directly ${name}, ${map[name]}`);
+            vtkWarningMacro$9(`Warning: Set value to model directly ${name}, ${map[name]}`);
           }
           ret = model[name] !== map[name] || ret;
           model[name] = map[name];
@@ -4983,7 +5001,7 @@
         const keyIdx = keyList.indexOf(key);
         if (keyIdx === -1) {
           if (debug) {
-            vtkDebugMacro$9(`add ${key} in shallowCopy`);
+            vtkDebugMacro$a(`add ${key} in shallowCopy`);
           }
         } else {
           keyList.splice(keyIdx, 1);
@@ -4991,7 +5009,7 @@
         model[key] = otherModel[key];
       });
       if (keyList.length && debug) {
-        vtkDebugMacro$9(`Untouched keys: ${keyList.join(', ')}`);
+        vtkDebugMacro$a(`Untouched keys: ${keyList.join(', ')}`);
       }
       publicAPI.modified();
     };
@@ -5051,7 +5069,7 @@
             }
             return false;
           }
-          vtkErrorMacro$v(`Set Enum with invalid argument ${field}, ${value}`);
+          vtkErrorMacro$A(`Set Enum with invalid argument ${field}, ${value}`);
           throw new RangeError('Set Enum with invalid string argument');
         }
         if (typeof value === 'number') {
@@ -5063,12 +5081,12 @@
               publicAPI.modified();
               return true;
             }
-            vtkErrorMacro$v(`Set Enum outside numeric range ${field}, ${value}`);
+            vtkErrorMacro$A(`Set Enum outside numeric range ${field}, ${value}`);
             throw new RangeError('Set Enum outside numeric range');
           }
           return false;
         }
-        vtkErrorMacro$v(`Set Enum with invalid argument (String/Number) ${field}, ${value}`);
+        vtkErrorMacro$A(`Set Enum with invalid argument (String/Number) ${field}, ${value}`);
         throw new TypeError('Set Enum with invalid argument (String/Number)');
       };
     },
@@ -5092,14 +5110,14 @@
       if (fn) {
         return (publicAPI, model) => fn(publicAPI, model, field);
       }
-      vtkErrorMacro$v(`No setter for field ${field}`);
+      vtkErrorMacro$A(`No setter for field ${field}`);
       throw new TypeError('No setter for field');
     }
     return function getSetter(publicAPI, model) {
       const onChanged = `_on${_capitalize(field)}Changed`;
       return function setter(value) {
         if (model.deleted) {
-          vtkErrorMacro$v('instance deleted - cannot call any method');
+          vtkErrorMacro$A('instance deleted - cannot call any method');
           return false;
         }
         if (model[field] !== value) {
@@ -5159,7 +5177,7 @@
       const onChanged = `_on${_capitalize(field)}Changed`;
       publicAPI[`set${_capitalize(field)}`] = function () {
         if (model.deleted) {
-          vtkErrorMacro$v('instance deleted - cannot call any method');
+          vtkErrorMacro$A('instance deleted - cannot call any method');
           return false;
         }
         for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
@@ -5263,11 +5281,11 @@
     function setInputData(dataset) {
       let port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       if (port >= model.numberOfInputs) {
-        vtkErrorMacro$v(`algorithm ${publicAPI.getClassName()} only has ${model.numberOfInputs} input ports. To add more input ports, use addInputData()`);
+        vtkErrorMacro$A(`algorithm ${publicAPI.getClassName()} only has ${model.numberOfInputs} input ports. To add more input ports, use addInputData()`);
         return;
       }
       if (model.inputData[port] !== dataset || model.inputConnection[port]) {
@@ -5288,14 +5306,14 @@
     function setInputConnection(outputPort) {
       let port = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       if (port >= model.numberOfInputs) {
         let msg = `algorithm ${publicAPI.getClassName()} only has `;
         msg += `${model.numberOfInputs}`;
         msg += ' input ports. To add more input ports, use addInputConnection()';
-        vtkErrorMacro$v(msg);
+        vtkErrorMacro$A(msg);
         return;
       }
       model.inputData[port] = null;
@@ -5317,14 +5335,14 @@
     }
     function addInputConnection(outputPort) {
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       setInputConnection(outputPort, getPortToFill());
     }
     function addInputData(dataset) {
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       setInputData(dataset, getPortToFill());
@@ -5332,7 +5350,7 @@
     function getOutputData() {
       let port = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return null;
       }
       if (publicAPI.shouldUpdate()) {
@@ -5457,7 +5475,7 @@
     }
     function invoke() {
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return;
       }
       /* eslint-disable prefer-rest-params */
@@ -5491,7 +5509,7 @@
         return null;
       }
       if (model.deleted) {
-        vtkErrorMacro$v('instance deleted - cannot call any method');
+        vtkErrorMacro$A('instance deleted - cannot call any method');
         return null;
       }
       const callbackID = curCallbackID++;
@@ -5512,7 +5530,7 @@
   // newInstance
   // ----------------------------------------------------------------------------
 
-  function newInstance$1I(extend, className) {
+  function newInstance$1$(extend, className) {
     const constructor = function () {
       let initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       const model = {};
@@ -6215,7 +6233,7 @@
     keystore,
     measurePromiseExecution,
     moveToProtected,
-    newInstance: newInstance$1I,
+    newInstance: newInstance$1$,
     newTypedArray,
     newTypedArrayFrom,
     normalizeWheel: normalizeWheel$1,
@@ -6236,12 +6254,12 @@
     // deprecated todo remove on breaking API revision
     uncapitalize,
     VOID: VOID$1,
-    vtkDebugMacro: vtkDebugMacro$9,
-    vtkErrorMacro: vtkErrorMacro$v,
+    vtkDebugMacro: vtkDebugMacro$a,
+    vtkErrorMacro: vtkErrorMacro$A,
     vtkInfoMacro,
     vtkLogMacro,
     vtkOnceErrorMacro: vtkOnceErrorMacro$1,
-    vtkWarningMacro: vtkWarningMacro$7
+    vtkWarningMacro: vtkWarningMacro$9
   };
 
   var macro$1 = /*#__PURE__*/Object.freeze({
@@ -6250,9 +6268,9 @@
     setLoggerFunction: setLoggerFunction,
     vtkLogMacro: vtkLogMacro,
     vtkInfoMacro: vtkInfoMacro,
-    vtkDebugMacro: vtkDebugMacro$9,
-    vtkErrorMacro: vtkErrorMacro$v,
-    vtkWarningMacro: vtkWarningMacro$7,
+    vtkDebugMacro: vtkDebugMacro$a,
+    vtkErrorMacro: vtkErrorMacro$A,
+    vtkWarningMacro: vtkWarningMacro$9,
     vtkOnceErrorMacro: vtkOnceErrorMacro$1,
     TYPED_ARRAYS: TYPED_ARRAYS,
     newTypedArray: newTypedArray,
@@ -6275,7 +6293,7 @@
     algo: algo,
     EVENT_ABORT: EVENT_ABORT,
     event: event,
-    newInstance: newInstance$1I,
+    newInstance: newInstance$1$,
     chain: chain,
     isVtkObject: isVtkObject,
     traverseInstanceTree: traverseInstanceTree,
@@ -6290,7 +6308,7 @@
   });
 
   const {
-    vtkErrorMacro: vtkErrorMacro$u
+    vtkErrorMacro: vtkErrorMacro$z
   } = macro;
   const PASS_TYPES = ['Build', 'Render'];
 
@@ -6446,7 +6464,7 @@
     };
     publicAPI.createViewNode = dataObj => {
       if (!model.myFactory) {
-        vtkErrorMacro$u('Cannot create view nodes without my own factory');
+        vtkErrorMacro$z('Cannot create view nodes without my own factory');
         return null;
       }
       const ret = model.myFactory.createNode(dataObj);
@@ -6468,7 +6486,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1D = {
+  const DEFAULT_VALUES$23 = {
     // _parent: null,
     renderable: null,
     myFactory: null,
@@ -6478,9 +6496,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1J(publicAPI, model) {
+  function extend$2h(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1D, initialValues);
+    Object.assign(model, DEFAULT_VALUES$23, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -6497,13 +6515,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1H = macro.newInstance(extend$1J, 'vtkViewNode');
+  const newInstance$1_ = macro.newInstance(extend$2h, 'vtkViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNode$1 = {
-    newInstance: newInstance$1H,
-    extend: extend$1J,
+    newInstance: newInstance$1_,
+    extend: extend$2h,
     PASS_TYPES
   };
 
@@ -6550,15 +6568,15 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1C = {
+  const DEFAULT_VALUES$22 = {
     // overrides: {},
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1I(publicAPI, model) {
+  function extend$2g(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1C, initialValues);
+    Object.assign(model, DEFAULT_VALUES$22, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -6569,13 +6587,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1G = macro.newInstance(extend$1I, 'vtkViewNodeFactory');
+  const newInstance$1Z = macro.newInstance(extend$2g, 'vtkViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory$1$1 = {
-    newInstance: newInstance$1G,
-    extend: extend$1I
+    newInstance: newInstance$1Z,
+    extend: extend$2g
   };
 
   const CLASS_MAPPING$1 = Object.create(null);
@@ -6596,13 +6614,13 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1B = {};
+  const DEFAULT_VALUES$21 = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$1H(publicAPI, model) {
+  function extend$2f(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1B, initialValues);
+    Object.assign(model, DEFAULT_VALUES$21, initialValues);
 
     // Static class mapping shared across instances
     model.overrides = CLASS_MAPPING$1;
@@ -6616,13 +6634,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1F = macro.newInstance(extend$1H, 'vtkOpenGLViewNodeFactory');
+  const newInstance$1Y = macro.newInstance(extend$2f, 'vtkOpenGLViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory = {
-    newInstance: newInstance$1F,
-    extend: extend$1H
+    newInstance: newInstance$1Y,
+    extend: extend$2f
   };
 
   // ----------------------------------------------------------------------------
@@ -6674,7 +6692,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1A = {
+  const DEFAULT_VALUES$20 = {
     context: null,
     lastRenderer: null,
     keyMatrixTime: null,
@@ -6683,9 +6701,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1G(publicAPI, model) {
+  function extend$2e(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1A, initialValues);
+    Object.assign(model, DEFAULT_VALUES$20, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -6709,13 +6727,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1E = newInstance$1I(extend$1G);
+  const newInstance$1X = newInstance$1$(extend$2e);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCamera', newInstance$1E);
+  registerOverride$1('vtkCamera', newInstance$1X);
 
   const {
-    vtkDebugMacro: vtkDebugMacro$8
+    vtkDebugMacro: vtkDebugMacro$9
   } = macro$1;
 
   // ----------------------------------------------------------------------------
@@ -6749,7 +6767,7 @@
         }
       }
       if (!count) {
-        vtkDebugMacro$8('No lights are on, creating one.');
+        vtkDebugMacro$9('No lights are on, creating one.');
         model.renderable.createLight();
       }
       return count;
@@ -6884,7 +6902,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1z = {
+  const DEFAULT_VALUES$1$ = {
     context: null,
     _openGLRenderWindow: null,
     selector: null
@@ -6892,9 +6910,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1F(publicAPI, model) {
+  function extend$2d(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1z, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1$, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -6910,10 +6928,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1D = newInstance$1I(extend$1F, 'vtkOpenGLRenderer');
+  const newInstance$1W = newInstance$1$(extend$2d, 'vtkOpenGLRenderer');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkRenderer', newInstance$1D);
+  registerOverride$1('vtkRenderer', newInstance$1W);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7040,7 +7058,7 @@
         copy$1(model.keyMatrices.mcwc, model.renderable.getMatrix());
         transpose(model.keyMatrices.mcwc, model.keyMatrices.mcwc);
         if (model.renderable.getIsIdentity()) {
-          identity$4(model.keyMatrices.normalMatrix);
+          identity$5(model.keyMatrices.normalMatrix);
         } else {
           fromMat4(model.keyMatrices.normalMatrix, model.keyMatrices.mcwc);
           invert$1(model.keyMatrices.normalMatrix, model.keyMatrices.normalMatrix);
@@ -7056,7 +7074,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1y = {
+  const DEFAULT_VALUES$1_ = {
     context: null,
     keyMatrixTime: null,
     keyMatrices: null,
@@ -7065,9 +7083,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1E(publicAPI, model) {
+  function extend$2c(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1y, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1_, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -7076,8 +7094,8 @@
       mtime: 0
     });
     model.keyMatrices = {
-      normalMatrix: identity$4(new Float64Array(9)),
-      mcwc: identity$3(new Float64Array(16))
+      normalMatrix: identity$5(new Float64Array(9)),
+      mcwc: identity$4(new Float64Array(16))
     };
 
     // Build VTK API
@@ -7090,10 +7108,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1C = newInstance$1I(extend$1E);
+  const newInstance$1V = newInstance$1$(extend$2c);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor', newInstance$1C);
+  registerOverride$1('vtkActor', newInstance$1V);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7227,16 +7245,16 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1x = {
+  const DEFAULT_VALUES$1Z = {
     context: null,
     activeTextures: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1D(publicAPI, model) {
+  function extend$2b(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1x, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1Z, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -7251,10 +7269,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1B = newInstance$1I(extend$1D);
+  const newInstance$1U = newInstance$1$(extend$2b);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor2D', newInstance$1B);
+  registerOverride$1('vtkActor2D', newInstance$1U);
 
   function ascending(a, b) {
     return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -7400,7 +7418,7 @@
     prototype.constructor = constructor;
   }
 
-  function extend$1C(parent, definition) {
+  function extend$2a(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
@@ -7573,7 +7591,7 @@
     yellowgreen: 0x9acd32
   };
 
-  define(Color, color, {
+  define(Color, color$2, {
     copy(channels) {
       return Object.assign(new this.constructor, this, channels);
     },
@@ -7604,7 +7622,7 @@
     return this.rgb().formatRgb();
   }
 
-  function color(format) {
+  function color$2(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
     return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
@@ -7633,7 +7651,7 @@
   }
 
   function rgbConvert(o) {
-    if (!(o instanceof Color)) o = color(o);
+    if (!(o instanceof Color)) o = color$2(o);
     if (!o) return new Rgb;
     o = o.rgb();
     return new Rgb(o.r, o.g, o.b, o.opacity);
@@ -7650,7 +7668,7 @@
     this.opacity = +opacity;
   }
 
-  define(Rgb, rgb$1, extend$1C(Color, {
+  define(Rgb, rgb$1, extend$2a(Color, {
     brighter(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
@@ -7713,7 +7731,7 @@
 
   function hslConvert(o) {
     if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color)) o = color(o);
+    if (!(o instanceof Color)) o = color$2(o);
     if (!o) return new Hsl;
     if (o instanceof Hsl) return o;
     o = o.rgb();
@@ -7748,7 +7766,7 @@
     this.opacity = +opacity;
   }
 
-  define(Hsl, hsl, extend$1C(Color, {
+  define(Hsl, hsl, extend$2a(Color, {
     brighter(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Hsl(this.h, this.s, this.l * k, this.opacity);
@@ -7981,8 +7999,8 @@
     var t = typeof b, c;
     return b == null || t === "boolean" ? constant(b)
         : (t === "number" ? interpolateNumber
-        : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
-        : b instanceof color ? rgb
+        : t === "string" ? ((c = color$2(b)) ? (b = c, rgb) : string)
+        : b instanceof color$2 ? rgb
         : b instanceof Date ? date
         : isNumberArray(b) ? numberArray
         : Array.isArray(b) ? genericArray
@@ -8008,7 +8026,7 @@
 
   var unit = [0, 1];
 
-  function identity$2(x) {
+  function identity$3(x) {
     return x;
   }
 
@@ -8072,14 +8090,14 @@
         transform,
         untransform,
         unknown,
-        clamp = identity$2,
+        clamp = identity$3,
         piecewise,
         output,
         input;
 
     function rescale() {
       var n = Math.min(domain.length, range.length);
-      if (clamp !== identity$2) clamp = clamper(domain[0], domain[n - 1]);
+      if (clamp !== identity$3) clamp = clamper(domain[0], domain[n - 1]);
       piecewise = n > 2 ? polymap : bimap;
       output = input = null;
       return scale;
@@ -8106,7 +8124,7 @@
     };
 
     scale.clamp = function(_) {
-      return arguments.length ? (clamp = _ ? true : identity$2, rescale()) : clamp !== identity$2;
+      return arguments.length ? (clamp = _ ? true : identity$3, rescale()) : clamp !== identity$3;
     };
 
     scale.interpolate = function(_) {
@@ -8124,7 +8142,7 @@
   }
 
   function continuous() {
-    return transformer()(identity$2, identity$2);
+    return transformer()(identity$3, identity$3);
   }
 
   function formatDecimal(x) {
@@ -8280,7 +8298,7 @@
     "x": (x) => Math.round(x).toString(16)
   };
 
-  function identity$1(x) {
+  function identity$2(x) {
     return x;
   }
 
@@ -8288,11 +8306,11 @@
       prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
   function formatLocale(locale) {
-    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$2 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
         currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
         currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
         decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-        numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
+        numerals = locale.numerals === undefined ? identity$2 : formatNumerals(map.call(locale.numerals, String)),
         percent = locale.percent === undefined ? "%" : locale.percent + "",
         minus = locale.minus === undefined ? "−" : locale.minus + "",
         nan = locale.nan === undefined ? "NaN" : locale.nan + "";
@@ -9217,7 +9235,7 @@
 
   var tycheiExports = tychei$1.exports;
 
-  var seedrandom = {exports: {}};
+  var seedrandom$2 = {exports: {}};
 
   /*
   Copyright 2019 David Bau.
@@ -9470,9 +9488,9 @@
   	  [],     // pool: entropy pool starts empty
   	  Math    // math: package containing random, pow, and seedrandom
   	); 
-  } (seedrandom));
+  } (seedrandom$2));
 
-  var seedrandomExports = seedrandom.exports;
+  var seedrandomExports = seedrandom$2.exports;
 
   // A library of seedable RNGs implemented in Javascript.
   //
@@ -9533,14 +9551,51 @@
   sr.xor4096 = xor4096;
   sr.tychei = tychei;
 
+  var seedrandom = sr;
+
+  var seedrandom$1 = /*@__PURE__*/getDefaultExportFromCjs(seedrandom);
+
   const IDENTITY = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+  const IDENTITY_3X3 = [1, 0, 0, 0, 1, 0, 0, 0, 1];
   const EPSILON$2 = 1e-6;
   const VTK_SMALL_NUMBER = 1.0e-12;
 
   const {
-    vtkErrorMacro: vtkErrorMacro$t,
-    vtkWarningMacro: vtkWarningMacro$6
+    vtkErrorMacro: vtkErrorMacro$y,
+    vtkWarningMacro: vtkWarningMacro$8
   } = macro;
+
+  // ----------------------------------------------------------------------------
+  /* eslint-disable camelcase                                                  */
+  /* eslint-disable no-cond-assign                                             */
+  /* eslint-disable no-bitwise                                                 */
+  /* eslint-disable no-multi-assign                                            */
+  // ----------------------------------------------------------------------------
+  let randomSeedValue = 0;
+  const VTK_MAX_ROTATIONS = 20;
+  function notImplemented$5(method) {
+    return () => vtkErrorMacro$y(`vtkMath::${method} - NOT IMPLEMENTED`);
+  }
+
+  // Swap rows for n by n matrix
+  function swapRowsMatrix_nxn(matrix, n, row1, row2) {
+    let tmp;
+    for (let i = 0; i < n; i++) {
+      tmp = matrix[row1 * n + i];
+      matrix[row1 * n + i] = matrix[row2 * n + i];
+      matrix[row2 * n + i] = tmp;
+    }
+  }
+
+  // Swap columns for n by n matrix
+  function swapColumnsMatrix_nxn(matrix, n, column1, column2) {
+    let tmp;
+    for (let i = 0; i < n; i++) {
+      tmp = matrix[i * n + column1];
+      matrix[i * n + column1] = matrix[i * n + column2];
+      matrix[i * n + column2] = tmp;
+    }
+  }
 
   // ----------------------------------------------------------------------------
   // Global methods
@@ -9555,6 +9610,7 @@
     }
     return res;
   }
+  const Pi = () => Math.PI;
   function radiansFromDegrees(deg) {
     return deg / 180 * Math.PI;
   }
@@ -9568,6 +9624,45 @@
     min,
     max
   } = Math;
+  function arrayMin(arr) {
+    let offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    let stride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    let minValue = Infinity;
+    for (let i = offset, len = arr.length; i < len; i += stride) {
+      if (arr[i] < minValue) {
+        minValue = arr[i];
+      }
+    }
+    return minValue;
+  }
+  function arrayMax(arr) {
+    let offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    let stride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    let maxValue = -Infinity;
+    for (let i = offset, len = arr.length; i < len; i += stride) {
+      if (maxValue < arr[i]) {
+        maxValue = arr[i];
+      }
+    }
+    return maxValue;
+  }
+  function arrayRange(arr) {
+    let offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    let stride = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+    let minValue = Infinity;
+    let maxValue = -Infinity;
+    for (let i = offset, len = arr.length; i < len; i += stride) {
+      if (arr[i] < minValue) {
+        minValue = arr[i];
+      }
+      if (maxValue < arr[i]) {
+        maxValue = arr[i];
+      }
+    }
+    return [minValue, maxValue];
+  }
+  const ceilLog2 = notImplemented$5('ceilLog2');
+  const factorial = notImplemented$5('factorial');
   function nearestPowerOfTwo(xi) {
     let v = 1;
     while (v < xi) {
@@ -9578,6 +9673,53 @@
   function isPowerOfTwo(x) {
     return x === nearestPowerOfTwo(x);
   }
+  function binomial(m, n) {
+    let r = 1;
+    for (let i = 1; i <= n; ++i) {
+      r *= (m - i + 1) / i;
+    }
+    return Math.floor(r);
+  }
+  function beginCombination(m, n) {
+    if (m < n) {
+      return 0;
+    }
+    const r = createArray(n);
+    for (let i = 0; i < n; ++i) {
+      r[i] = i;
+    }
+    return r;
+  }
+  function nextCombination(m, n, r) {
+    let status = 0;
+    for (let i = n - 1; i >= 0; --i) {
+      if (r[i] < m - n + i) {
+        let j = r[i] + 1;
+        while (i < n) {
+          r[i++] = j++;
+        }
+        status = 1;
+        break;
+      }
+    }
+    return status;
+  }
+  function randomSeed(seed) {
+    seedrandom$1(`${seed}`, {
+      global: true
+    });
+    randomSeedValue = seed;
+  }
+  function getSeed() {
+    return randomSeedValue;
+  }
+  function random() {
+    let minValue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    let maxValue = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    const delta = maxValue - minValue;
+    return minValue + delta * Math.random();
+  }
+  const gaussian = notImplemented$5('gaussian');
 
   // Vect3 operations
   function add(a, b, out) {
@@ -9592,14 +9734,41 @@
     out[2] = a[2] - b[2];
     return out;
   }
+  function multiplyScalar(vec, scalar) {
+    vec[0] *= scalar;
+    vec[1] *= scalar;
+    vec[2] *= scalar;
+    return vec;
+  }
+  function multiplyScalar2D(vec, scalar) {
+    vec[0] *= scalar;
+    vec[1] *= scalar;
+    return vec;
+  }
   function multiplyAccumulate(a, b, scalar, out) {
     out[0] = a[0] + b[0] * scalar;
     out[1] = a[1] + b[1] * scalar;
     out[2] = a[2] + b[2] * scalar;
     return out;
   }
+  function multiplyAccumulate2D(a, b, scalar, out) {
+    out[0] = a[0] + b[0] * scalar;
+    out[1] = a[1] + b[1] * scalar;
+    return out;
+  }
   function dot(x, y) {
     return x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
+  }
+  function outer(x, y, out_3x3) {
+    out_3x3[0] = x[0] * y[0];
+    out_3x3[1] = x[0] * y[1];
+    out_3x3[2] = x[0] * y[2];
+    out_3x3[3] = x[1] * y[0];
+    out_3x3[4] = x[1] * y[1];
+    out_3x3[5] = x[1] * y[2];
+    out_3x3[6] = x[2] * y[0];
+    out_3x3[7] = x[2] * y[1];
+    out_3x3[8] = x[2] * y[2];
   }
   function cross(x, y, out) {
     const Zx = x[1] * y[2] - x[2] * y[1];
@@ -9638,8 +9807,112 @@
     }
     return den;
   }
+  function perpendiculars(x, y, z, theta) {
+    const x2 = x[0] * x[0];
+    const y2 = x[1] * x[1];
+    const z2 = x[2] * x[2];
+    const r = Math.sqrt(x2 + y2 + z2);
+    let dx;
+    let dy;
+    let dz;
+
+    // transpose the vector to avoid divide-by-zero error
+    if (x2 > y2 && x2 > z2) {
+      dx = 0;
+      dy = 1;
+      dz = 2;
+    } else if (y2 > z2) {
+      dx = 1;
+      dy = 2;
+      dz = 0;
+    } else {
+      dx = 2;
+      dy = 0;
+      dz = 1;
+    }
+    const a = x[dx] / r;
+    const b = x[dy] / r;
+    const c = x[dz] / r;
+    const tmp = Math.sqrt(a * a + c * c);
+    if (theta !== 0) {
+      const sintheta = Math.sin(theta);
+      const costheta = Math.cos(theta);
+      if (y) {
+        y[dx] = (c * costheta - a * b * sintheta) / tmp;
+        y[dy] = sintheta * tmp;
+        y[dz] = (-(a * costheta) - b * c * sintheta) / tmp;
+      }
+      if (z) {
+        z[dx] = (-(c * sintheta) - a * b * costheta) / tmp;
+        z[dy] = costheta * tmp;
+        z[dz] = (a * sintheta - b * c * costheta) / tmp;
+      }
+    } else {
+      if (y) {
+        y[dx] = c / tmp;
+        y[dy] = 0;
+        y[dz] = -a / tmp;
+      }
+      if (z) {
+        z[dx] = -a * b / tmp;
+        z[dy] = tmp;
+        z[dz] = -b * c / tmp;
+      }
+    }
+  }
+  function projectVector$1(a, b, projection) {
+    const bSquared = dot(b, b);
+    if (bSquared === 0) {
+      projection[0] = 0;
+      projection[1] = 0;
+      projection[2] = 0;
+      return false;
+    }
+    const scale = dot(a, b) / bSquared;
+    for (let i = 0; i < 3; i++) {
+      projection[i] = b[i];
+    }
+    multiplyScalar(projection, scale);
+    return true;
+  }
+  function dot2D(x, y) {
+    return x[0] * y[0] + x[1] * y[1];
+  }
+  function projectVector2D(a, b, projection) {
+    const bSquared = dot2D(b, b);
+    if (bSquared === 0) {
+      projection[0] = 0;
+      projection[1] = 0;
+      return false;
+    }
+    const scale = dot2D(a, b) / bSquared;
+    for (let i = 0; i < 2; i++) {
+      projection[i] = b[i];
+    }
+    multiplyScalar2D(projection, scale);
+    return true;
+  }
   function distance2BetweenPoints(x, y) {
     return (x[0] - y[0]) * (x[0] - y[0]) + (x[1] - y[1]) * (x[1] - y[1]) + (x[2] - y[2]) * (x[2] - y[2]);
+  }
+  function angleBetweenVectors(v1, v2) {
+    const crossVect = [0, 0, 0];
+    cross(v1, v2, crossVect);
+    return Math.atan2(norm(crossVect), dot(v1, v2));
+  }
+  function gaussianAmplitude(mean, variance, position) {
+    const distanceFromMean = Math.abs(mean - position);
+    return 1 / Math.sqrt(2 * Math.PI * variance) * Math.exp(-(distanceFromMean ** 2) / (2 * variance));
+  }
+  function gaussianWeight(mean, variance, position) {
+    const distanceFromMean = Math.abs(mean - position);
+    return Math.exp(-(distanceFromMean ** 2) / (2 * variance));
+  }
+  function outer2D(x, y, out_2x2) {
+    out_2x2[0] = x[0] * y[0];
+    out_2x2[1] = x[0] * y[1];
+    out_2x2[2] = x[1] * y[0];
+    out_2x2[3] = x[1] * y[1];
   }
   function norm2D(x2D) {
     return Math.sqrt(x2D[0] * x2D[0] + x2D[1] * x2D[1]);
@@ -9664,6 +9937,212 @@
     }
     return Number.NaN;
   }
+  function LUFactor3x3(mat_3x3, index_3) {
+    let maxI;
+    let tmp;
+    let largest;
+    const scale = [0, 0, 0];
+
+    // Loop over rows to get implicit scaling information
+    for (let i = 0; i < 3; i++) {
+      largest = Math.abs(mat_3x3[i * 3]);
+      if ((tmp = Math.abs(mat_3x3[i * 3 + 1])) > largest) {
+        largest = tmp;
+      }
+      if ((tmp = Math.abs(mat_3x3[i * 3 + 2])) > largest) {
+        largest = tmp;
+      }
+      scale[i] = 1 / largest;
+    }
+
+    // Loop over all columns using Crout's method
+
+    // first column
+    largest = scale[0] * Math.abs(mat_3x3[0]);
+    maxI = 0;
+    if ((tmp = scale[1] * Math.abs(mat_3x3[3])) >= largest) {
+      largest = tmp;
+      maxI = 1;
+    }
+    if ((tmp = scale[2] * Math.abs(mat_3x3[6])) >= largest) {
+      maxI = 2;
+    }
+    if (maxI !== 0) {
+      swapRowsMatrix_nxn(mat_3x3, 3, maxI, 0);
+      scale[maxI] = scale[0];
+    }
+    index_3[0] = maxI;
+    mat_3x3[3] /= mat_3x3[0];
+    mat_3x3[6] /= mat_3x3[0];
+
+    // second column
+    mat_3x3[4] -= mat_3x3[3] * mat_3x3[1];
+    mat_3x3[7] -= mat_3x3[6] * mat_3x3[1];
+    largest = scale[1] * Math.abs(mat_3x3[4]);
+    maxI = 1;
+    if ((tmp = scale[2] * Math.abs(mat_3x3[7])) >= largest) {
+      maxI = 2;
+      swapRowsMatrix_nxn(mat_3x3, 3, 1, 2);
+      scale[2] = scale[1];
+    }
+    index_3[1] = maxI;
+    mat_3x3[7] /= mat_3x3[4];
+
+    // third column
+    mat_3x3[5] -= mat_3x3[3] * mat_3x3[2];
+    mat_3x3[8] -= mat_3x3[6] * mat_3x3[2] + mat_3x3[7] * mat_3x3[5];
+    index_3[2] = 2;
+  }
+  function LUSolve3x3(mat_3x3, index_3, x_3) {
+    // forward substitution
+    let sum = x_3[index_3[0]];
+    x_3[index_3[0]] = x_3[0];
+    x_3[0] = sum;
+    sum = x_3[index_3[1]];
+    x_3[index_3[1]] = x_3[1];
+    x_3[1] = sum - mat_3x3[3] * x_3[0];
+    sum = x_3[index_3[2]];
+    x_3[index_3[2]] = x_3[2];
+    x_3[2] = sum - mat_3x3[6] * x_3[0] - mat_3x3[7] * x_3[1];
+
+    // back substitution
+    x_3[2] /= mat_3x3[8];
+    x_3[1] = (x_3[1] - mat_3x3[5] * x_3[2]) / mat_3x3[4];
+    x_3[0] = (x_3[0] - mat_3x3[1] * x_3[1] - mat_3x3[2] * x_3[2]) / mat_3x3[0];
+  }
+  function linearSolve3x3(mat_3x3, x_3, y_3) {
+    const a1 = mat_3x3[0];
+    const b1 = mat_3x3[1];
+    const c1 = mat_3x3[2];
+    const a2 = mat_3x3[3];
+    const b2 = mat_3x3[4];
+    const c2 = mat_3x3[5];
+    const a3 = mat_3x3[6];
+    const b3 = mat_3x3[7];
+    const c3 = mat_3x3[8];
+
+    // Compute the adjoint
+    const d1 = +determinant2x2(b2, b3, c2, c3);
+    const d2 = -determinant2x2(a2, a3, c2, c3);
+    const d3 = +determinant2x2(a2, a3, b2, b3);
+    const e1 = -determinant2x2(b1, b3, c1, c3);
+    const e2 = +determinant2x2(a1, a3, c1, c3);
+    const e3 = -determinant2x2(a1, a3, b1, b3);
+    const f1 = +determinant2x2(b1, b2, c1, c2);
+    const f2 = -determinant2x2(a1, a2, c1, c2);
+    const f3 = +determinant2x2(a1, a2, b1, b2);
+
+    // Compute the determinant
+    const det = a1 * d1 + b1 * d2 + c1 * d3;
+
+    // Multiply by the adjoint
+    const v1 = d1 * x_3[0] + e1 * x_3[1] + f1 * x_3[2];
+    const v2 = d2 * x_3[0] + e2 * x_3[1] + f2 * x_3[2];
+    const v3 = d3 * x_3[0] + e3 * x_3[1] + f3 * x_3[2];
+
+    // Divide by the determinant
+    y_3[0] = v1 / det;
+    y_3[1] = v2 / det;
+    y_3[2] = v3 / det;
+  }
+  function multiply3x3_vect3(mat_3x3, in_3, out_3) {
+    const x = mat_3x3[0] * in_3[0] + mat_3x3[1] * in_3[1] + mat_3x3[2] * in_3[2];
+    const y = mat_3x3[3] * in_3[0] + mat_3x3[4] * in_3[1] + mat_3x3[5] * in_3[2];
+    const z = mat_3x3[6] * in_3[0] + mat_3x3[7] * in_3[1] + mat_3x3[8] * in_3[2];
+    out_3[0] = x;
+    out_3[1] = y;
+    out_3[2] = z;
+  }
+  function multiply3x3_mat3(a_3x3, b_3x3, out_3x3) {
+    const copyA = [...a_3x3];
+    const copyB = [...b_3x3];
+    for (let i = 0; i < 3; i++) {
+      out_3x3[i] = copyA[0] * copyB[i] + copyA[1] * copyB[i + 3] + copyA[2] * copyB[i + 6];
+      out_3x3[i + 3] = copyA[3] * copyB[i] + copyA[4] * copyB[i + 3] + copyA[5] * copyB[i + 6];
+      out_3x3[i + 6] = copyA[6] * copyB[i] + copyA[7] * copyB[i + 3] + copyA[8] * copyB[i + 6];
+    }
+  }
+  function multiplyMatrix(a, b, rowA, colA, rowB, colB, outRowAColB) {
+    // we need colA == rowB
+    if (colA !== rowB) {
+      vtkErrorMacro$y('Number of columns of A must match number of rows of B.');
+    }
+
+    // If a or b is used to store the result, copying them is required
+    const copyA = [...a];
+    const copyB = [...b];
+    // output matrix is rowA*colB
+    // output row
+    for (let i = 0; i < rowA; i++) {
+      // output col
+      for (let j = 0; j < colB; j++) {
+        outRowAColB[i * colB + j] = 0;
+        // sum for this point
+        for (let k = 0; k < colA; k++) {
+          outRowAColB[i * colB + j] += copyA[i * colA + k] * copyB[j + colB * k];
+        }
+      }
+    }
+  }
+  function transpose3x3(in_3x3, outT_3x3) {
+    let tmp;
+
+    // off-diagonal elements
+    tmp = in_3x3[3];
+    outT_3x3[3] = in_3x3[1];
+    outT_3x3[1] = tmp;
+    tmp = in_3x3[6];
+    outT_3x3[6] = in_3x3[2];
+    outT_3x3[2] = tmp;
+    tmp = in_3x3[7];
+    outT_3x3[7] = in_3x3[5];
+    outT_3x3[5] = tmp;
+
+    // on-diagonal elements
+    outT_3x3[0] = in_3x3[0];
+    outT_3x3[4] = in_3x3[4];
+    outT_3x3[8] = in_3x3[8];
+  }
+  function invert3x3(in_3x3, outI_3x3) {
+    const a1 = in_3x3[0];
+    const b1 = in_3x3[1];
+    const c1 = in_3x3[2];
+    const a2 = in_3x3[3];
+    const b2 = in_3x3[4];
+    const c2 = in_3x3[5];
+    const a3 = in_3x3[6];
+    const b3 = in_3x3[7];
+    const c3 = in_3x3[8];
+
+    // Compute the adjoint
+    const d1 = +determinant2x2(b2, b3, c2, c3);
+    const d2 = -determinant2x2(a2, a3, c2, c3);
+    const d3 = +determinant2x2(a2, a3, b2, b3);
+    const e1 = -determinant2x2(b1, b3, c1, c3);
+    const e2 = +determinant2x2(a1, a3, c1, c3);
+    const e3 = -determinant2x2(a1, a3, b1, b3);
+    const f1 = +determinant2x2(b1, b2, c1, c2);
+    const f2 = -determinant2x2(a1, a2, c1, c2);
+    const f3 = +determinant2x2(a1, a2, b1, b2);
+
+    // Divide by the determinant
+    const det = a1 * d1 + b1 * d2 + c1 * d3;
+    if (det === 0) {
+      vtkWarningMacro$8('Matrix has 0 determinant');
+    }
+    outI_3x3[0] = d1 / det;
+    outI_3x3[3] = d2 / det;
+    outI_3x3[6] = d3 / det;
+    outI_3x3[1] = e1 / det;
+    outI_3x3[4] = e2 / det;
+    outI_3x3[7] = e3 / det;
+    outI_3x3[2] = f1 / det;
+    outI_3x3[5] = f2 / det;
+    outI_3x3[8] = f3 / det;
+  }
+  function determinant3x3(mat_3x3) {
+    return mat_3x3[0] * mat_3x3[4] * mat_3x3[8] + mat_3x3[3] * mat_3x3[7] * mat_3x3[2] + mat_3x3[6] * mat_3x3[1] * mat_3x3[5] - mat_3x3[0] * mat_3x3[7] * mat_3x3[5] - mat_3x3[3] * mat_3x3[1] * mat_3x3[8] - mat_3x3[6] * mat_3x3[4] * mat_3x3[2];
+  }
 
   /**
    * Returns true if elements of both arrays are equals.
@@ -9682,6 +10161,56 @@
     return a.every(isEqual);
   }
   const areMatricesEqual = areEquals;
+  function identity3x3(mat_3x3) {
+    for (let i = 0; i < 3; i++) {
+      /* eslint-disable-next-line no-multi-assign */
+      mat_3x3[i * 3] = mat_3x3[i * 3 + 1] = mat_3x3[i * 3 + 2] = 0;
+      mat_3x3[i * 3 + i] = 1;
+    }
+  }
+  function identity$1(n, mat) {
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        mat[i * n + j] = 0;
+      }
+      mat[i * n + i] = 1;
+    }
+    return mat;
+  }
+  function isIdentity(mat) {
+    let eps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : EPSILON$2;
+    return areMatricesEqual(mat, IDENTITY, eps);
+  }
+  function isIdentity3x3(mat) {
+    let eps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : EPSILON$2;
+    return areMatricesEqual(mat, IDENTITY_3X3, eps);
+  }
+  function quaternionToMatrix3x3(quat_4, mat_3x3) {
+    const ww = quat_4[0] * quat_4[0];
+    const wx = quat_4[0] * quat_4[1];
+    const wy = quat_4[0] * quat_4[2];
+    const wz = quat_4[0] * quat_4[3];
+    const xx = quat_4[1] * quat_4[1];
+    const yy = quat_4[2] * quat_4[2];
+    const zz = quat_4[3] * quat_4[3];
+    const xy = quat_4[1] * quat_4[2];
+    const xz = quat_4[1] * quat_4[3];
+    const yz = quat_4[2] * quat_4[3];
+    const rr = xx + yy + zz;
+    // normalization factor, just in case quaternion was not normalized
+    let f = 1 / (ww + rr);
+    const s = (ww - rr) * f;
+    f *= 2;
+    mat_3x3[0] = xx * f + s;
+    mat_3x3[3] = (xy + wz) * f;
+    mat_3x3[6] = (xz - wy) * f;
+    mat_3x3[1] = (xy - wz) * f;
+    mat_3x3[4] = yy * f + s;
+    mat_3x3[7] = (yz + wx) * f;
+    mat_3x3[2] = (xz + wy) * f;
+    mat_3x3[5] = (yz - wx) * f;
+    mat_3x3[8] = zz * f + s;
+  }
   function roundNumber(num) {
     let digits = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     if (!`${num}`.includes('e')) {
@@ -9701,6 +10230,443 @@
     out[1] = roundNumber(vector[1], digits);
     out[2] = roundNumber(vector[2], digits);
     return out;
+  }
+  function jacobiN(a, n, w, v) {
+    let i;
+    let j;
+    let k;
+    let iq;
+    let ip;
+    let numPos;
+    let tresh;
+    let theta;
+    let t;
+    let tau;
+    let sm;
+    let s;
+    let h;
+    let g;
+    let c;
+    let tmp;
+    const b = createArray(n);
+    const z = createArray(n);
+    const vtkROTATE = (aa, ii, jj) => {
+      g = aa[ii];
+      h = aa[jj];
+      aa[ii] = g - s * (h + g * tau);
+      aa[jj] = h + s * (g - h * tau);
+    };
+
+    // initialize
+    identity$1(n, v);
+    for (ip = 0; ip < n; ip++) {
+      b[ip] = w[ip] = a[ip + ip * n];
+      z[ip] = 0.0;
+    }
+
+    // begin rotation sequence
+    for (i = 0; i < VTK_MAX_ROTATIONS; i++) {
+      sm = 0.0;
+      for (ip = 0; ip < n - 1; ip++) {
+        for (iq = ip + 1; iq < n; iq++) {
+          sm += Math.abs(a[ip * n + iq]);
+        }
+      }
+      if (sm === 0.0) {
+        break;
+      }
+
+      // first 3 sweeps
+      if (i < 3) {
+        tresh = 0.2 * sm / (n * n);
+      } else {
+        tresh = 0.0;
+      }
+      for (ip = 0; ip < n - 1; ip++) {
+        for (iq = ip + 1; iq < n; iq++) {
+          g = 100.0 * Math.abs(a[ip * n + iq]);
+
+          // after 4 sweeps
+          if (i > 3 && Math.abs(w[ip]) + g === Math.abs(w[ip]) && Math.abs(w[iq]) + g === Math.abs(w[iq])) {
+            a[ip * n + iq] = 0.0;
+          } else if (Math.abs(a[ip * n + iq]) > tresh) {
+            h = w[iq] - w[ip];
+            if (Math.abs(h) + g === Math.abs(h)) {
+              t = a[ip * n + iq] / h;
+            } else {
+              theta = 0.5 * h / a[ip * n + iq];
+              t = 1.0 / (Math.abs(theta) + Math.sqrt(1.0 + theta * theta));
+              if (theta < 0.0) {
+                t = -t;
+              }
+            }
+            c = 1.0 / Math.sqrt(1 + t * t);
+            s = t * c;
+            tau = s / (1.0 + c);
+            h = t * a[ip * n + iq];
+            z[ip] -= h;
+            z[iq] += h;
+            w[ip] -= h;
+            w[iq] += h;
+            a[ip * n + iq] = 0.0;
+
+            // ip already shifted left by 1 unit
+            for (j = 0; j <= ip - 1; j++) {
+              vtkROTATE(a, j * n + ip, j * n + iq);
+            }
+            // ip and iq already shifted left by 1 unit
+            for (j = ip + 1; j <= iq - 1; j++) {
+              vtkROTATE(a, ip * n + j, j * n + iq);
+            }
+            // iq already shifted left by 1 unit
+            for (j = iq + 1; j < n; j++) {
+              vtkROTATE(a, ip * n + j, iq * n + j);
+            }
+            for (j = 0; j < n; j++) {
+              vtkROTATE(v, j * n + ip, j * n + iq);
+            }
+          }
+        }
+      }
+      for (ip = 0; ip < n; ip++) {
+        b[ip] += z[ip];
+        w[ip] = b[ip];
+        z[ip] = 0.0;
+      }
+    }
+
+    // this is NEVER called
+    if (i >= VTK_MAX_ROTATIONS) {
+      vtkWarningMacro$8('vtkMath::Jacobi: Error extracting eigenfunctions');
+      return 0;
+    }
+
+    // sort eigenfunctions: these changes do not affect accuracy
+    for (j = 0; j < n - 1; j++) {
+      // boundary incorrect
+      k = j;
+      tmp = w[k];
+      for (i = j + 1; i < n; i++) {
+        // boundary incorrect, shifted already
+        if (w[i] >= tmp || Math.abs(w[i] - tmp) < VTK_SMALL_NUMBER) {
+          // why exchange if same?
+          k = i;
+          tmp = w[k];
+        }
+      }
+      if (k !== j) {
+        w[k] = w[j];
+        w[j] = tmp;
+        swapColumnsMatrix_nxn(v, n, j, k);
+      }
+    }
+    // ensure eigenvector consistency (i.e., Jacobi can compute vectors that
+    // are negative of one another (.707,.707,0) and (-.707,-.707,0). This can
+    // reek havoc in hyperstreamline/other stuff. We will select the most
+    // positive eigenvector.
+    const ceil_half_n = (n >> 1) + (n & 1);
+    for (numPos = 0, i = 0; i < n * n; i++) {
+      if (v[i] >= 0.0) {
+        numPos++;
+      }
+    }
+    //    if ( numPos < ceil(double(n)/double(2.0)) )
+    if (numPos < ceil_half_n) {
+      for (i = 0; i < n; i++) {
+        v[i * n + j] *= -1.0;
+      }
+    }
+    return 1;
+  }
+  function matrix3x3ToQuaternion(mat_3x3, quat_4) {
+    const tmp = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    // on-diagonal elements
+    tmp[0] = mat_3x3[0] + mat_3x3[4] + mat_3x3[8];
+    tmp[5] = mat_3x3[0] - mat_3x3[4] - mat_3x3[8];
+    tmp[10] = -mat_3x3[0] + mat_3x3[4] - mat_3x3[8];
+    tmp[15] = -mat_3x3[0] - mat_3x3[4] + mat_3x3[8];
+
+    // off-diagonal elements
+    tmp[1] = tmp[4] = mat_3x3[7] - mat_3x3[5];
+    tmp[2] = tmp[8] = mat_3x3[2] - mat_3x3[6];
+    tmp[3] = tmp[12] = mat_3x3[3] - mat_3x3[1];
+    tmp[6] = tmp[9] = mat_3x3[3] + mat_3x3[1];
+    tmp[7] = tmp[13] = mat_3x3[2] + mat_3x3[6];
+    tmp[11] = tmp[14] = mat_3x3[7] + mat_3x3[5];
+    const eigenvectors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const eigenvalues = [0, 0, 0, 0];
+
+    // convert into format that JacobiN can use,
+    // then use Jacobi to find eigenvalues and eigenvectors
+    // tmp is copied because jacobiN may modify it
+    const NTemp = [...tmp];
+    jacobiN(NTemp, 4, eigenvalues, eigenvectors);
+
+    // the first eigenvector is the one we want
+    quat_4[0] = eigenvectors[0];
+    quat_4[1] = eigenvectors[4];
+    quat_4[2] = eigenvectors[8];
+    quat_4[3] = eigenvectors[12];
+  }
+  function multiplyQuaternion(quat_1, quat_2, quat_out) {
+    const ww = quat_1[0] * quat_2[0];
+    const wx = quat_1[0] * quat_2[1];
+    const wy = quat_1[0] * quat_2[2];
+    const wz = quat_1[0] * quat_2[3];
+    const xw = quat_1[1] * quat_2[0];
+    const xx = quat_1[1] * quat_2[1];
+    const xy = quat_1[1] * quat_2[2];
+    const xz = quat_1[1] * quat_2[3];
+    const yw = quat_1[2] * quat_2[0];
+    const yx = quat_1[2] * quat_2[1];
+    const yy = quat_1[2] * quat_2[2];
+    const yz = quat_1[2] * quat_2[3];
+    const zw = quat_1[3] * quat_2[0];
+    const zx = quat_1[3] * quat_2[1];
+    const zy = quat_1[3] * quat_2[2];
+    const zz = quat_1[3] * quat_2[3];
+    quat_out[0] = ww - xx - yy - zz;
+    quat_out[1] = wx + xw + yz - zy;
+    quat_out[2] = wy - xz + yw + zx;
+    quat_out[3] = wz + xy - yx + zw;
+  }
+  function orthogonalize3x3(a_3x3, out_3x3) {
+    // copy the matrix
+    for (let i = 0; i < 9; i++) {
+      out_3x3[i] = a_3x3[i];
+    }
+
+    // Pivot the matrix to improve accuracy
+    const scale = createArray(3);
+    const index = createArray(3);
+    let largest;
+
+    // Loop over rows to get implicit scaling information
+    for (let i = 0; i < 3; i++) {
+      const x1 = Math.abs(out_3x3[i * 3]);
+      const x2 = Math.abs(out_3x3[i * 3 + 1]);
+      const x3 = Math.abs(out_3x3[i * 3 + 2]);
+      largest = x2 > x1 ? x2 : x1;
+      largest = x3 > largest ? x3 : largest;
+      scale[i] = 1;
+      if (largest !== 0) {
+        scale[i] /= largest;
+      }
+    }
+
+    // first column
+    const x1 = Math.abs(out_3x3[0]) * scale[0];
+    const x2 = Math.abs(out_3x3[3]) * scale[1];
+    const x3 = Math.abs(out_3x3[6]) * scale[2];
+    index[0] = 0;
+    largest = x1;
+    if (x2 >= largest) {
+      largest = x2;
+      index[0] = 1;
+    }
+    if (x3 >= largest) {
+      index[0] = 2;
+    }
+    if (index[0] !== 0) {
+      // swap vectors
+      swapColumnsMatrix_nxn(out_3x3, 3, index[0], 0);
+      scale[index[0]] = scale[0];
+    }
+
+    // second column
+    const y2 = Math.abs(out_3x3[4]) * scale[1];
+    const y3 = Math.abs(out_3x3[7]) * scale[2];
+    index[1] = 1;
+    largest = y2;
+    if (y3 >= largest) {
+      index[1] = 2;
+      // swap vectors
+      swapColumnsMatrix_nxn(out_3x3, 3, 1, 2);
+    }
+
+    // third column
+    index[2] = 2;
+
+    // A quaternion can only describe a pure rotation, not
+    // a rotation with a flip, therefore the flip must be
+    // removed before the matrix is converted to a quaternion.
+    let flip = 0;
+    if (determinant3x3(out_3x3) < 0) {
+      flip = 1;
+      for (let i = 0; i < 9; i++) {
+        out_3x3[i] = -out_3x3[i];
+      }
+    }
+
+    // Do orthogonalization using a quaternion intermediate
+    // (this, essentially, does the orthogonalization via
+    // diagonalization of an appropriately constructed symmetric
+    // 4x4 matrix rather than by doing SVD of the 3x3 matrix)
+    const quat = createArray(4);
+    matrix3x3ToQuaternion(out_3x3, quat);
+    quaternionToMatrix3x3(quat, out_3x3);
+
+    // Put the flip back into the orthogonalized matrix.
+    if (flip) {
+      for (let i = 0; i < 9; i++) {
+        out_3x3[i] = -out_3x3[i];
+      }
+    }
+
+    // Undo the pivoting
+    if (index[1] !== 1) {
+      swapColumnsMatrix_nxn(out_3x3, 3, index[1], 1);
+    }
+    if (index[0] !== 0) {
+      swapColumnsMatrix_nxn(out_3x3, 3, index[0], 0);
+    }
+  }
+  function diagonalize3x3(a_3x3, w_3, v_3x3) {
+    let i;
+    let j;
+    let k;
+    let maxI;
+    let tmp;
+    let maxVal;
+
+    // a is copied because jacobiN may modify it
+    const copyA = [...a_3x3];
+
+    // diagonalize using Jacobi
+    jacobiN(copyA, 3, w_3, v_3x3);
+
+    // if all the eigenvalues are the same, return identity matrix
+    if (w_3[0] === w_3[1] && w_3[0] === w_3[2]) {
+      identity3x3(v_3x3);
+      return;
+    }
+
+    // transpose temporarily, it makes it easier to sort the eigenvectors
+    transpose3x3(v_3x3, v_3x3);
+
+    // if two eigenvalues are the same, re-orthogonalize to optimally line
+    // up the eigenvectors with the x, y, and z axes
+    for (i = 0; i < 3; i++) {
+      // two eigenvalues are the same
+      if (w_3[(i + 1) % 3] === w_3[(i + 2) % 3]) {
+        // find maximum element of the independent eigenvector
+        maxVal = Math.abs(v_3x3[i * 3]);
+        maxI = 0;
+        for (j = 1; j < 3; j++) {
+          if (maxVal < (tmp = Math.abs(v_3x3[i * 3 + j]))) {
+            maxVal = tmp;
+            maxI = j;
+          }
+        }
+        // swap the eigenvector into its proper position
+        if (maxI !== i) {
+          tmp = w_3[maxI];
+          w_3[maxI] = w_3[i];
+          w_3[i] = tmp;
+          swapRowsMatrix_nxn(v_3x3, 3, i, maxI);
+        }
+        // maximum element of eigenvector should be positive
+        if (v_3x3[maxI * 3 + maxI] < 0) {
+          v_3x3[maxI * 3] = -v_3x3[maxI * 3];
+          v_3x3[maxI * 3 + 1] = -v_3x3[maxI * 3 + 1];
+          v_3x3[maxI * 3 + 2] = -v_3x3[maxI * 3 + 2];
+        }
+
+        // re-orthogonalize the other two eigenvectors
+        j = (maxI + 1) % 3;
+        k = (maxI + 2) % 3;
+        v_3x3[j * 3] = 0.0;
+        v_3x3[j * 3 + 1] = 0.0;
+        v_3x3[j * 3 + 2] = 0.0;
+        v_3x3[j * 3 + j] = 1.0;
+        const vectTmp1 = cross([v_3x3[maxI * 3], v_3x3[maxI * 3 + 1], v_3x3[maxI * 3 + 2]], [v_3x3[j * 3], v_3x3[j * 3 + 1], v_3x3[j * 3 + 2]], []);
+        normalize(vectTmp1);
+        const vectTmp2 = cross(vectTmp1, [v_3x3[maxI * 3], v_3x3[maxI * 3 + 1], v_3x3[maxI * 3 + 2]], []);
+        for (let t = 0; t < 3; t++) {
+          v_3x3[k * 3 + t] = vectTmp1[t];
+          v_3x3[j * 3 + t] = vectTmp2[t];
+        }
+
+        // transpose vectors back to columns
+        transpose3x3(v_3x3, v_3x3);
+        return;
+      }
+    }
+
+    // the three eigenvalues are different, just sort the eigenvectors
+    // to align them with the x, y, and z axes
+
+    // find the vector with the largest x element, make that vector
+    // the first vector
+    maxVal = Math.abs(v_3x3[0]);
+    maxI = 0;
+    for (i = 1; i < 3; i++) {
+      if (maxVal < (tmp = Math.abs(v_3x3[i * 3]))) {
+        maxVal = tmp;
+        maxI = i;
+      }
+    }
+    // swap eigenvalue and eigenvector
+    if (maxI !== 0) {
+      const eigenValTmp = w_3[maxI];
+      w_3[maxI] = w_3[0];
+      w_3[0] = eigenValTmp;
+      swapRowsMatrix_nxn(v_3x3, 3, maxI, 0);
+    }
+    // do the same for the y element
+    if (Math.abs(v_3x3[4]) < Math.abs(v_3x3[7])) {
+      const eigenValTmp = w_3[2];
+      w_3[2] = w_3[1];
+      w_3[1] = eigenValTmp;
+      swapRowsMatrix_nxn(v_3x3, 3, 1, 2);
+    }
+
+    // ensure that the sign of the eigenvectors is correct
+    for (i = 0; i < 2; i++) {
+      if (v_3x3[i * 3 + i] < 0) {
+        v_3x3[i * 3] = -v_3x3[i * 3];
+        v_3x3[i * 3 + 1] = -v_3x3[i * 3 + 1];
+        v_3x3[i * 3 + 2] = -v_3x3[i * 3 + 2];
+      }
+    }
+    // set sign of final eigenvector to ensure that determinant is positive
+    if (determinant3x3(v_3x3) < 0) {
+      v_3x3[6] = -v_3x3[6];
+      v_3x3[7] = -v_3x3[7];
+      v_3x3[8] = -v_3x3[8];
+    }
+
+    // transpose the eigenvectors back again
+    transpose3x3(v_3x3, v_3x3);
+  }
+  function singularValueDecomposition3x3(a_3x3, u_3x3, w_3, vT_3x3) {
+    let i;
+    // copy so that A can be used for U or VT without risk
+    const B = [...a_3x3];
+
+    // temporarily flip if determinant is negative
+    const d = determinant3x3(B);
+    if (d < 0) {
+      for (i = 0; i < 9; i++) {
+        B[i] = -B[i];
+      }
+    }
+
+    // orthogonalize, diagonalize, etc.
+    orthogonalize3x3(B, u_3x3);
+    transpose3x3(B, B);
+    multiply3x3_mat3(B, u_3x3, vT_3x3);
+    diagonalize3x3(vT_3x3, w_3, vT_3x3);
+    multiply3x3_mat3(u_3x3, vT_3x3, u_3x3);
+    transpose3x3(vT_3x3, vT_3x3);
+
+    // re-create the flip
+    if (d < 0) {
+      w_3[0] = -w_3[0];
+      w_3[1] = -w_3[1];
+      w_3[2] = -w_3[2];
+    }
   }
 
   /**
@@ -9730,7 +10696,7 @@
         }
       }
       if (largest === 0.0) {
-        vtkWarningMacro$6('Unable to factor linear system');
+        vtkWarningMacro$8('Unable to factor linear system');
         return 0;
       }
       scale[i] = 1.0 / largest;
@@ -9776,7 +10742,7 @@
       //
       index[j] = maxI;
       if (Math.abs(A[j * size + j]) <= VTK_SMALL_NUMBER) {
-        vtkWarningMacro$6('Unable to factor linear system');
+        vtkWarningMacro$8('Unable to factor linear system');
         return 0;
       }
       if (j !== size - 1) {
@@ -9860,6 +10826,310 @@
     luSolveLinearSystem(A, index, x, size);
     return 1;
   }
+
+  // Note that A is modified during the inversion !
+  function invertMatrix(A, AI, size) {
+    let index = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+    let column = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+    const tmp1Size = index || createArray(size);
+    const tmp2Size = column || createArray(size);
+
+    // Factor matrix; then begin solving for inverse one column at a time.
+    // Note: tmp1Size returned value is used later, tmp2Size is just working
+    // memory whose values are not used in LUSolveLinearSystem
+    if (luFactorLinearSystem(A, tmp1Size, size) === 0) {
+      return null;
+    }
+    for (let j = 0; j < size; j++) {
+      for (let i = 0; i < size; i++) {
+        tmp2Size[i] = 0.0;
+      }
+      tmp2Size[j] = 1.0;
+      luSolveLinearSystem(A, tmp1Size, tmp2Size, size);
+      for (let i = 0; i < size; i++) {
+        AI[i * size + j] = tmp2Size[i];
+      }
+    }
+    return AI;
+  }
+  function estimateMatrixCondition(A, size) {
+    let minValue = +Number.MAX_VALUE;
+    let maxValue = -Number.MAX_VALUE;
+
+    // find the maximum value
+    for (let i = 0; i < size; i++) {
+      for (let j = i; j < size; j++) {
+        if (Math.abs(A[i * size + j]) > maxValue) {
+          maxValue = Math.abs(A[i * size + j]);
+        }
+      }
+    }
+
+    // find the minimum diagonal value
+    for (let i = 0; i < size; i++) {
+      if (Math.abs(A[i * size + i]) < minValue) {
+        minValue = Math.abs(A[i * size + i]);
+      }
+    }
+    if (minValue === 0.0) {
+      return Number.MAX_VALUE;
+    }
+    return maxValue / minValue;
+  }
+  function jacobi(a_3x3, w, v) {
+    return jacobiN(a_3x3, 3, w, v);
+  }
+  function solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, mt) {
+    // check dimensional consistency
+    if (numberOfSamples < xOrder) {
+      vtkWarningMacro$8('Insufficient number of samples. Underdetermined.');
+      return 0;
+    }
+    let i;
+    let j;
+    let k;
+
+    // set up intermediate variables
+    // Allocate matrix to hold X times transpose of X
+    const XXt = createArray(xOrder * xOrder); // size x by x
+    // Allocate the array of eigenvalues and eigenvectors
+    const eigenvals = createArray(xOrder);
+    const eigenvecs = createArray(xOrder * xOrder);
+
+    // Calculate XXt upper half only, due to symmetry
+    for (k = 0; k < numberOfSamples; k++) {
+      for (i = 0; i < xOrder; i++) {
+        for (j = i; j < xOrder; j++) {
+          XXt[i * xOrder + j] += xt[k * xOrder + i] * xt[k * xOrder + j];
+        }
+      }
+    }
+
+    // now fill in the lower half of the XXt matrix
+    for (i = 0; i < xOrder; i++) {
+      for (j = 0; j < i; j++) {
+        XXt[i * xOrder + j] = XXt[j * xOrder + i];
+      }
+    }
+
+    // Compute the eigenvectors and eigenvalues
+    jacobiN(XXt, xOrder, eigenvals, eigenvecs);
+
+    // Smallest eigenval is at the end of the list (xOrder-1), and solution is
+    // corresponding eigenvec.
+    for (i = 0; i < xOrder; i++) {
+      mt[i] = eigenvecs[i * xOrder + xOrder - 1];
+    }
+    return 1;
+  }
+  function solveLeastSquares(numberOfSamples, xt, xOrder, yt, yOrder, mt) {
+    let checkHomogeneous = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : true;
+    // check dimensional consistency
+    if (numberOfSamples < xOrder || numberOfSamples < yOrder) {
+      vtkWarningMacro$8('Insufficient number of samples. Underdetermined.');
+      return 0;
+    }
+    const homogenFlags = createArray(yOrder);
+    let allHomogeneous = 1;
+    let hmt;
+    let homogRC = 0;
+    let i;
+    let j;
+    let k;
+    let someHomogeneous = 0;
+
+    // Ok, first init some flags check and see if all the systems are homogeneous
+    if (checkHomogeneous) {
+      // If Y' is zero, it's a homogeneous system and can't be solved via
+      // the pseudoinverse method. Detect this case, warn the user, and
+      // invoke SolveHomogeneousLeastSquares instead. Note that it doesn't
+      // really make much sense for yOrder to be greater than one in this case,
+      // since that's just yOrder occurrences of a 0 vector on the RHS, but
+      // we allow it anyway. N
+
+      // Initialize homogeneous flags on a per-right-hand-side basis
+      for (j = 0; j < yOrder; j++) {
+        homogenFlags[j] = 1;
+      }
+      for (i = 0; i < numberOfSamples; i++) {
+        for (j = 0; j < yOrder; j++) {
+          if (Math.abs(yt[i * yOrder + j]) > VTK_SMALL_NUMBER) {
+            allHomogeneous = 0;
+            homogenFlags[j] = 0;
+          }
+        }
+      }
+
+      // If we've got one system, and it's homogeneous, do it and bail out quickly.
+      if (allHomogeneous && yOrder === 1) {
+        vtkWarningMacro$8('Detected homogeneous system (Y=0), calling SolveHomogeneousLeastSquares()');
+        return solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, mt);
+      }
+
+      // Ok, we've got more than one system of equations.
+      // Figure out if we need to calculate the homogeneous equation solution for
+      // any of them.
+      if (allHomogeneous) {
+        someHomogeneous = 1;
+      } else {
+        for (j = 0; j < yOrder; j++) {
+          if (homogenFlags[j]) {
+            someHomogeneous = 1;
+          }
+        }
+      }
+    }
+
+    // If necessary, solve the homogeneous problem
+    if (someHomogeneous) {
+      // hmt is the homogeneous equation version of mt, the general solution.
+      // hmt should be xOrder x yOrder, but since we are solving only the homogeneous part, here it is xOrder x 1
+      hmt = createArray(xOrder);
+
+      // Ok, solve the homogeneous problem
+      homogRC = solveHomogeneousLeastSquares(numberOfSamples, xt, xOrder, hmt);
+    }
+
+    // set up intermediate variables
+    const XXt = createArray(xOrder * xOrder); // size x by x
+    const XXtI = createArray(xOrder * xOrder); // size x by x
+    const XYt = createArray(xOrder * yOrder); // size x by y
+
+    // first find the pseudoinverse matrix
+    for (k = 0; k < numberOfSamples; k++) {
+      for (i = 0; i < xOrder; i++) {
+        // first calculate the XXt matrix, only do the upper half (symmetrical)
+        for (j = i; j < xOrder; j++) {
+          XXt[i * xOrder + j] += xt[k * xOrder + i] * xt[k * xOrder + j];
+        }
+
+        // now calculate the XYt matrix
+        for (j = 0; j < yOrder; j++) {
+          XYt[i * yOrder + j] += xt[k * xOrder + i] * yt[k * yOrder + j];
+        }
+      }
+    }
+
+    // now fill in the lower half of the XXt matrix
+    for (i = 0; i < xOrder; i++) {
+      for (j = 0; j < i; j++) {
+        XXt[i * xOrder + j] = XXt[j * xOrder + i];
+      }
+    }
+    const successFlag = invertMatrix(XXt, XXtI, xOrder);
+
+    // next get the inverse of XXt
+    if (successFlag) {
+      for (i = 0; i < xOrder; i++) {
+        for (j = 0; j < yOrder; j++) {
+          mt[i * yOrder + j] = 0.0;
+          for (k = 0; k < xOrder; k++) {
+            mt[i * yOrder + j] += XXtI[i * xOrder + k] * XYt[k * yOrder + j];
+          }
+        }
+      }
+    }
+
+    // Fix up any of the solutions that correspond to the homogeneous equation
+    // problem.
+    if (someHomogeneous) {
+      for (j = 0; j < yOrder; j++) {
+        if (homogenFlags[j]) {
+          // Fix this one
+          for (i = 0; i < xOrder; i++) {
+            mt[i * yOrder + j] = hmt[i * yOrder];
+          }
+        }
+      }
+    }
+    if (someHomogeneous) {
+      return homogRC && successFlag;
+    }
+    return successFlag;
+  }
+  function hex2float(hexStr) {
+    let outFloatArray = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0.5, 1];
+    switch (hexStr.length) {
+      case 3:
+        // abc => #aabbcc
+        outFloatArray[0] = parseInt(hexStr[0], 16) * 17 / 255;
+        outFloatArray[1] = parseInt(hexStr[1], 16) * 17 / 255;
+        outFloatArray[2] = parseInt(hexStr[2], 16) * 17 / 255;
+        return outFloatArray;
+      case 4:
+        // #abc => #aabbcc
+        outFloatArray[0] = parseInt(hexStr[1], 16) * 17 / 255;
+        outFloatArray[1] = parseInt(hexStr[2], 16) * 17 / 255;
+        outFloatArray[2] = parseInt(hexStr[3], 16) * 17 / 255;
+        return outFloatArray;
+      case 6:
+        // ab01df => #ab01df
+        outFloatArray[0] = parseInt(hexStr.substr(0, 2), 16) / 255;
+        outFloatArray[1] = parseInt(hexStr.substr(2, 2), 16) / 255;
+        outFloatArray[2] = parseInt(hexStr.substr(4, 2), 16) / 255;
+        return outFloatArray;
+      case 7:
+        // #ab01df
+        outFloatArray[0] = parseInt(hexStr.substr(1, 2), 16) / 255;
+        outFloatArray[1] = parseInt(hexStr.substr(3, 2), 16) / 255;
+        outFloatArray[2] = parseInt(hexStr.substr(5, 2), 16) / 255;
+        return outFloatArray;
+      case 9:
+        // #ab01df00
+        outFloatArray[0] = parseInt(hexStr.substr(1, 2), 16) / 255;
+        outFloatArray[1] = parseInt(hexStr.substr(3, 2), 16) / 255;
+        outFloatArray[2] = parseInt(hexStr.substr(5, 2), 16) / 255;
+        outFloatArray[3] = parseInt(hexStr.substr(7, 2), 16) / 255;
+        return outFloatArray;
+      default:
+        return outFloatArray;
+    }
+  }
+  function rgb2hsv(rgb, hsv) {
+    let h;
+    let s;
+    const [r, g, b] = rgb;
+    const onethird = 1.0 / 3.0;
+    const onesixth = 1.0 / 6.0;
+    const twothird = 2.0 / 3.0;
+    let cmax = r;
+    let cmin = r;
+    if (g > cmax) {
+      cmax = g;
+    } else if (g < cmin) {
+      cmin = g;
+    }
+    if (b > cmax) {
+      cmax = b;
+    } else if (b < cmin) {
+      cmin = b;
+    }
+    const v = cmax;
+    if (v > 0.0) {
+      s = (cmax - cmin) / cmax;
+    } else {
+      s = 0.0;
+    }
+    if (s > 0) {
+      if (r === cmax) {
+        h = onesixth * (g - b) / (cmax - cmin);
+      } else if (g === cmax) {
+        h = onethird + onesixth * (b - r) / (cmax - cmin);
+      } else {
+        h = twothird + onesixth * (r - g) / (cmax - cmin);
+      }
+      if (h < 0.0) {
+        h += 1.0;
+      }
+    } else {
+      h = 0.0;
+    }
+
+    // Set the values back to the array
+    hsv[0] = h;
+    hsv[1] = s;
+    hsv[2] = v;
+  }
   function hsv2rgb(hsv, rgb) {
     const [h, s, v] = hsv;
     const onethird = 1.0 / 3.0;
@@ -9916,6 +11186,118 @@
     rgb[1] = g;
     rgb[2] = b;
   }
+  function lab2xyz(lab, xyz) {
+    // LAB to XYZ
+    const [L, a, b] = lab;
+    let var_Y = (L + 16) / 116;
+    let var_X = a / 500 + var_Y;
+    let var_Z = var_Y - b / 200;
+    if (var_Y ** 3 > 0.008856) {
+      var_Y **= 3;
+    } else {
+      var_Y = (var_Y - 16.0 / 116.0) / 7.787;
+    }
+    if (var_X ** 3 > 0.008856) {
+      var_X **= 3;
+    } else {
+      var_X = (var_X - 16.0 / 116.0) / 7.787;
+    }
+    if (var_Z ** 3 > 0.008856) {
+      var_Z **= 3;
+    } else {
+      var_Z = (var_Z - 16.0 / 116.0) / 7.787;
+    }
+    const ref_X = 0.9505;
+    const ref_Y = 1.0;
+    const ref_Z = 1.089;
+    xyz[0] = ref_X * var_X; // ref_X = 0.9505  Observer= 2 deg Illuminant= D65
+    xyz[1] = ref_Y * var_Y; // ref_Y = 1.000
+    xyz[2] = ref_Z * var_Z; // ref_Z = 1.089
+  }
+
+  function xyz2lab(xyz, lab) {
+    const [x, y, z] = xyz;
+    const ref_X = 0.9505;
+    const ref_Y = 1.0;
+    const ref_Z = 1.089;
+    let var_X = x / ref_X; // ref_X = 0.9505  Observer= 2 deg, Illuminant= D65
+    let var_Y = y / ref_Y; // ref_Y = 1.000
+    let var_Z = z / ref_Z; // ref_Z = 1.089
+
+    if (var_X > 0.008856) var_X **= 1.0 / 3.0;else var_X = 7.787 * var_X + 16.0 / 116.0;
+    if (var_Y > 0.008856) var_Y **= 1.0 / 3.0;else var_Y = 7.787 * var_Y + 16.0 / 116.0;
+    if (var_Z > 0.008856) var_Z **= 1.0 / 3.0;else var_Z = 7.787 * var_Z + 16.0 / 116.0;
+    lab[0] = 116 * var_Y - 16;
+    lab[1] = 500 * (var_X - var_Y);
+    lab[2] = 200 * (var_Y - var_Z);
+  }
+  function xyz2rgb(xyz, rgb) {
+    const [x, y, z] = xyz;
+    let r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+    let g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+    let b = x * 0.0557 + y * -0.204 + z * 1.057;
+
+    // The following performs a "gamma correction" specified by the sRGB color
+    // space.  sRGB is defined by a canonical definition of a display monitor and
+    // has been standardized by the International Electrotechnical Commission (IEC
+    // 61966-2-1).  The nonlinearity of the correction is designed to make the
+    // colors more perceptually uniform.  This color space has been adopted by
+    // several applications including Adobe Photoshop and Microsoft Windows color
+    // management.  OpenGL is agnostic on its RGB color space, but it is reasonable
+    // to assume it is close to this one.
+    if (r > 0.0031308) r = 1.055 * r ** (1 / 2.4) - 0.055;else r *= 12.92;
+    if (g > 0.0031308) g = 1.055 * g ** (1 / 2.4) - 0.055;else g *= 12.92;
+    if (b > 0.0031308) b = 1.055 * b ** (1 / 2.4) - 0.055;else b *= 12.92;
+
+    // Clip colors. ideally we would do something that is perceptually closest
+    // (since we can see colors outside of the display gamut), but this seems to
+    // work well enough.
+    let maxVal = r;
+    if (maxVal < g) maxVal = g;
+    if (maxVal < b) maxVal = b;
+    if (maxVal > 1.0) {
+      r /= maxVal;
+      g /= maxVal;
+      b /= maxVal;
+    }
+    if (r < 0) r = 0;
+    if (g < 0) g = 0;
+    if (b < 0) b = 0;
+
+    // Push values back to array
+    rgb[0] = r;
+    rgb[1] = g;
+    rgb[2] = b;
+  }
+  function rgb2xyz(rgb, xyz) {
+    let [r, g, b] = rgb;
+    // The following performs a "gamma correction" specified by the sRGB color
+    // space.  sRGB is defined by a canonical definition of a display monitor and
+    // has been standardized by the International Electrotechnical Commission (IEC
+    // 61966-2-1).  The nonlinearity of the correction is designed to make the
+    // colors more perceptually uniform.  This color space has been adopted by
+    // several applications including Adobe Photoshop and Microsoft Windows color
+    // management.  OpenGL is agnostic on its RGB color space, but it is reasonable
+    // to assume it is close to this one.
+    if (r > 0.04045) r = ((r + 0.055) / 1.055) ** 2.4;else r /= 12.92;
+    if (g > 0.04045) g = ((g + 0.055) / 1.055) ** 2.4;else g /= 12.92;
+    if (b > 0.04045) b = ((b + 0.055) / 1.055) ** 2.4;else b /= 12.92;
+
+    // Observer. = 2 deg, Illuminant = D65
+    xyz[0] = r * 0.4124 + g * 0.3576 + b * 0.1805;
+    xyz[1] = r * 0.2126 + g * 0.7152 + b * 0.0722;
+    xyz[2] = r * 0.0193 + g * 0.1192 + b * 0.9505;
+  }
+  function rgb2lab(rgb, lab) {
+    const xyz = [0, 0, 0];
+    rgb2xyz(rgb, xyz);
+    xyz2lab(xyz, lab);
+  }
+  function lab2rgb(lab, rgb) {
+    const xyz = [0, 0, 0];
+    lab2xyz(lab, xyz);
+    xyz2rgb(xyz, rgb);
+  }
   function uninitializeBounds(bounds) {
     bounds[0] = 1.0;
     bounds[1] = -1.0;
@@ -9927,6 +11309,19 @@
   }
   function areBoundsInitialized(bounds) {
     return !(bounds[1] - bounds[0] < 0.0);
+  }
+
+  /**
+   * @deprecated please use vtkBoundingBox.addPoints(vtkBoundingBox.reset([]), points)
+   */
+  function computeBoundsFromPoints(point1, point2, bounds) {
+    bounds[0] = Math.min(point1[0], point2[0]);
+    bounds[1] = Math.max(point1[0], point2[0]);
+    bounds[2] = Math.min(point1[1], point2[1]);
+    bounds[3] = Math.max(point1[1], point2[1]);
+    bounds[4] = Math.min(point1[2], point2[2]);
+    bounds[5] = Math.max(point1[2], point2[2]);
+    return bounds;
   }
   function clampValue(value, minValue, maxValue) {
     if (value < minValue) {
@@ -9944,6 +11339,91 @@
     out[2] = clampValue(vector[2], minVector[2], maxVector[2]);
     return out;
   }
+  function clampAndNormalizeValue(value, range) {
+    let result = 0;
+    if (range[0] !== range[1]) {
+      // clamp
+      if (value < range[0]) {
+        result = range[0];
+      } else if (value > range[1]) {
+        result = range[1];
+      } else {
+        result = value;
+      }
+      // normalize
+      result = (result - range[0]) / (range[1] - range[0]);
+    }
+    return result;
+  }
+  const getScalarTypeFittingRange = notImplemented$5('GetScalarTypeFittingRange');
+  const getAdjustedScalarRange = notImplemented$5('GetAdjustedScalarRange');
+  function extentIsWithinOtherExtent(extent1, extent2) {
+    if (!extent1 || !extent2) {
+      return 0;
+    }
+    for (let i = 0; i < 6; i += 2) {
+      if (extent1[i] < extent2[i] || extent1[i] > extent2[i + 1] || extent1[i + 1] < extent2[i] || extent1[i + 1] > extent2[i + 1]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  function boundsIsWithinOtherBounds(bounds1_6, bounds2_6, delta_3) {
+    if (!bounds1_6 || !bounds2_6) {
+      return 0;
+    }
+    for (let i = 0; i < 6; i += 2) {
+      if (bounds1_6[i] + delta_3[i / 2] < bounds2_6[i] || bounds1_6[i] - delta_3[i / 2] > bounds2_6[i + 1] || bounds1_6[i + 1] + delta_3[i / 2] < bounds2_6[i] || bounds1_6[i + 1] - delta_3[i / 2] > bounds2_6[i + 1]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  function pointIsWithinBounds(point_3, bounds_6, delta_3) {
+    if (!point_3 || !bounds_6 || !delta_3) {
+      return 0;
+    }
+    for (let i = 0; i < 3; i++) {
+      if (point_3[i] + delta_3[i] < bounds_6[2 * i] || point_3[i] - delta_3[i] > bounds_6[2 * i + 1]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  function solve3PointCircle(p1, p2, p3, center) {
+    const v21 = createArray(3);
+    const v32 = createArray(3);
+    const v13 = createArray(3);
+    const v12 = createArray(3);
+    const v23 = createArray(3);
+    const v31 = createArray(3);
+    for (let i = 0; i < 3; ++i) {
+      v21[i] = p1[i] - p2[i];
+      v32[i] = p2[i] - p3[i];
+      v13[i] = p3[i] - p1[i];
+      v12[i] = -v21[i];
+      v23[i] = -v32[i];
+      v31[i] = -v13[i];
+    }
+    const norm12 = norm(v12);
+    const norm23 = norm(v23);
+    const norm13 = norm(v13);
+    const crossv21v32 = createArray(3);
+    cross(v21, v32, crossv21v32);
+    const normCross = norm(crossv21v32);
+    const radius = norm12 * norm23 * norm13 / (2 * normCross);
+    const normCross22 = 2 * normCross * normCross;
+    const alpha = norm23 * norm23 * dot(v21, v31) / normCross22;
+    const beta = norm13 * norm13 * dot(v12, v32) / normCross22;
+    const gamma = norm12 * norm12 * dot(v13, v23) / normCross22;
+    for (let i = 0; i < 3; ++i) {
+      center[i] = alpha * p1[i] + beta * p2[i] + gamma * p3[i];
+    }
+    return radius;
+  }
+  const inf = Infinity;
+  const negInf = -Infinity;
+  const isInf = value => !Number.isFinite(value);
   const {
     isFinite: isFinite$1,
     isNaN: isNaN$1
@@ -9960,6 +11440,207 @@
     Number.MAX_VALUE, -Number.MAX_VALUE // Z
     ]);
   }
+
+  function getMajorAxisIndex(vector) {
+    let maxValue = -1;
+    let axisIndex = -1;
+    for (let i = 0; i < vector.length; i++) {
+      const value = Math.abs(vector[i]);
+      if (value > maxValue) {
+        axisIndex = i;
+        maxValue = value;
+      }
+    }
+    return axisIndex;
+  }
+
+  // Return the closest orthogonal matrix of 1, -1 and 0
+  // It works for both column major and row major matrices
+  // This function iteratively associate a column with a row by choosing
+  // the greatest absolute value from the remaining row and columns
+  // For each association, a -1 or a 1 is set in the output, depending on
+  // the sign of the value in the original matrix
+  function getSparseOrthogonalMatrix(matrix) {
+    let n = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 3;
+    // Initialize rows and columns to available indices
+    const rows = new Array(n);
+    const cols = new Array(n);
+    for (let i = 0; i < n; ++i) {
+      rows[i] = i;
+      cols[i] = i;
+    }
+    // No need for the last iteration: i = 0
+    for (let i = n - 1; i > 0; i--) {
+      // Loop invariant:
+      // rows[0:i] and cols[0:i] contain the remaining rows and columns
+      // rows]i:n[ and cols]i:n[ contain the associations found (rows[k] is associated with cols[k])
+      let bestValue = -Infinity;
+      let bestRowI = 0;
+      let bestColI = 0;
+      for (let rowI = 0; rowI <= i; ++rowI) {
+        const row = rows[rowI];
+        for (let colI = 0; colI <= i; ++colI) {
+          const col = cols[colI];
+          const absVal = Math.abs(matrix[row + n * col]);
+          if (absVal > bestValue) {
+            bestValue = absVal;
+            bestRowI = rowI;
+            bestColI = colI;
+          }
+        }
+      }
+      // Found an association between rows[bestRowI] and cols[bestColI]
+      // Put both at the end of their array by swapping with i
+      [rows[i], rows[bestRowI]] = [rows[bestRowI], rows[i]];
+      [cols[i], cols[bestColI]] = [cols[bestColI], cols[i]];
+    }
+
+    // Convert row/column association to a matrix
+    const output = new Array(n * n).fill(0);
+    for (let i = 0; i < n; ++i) {
+      const matIdx = rows[i] + n * cols[i];
+      output[matIdx] = matrix[matIdx] < 0 ? -1 : 1;
+    }
+    return output;
+  }
+  function floatToHex2(value) {
+    const integer = Math.floor(value * 255);
+    if (integer > 15) {
+      return integer.toString(16);
+    }
+    return `0${integer.toString(16)}`;
+  }
+  function floatRGB2HexCode(rgbArray) {
+    let prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#';
+    return `${prefix}${rgbArray.map(floatToHex2).join('')}`;
+  }
+  function floatToChar(f) {
+    return Math.round(f * 255);
+  }
+  function float2CssRGBA(rgbArray) {
+    if (rgbArray.length === 3) {
+      return `rgb(${rgbArray.map(floatToChar).join(', ')})`;
+    }
+    return `rgba(${floatToChar(rgbArray[0] || 0)}, ${floatToChar(rgbArray[1] || 0)}, ${floatToChar(rgbArray[2] || 0)}, ${rgbArray[3] || 0})`;
+  }
+
+  // ----------------------------------------------------------------------------
+  // Only Static API
+  // ----------------------------------------------------------------------------
+
+  var vtkMath = {
+    Pi,
+    radiansFromDegrees,
+    degreesFromRadians,
+    round,
+    floor,
+    ceil,
+    ceilLog2,
+    min,
+    max,
+    arrayMin,
+    arrayMax,
+    arrayRange,
+    isPowerOfTwo,
+    nearestPowerOfTwo,
+    factorial,
+    binomial,
+    beginCombination,
+    nextCombination,
+    randomSeed,
+    getSeed,
+    random,
+    gaussian,
+    add,
+    subtract,
+    multiplyScalar,
+    multiplyScalar2D,
+    multiplyAccumulate,
+    multiplyAccumulate2D,
+    dot,
+    outer,
+    cross,
+    norm,
+    normalize,
+    perpendiculars,
+    projectVector: projectVector$1,
+    projectVector2D,
+    distance2BetweenPoints,
+    angleBetweenVectors,
+    gaussianAmplitude,
+    gaussianWeight,
+    dot2D,
+    outer2D,
+    norm2D,
+    normalize2D,
+    determinant2x2,
+    LUFactor3x3,
+    LUSolve3x3,
+    linearSolve3x3,
+    multiply3x3_vect3,
+    multiply3x3_mat3,
+    multiplyMatrix,
+    transpose3x3,
+    invert3x3,
+    identity3x3,
+    identity: identity$1,
+    isIdentity,
+    isIdentity3x3,
+    determinant3x3,
+    quaternionToMatrix3x3,
+    areEquals,
+    areMatricesEqual,
+    roundNumber,
+    roundVector,
+    matrix3x3ToQuaternion,
+    multiplyQuaternion,
+    orthogonalize3x3,
+    diagonalize3x3,
+    singularValueDecomposition3x3,
+    solveLinearSystem,
+    invertMatrix,
+    luFactorLinearSystem,
+    luSolveLinearSystem,
+    estimateMatrixCondition,
+    jacobi,
+    jacobiN,
+    solveHomogeneousLeastSquares,
+    solveLeastSquares,
+    hex2float,
+    rgb2hsv,
+    hsv2rgb,
+    lab2xyz,
+    xyz2lab,
+    xyz2rgb,
+    rgb2xyz,
+    rgb2lab,
+    lab2rgb,
+    uninitializeBounds,
+    areBoundsInitialized,
+    computeBoundsFromPoints,
+    clampValue,
+    clampVector,
+    clampAndNormalizeValue,
+    getScalarTypeFittingRange,
+    getAdjustedScalarRange,
+    extentIsWithinOtherExtent,
+    boundsIsWithinOtherBounds,
+    pointIsWithinBounds,
+    solve3PointCircle,
+    inf,
+    negInf,
+    isInf,
+    isNan: isNaN$1,
+    isNaN: isNaN$1,
+    isFinite: isFinite$1,
+    // JS add-on
+    createUninitializedBounds,
+    getMajorAxisIndex,
+    getSparseOrthogonalMatrix,
+    floatToHex2,
+    floatRGB2HexCode,
+    float2CssRGBA
+  };
 
   const PLANE_TOLERANCE = 1.0e-6;
   const COINCIDE = 'coincide';
@@ -10183,16 +11864,16 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1w = {
+  const DEFAULT_VALUES$1Y = {
     normal: [0.0, 0.0, 1.0],
     origin: [0.0, 0.0, 0.0]
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1B(publicAPI, model) {
+  function extend$29(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1w, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1Y, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -10202,13 +11883,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1A = macro.newInstance(extend$1B, 'vtkPlane');
+  const newInstance$1T = macro.newInstance(extend$29, 'vtkPlane');
 
   // ----------------------------------------------------------------------------
 
   var vtkPlane$1 = {
-    newInstance: newInstance$1A,
-    extend: extend$1B,
+    newInstance: newInstance$1T,
+    extend: extend$29,
     ...STATIC$a
   };
 
@@ -10841,7 +12522,7 @@
       return intersects(this.bounds, otherBounds);
     }
   }
-  function newInstance$1z(initialValues) {
+  function newInstance$1S(initialValues) {
     const bounds = initialValues && initialValues.bounds;
     return new BoundingBox(bounds);
   }
@@ -10888,7 +12569,7 @@
     INIT_BOUNDS
   };
   var vtkBoundingBox = {
-    newInstance: newInstance$1z,
+    newInstance: newInstance$1S,
     ...STATIC$9
   };
 
@@ -10896,13 +12577,13 @@
     DISPLAY: 0,
     WORLD: 1
   };
-  var Constants$d = {
+  var Constants$h = {
     CoordinateSystem: CoordinateSystem$5
   };
 
   const {
     CoordinateSystem: CoordinateSystem$4
-  } = Constants$d;
+  } = Constants$h;
   function notImplemented$4(method) {
     return () => macro.vtkErrorMacro(`vtkProp::${method} - NOT IMPLEMENTED`);
   }
@@ -10980,7 +12661,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1v = {
+  const DEFAULT_VALUES$1X = {
     // _parentProp: null,
     allocatedRenderTime: 10,
     coordinateSystem: CoordinateSystem$4.WORLD,
@@ -10997,9 +12678,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1A(publicAPI, model) {
+  function extend$28(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1v, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1X, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -11013,14 +12694,14 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1y = macro.newInstance(extend$1A, 'vtkProp');
+  const newInstance$1R = macro.newInstance(extend$28, 'vtkProp');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp$1 = {
-    newInstance: newInstance$1y,
-    extend: extend$1A,
-    ...Constants$d
+    newInstance: newInstance$1R,
+    extend: extend$28,
+    ...Constants$h
   };
 
   // ----------------------------------------------------------------------------
@@ -11081,7 +12762,7 @@
         return false;
       }
       model.orientation = [x, y, z];
-      identity$3(model.rotation);
+      identity$4(model.rotation);
       publicAPI.rotateZ(z);
       publicAPI.rotateX(x);
       publicAPI.rotateY(y);
@@ -11103,7 +12784,7 @@
     publicAPI.computeMatrix = () => {
       // check whether or not need to rebuild the matrix
       if (publicAPI.getMTime() > model.matrixMTime.getMTime()) {
-        identity$3(model.matrix);
+        identity$4(model.matrix);
         if (model.userMatrix) {
           multiply$1(model.matrix, model.matrix, model.userMatrix);
         }
@@ -11142,7 +12823,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1u = {
+  const DEFAULT_VALUES$1W = {
     origin: [0, 0, 0],
     position: [0, 0, 0],
     orientation: [0, 0, 0],
@@ -11158,9 +12839,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1z(publicAPI, model) {
+  function extend$27(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1u, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1W, initialValues);
 
     // Inheritance
     vtkProp$1.extend(publicAPI, model, initialValues);
@@ -11173,9 +12854,9 @@
     macro.setGetArray(publicAPI, model, ['origin', 'position', 'scale'], 3);
 
     // Object internal instance
-    model.matrix = identity$3(new Float64Array(16));
-    model.rotation = identity$3(new Float64Array(16));
-    model.userMatrix = identity$3(new Float64Array(16));
+    model.matrix = identity$4(new Float64Array(16));
+    model.rotation = identity$4(new Float64Array(16));
+    model.userMatrix = identity$4(new Float64Array(16));
     model.transform = null; // FIXME
 
     // Object methods
@@ -11184,13 +12865,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1x = macro.newInstance(extend$1z, 'vtkProp3D');
+  const newInstance$1Q = macro.newInstance(extend$27, 'vtkProp3D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp3D$1 = {
-    newInstance: newInstance$1x,
-    extend: extend$1z
+    newInstance: newInstance$1Q,
+    extend: extend$27
   };
 
   const Shading$1 = {
@@ -11278,7 +12959,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1t = {
+  const DEFAULT_VALUES$1V = {
     color: [1, 1, 1],
     ambientColor: [1, 1, 1],
     diffuseColor: [1, 1, 1],
@@ -11308,9 +12989,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1y(publicAPI, model) {
+  function extend$26(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1t, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1V, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -11323,18 +13004,18 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1w = macro.newInstance(extend$1y, 'vtkProperty');
+  const newInstance$1P = macro.newInstance(extend$26, 'vtkProperty');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty$1 = {
-    newInstance: newInstance$1w,
-    extend: extend$1y,
+    newInstance: newInstance$1P,
+    extend: extend$26,
     ...PropertyConst
   };
 
   const {
-    vtkDebugMacro: vtkDebugMacro$7
+    vtkDebugMacro: vtkDebugMacro$8
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -11416,7 +13097,7 @@
       // the modified time of this class is newer than the cached time,
       // then we need to rebuild.
       if (!model.mapperBounds || bds[0] !== model.mapperBounds[0] || bds[1] !== model.mapperBounds[1] || bds[2] !== model.mapperBounds[2] || bds[3] !== model.mapperBounds[3] || bds[4] !== model.mapperBounds[4] || bds[5] !== model.mapperBounds[5] || publicAPI.getMTime() > model.boundsMTime.getMTime()) {
-        vtkDebugMacro$7('Recomputing bounds...');
+        vtkDebugMacro$8('Recomputing bounds...');
         model.mapperBounds = bds.concat(); // copy the mapper's bounds
         const bbox = [];
         vtkBoundingBox.getCorners(bds, bbox);
@@ -11473,7 +13154,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1s = {
+  const DEFAULT_VALUES$1U = {
     mapper: null,
     property: null,
     backfaceProperty: null,
@@ -11484,9 +13165,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1x(publicAPI, model) {
+  function extend$25(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1s, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1U, initialValues);
 
     // Inheritance
     vtkProp3D$1.extend(publicAPI, model, initialValues);
@@ -11505,13 +13186,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1v = macro.newInstance(extend$1x, 'vtkActor');
+  const newInstance$1O = macro.newInstance(extend$25, 'vtkActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkActor$1 = {
-    newInstance: newInstance$1v,
-    extend: extend$1x
+    newInstance: newInstance$1O,
+    extend: extend$25
   };
 
   const DataTypeByteSize = {
@@ -11539,18 +13220,18 @@
     DOUBLE: 'Float64Array'
   };
   const DefaultDataType$1 = VtkDataTypes$5.FLOAT;
-  var Constants$c = {
+  var Constants$g = {
     DefaultDataType: DefaultDataType$1,
     DataTypeByteSize,
     VtkDataTypes: VtkDataTypes$5
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$s
+    vtkErrorMacro: vtkErrorMacro$x
   } = macro$1;
   const {
     DefaultDataType
-  } = Constants$c;
+  } = Constants$g;
 
   // ----------------------------------------------------------------------------
   // Global methods
@@ -11908,7 +13589,7 @@
     publicAPI.getNumberOfTuples = () => model.size / model.numberOfComponents;
     publicAPI.getDataType = () => model.dataType;
     /* eslint-disable no-use-before-define */
-    publicAPI.newClone = () => newInstance$1u({
+    publicAPI.newClone = () => newInstance$1N({
       empty: true,
       name: model.name,
       dataType: model.dataType,
@@ -11988,7 +13669,7 @@
     publicAPI.interpolateTuple = (idx, source1, source1Idx, source2, source2Idx, t) => {
       const numberOfComponents = model.numberOfComponents || 1;
       if (numberOfComponents !== source1.getNumberOfComponents() || numberOfComponents !== source2.getNumberOfComponents()) {
-        vtkErrorMacro$s('numberOfComponents must match');
+        vtkErrorMacro$x('numberOfComponents must match');
       }
       const tuple1 = source1.getTuple(source1Idx);
       const tuple2 = source2.getTuple(source2Idx);
@@ -12025,7 +13706,7 @@
 
   // size: The current size of the dataArray.
   // NOTE: The underlying typed array may be larger than 'size'.
-  const DEFAULT_VALUES$1r = {
+  const DEFAULT_VALUES$1T = {
     name: '',
     numberOfComponents: 1,
     dataType: DefaultDataType,
@@ -12037,9 +13718,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1w(publicAPI, model) {
+  function extend$24(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1r, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1T, initialValues);
     if (!model.empty && !model.values && !model.size) {
       throw new TypeError('Cannot create vtkDataArray object without: size > 0, values');
     }
@@ -12067,15 +13748,15 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1u = newInstance$1I(extend$1w, 'vtkDataArray');
+  const newInstance$1N = newInstance$1$(extend$24, 'vtkDataArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataArray$1 = {
-    newInstance: newInstance$1u,
-    extend: extend$1w,
+    newInstance: newInstance$1N,
+    extend: extend$24,
     ...STATIC$8,
-    ...Constants$c
+    ...Constants$g
   };
 
   // ----------------------------------------------------------------------------
@@ -12163,15 +13844,15 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1q = {
+  const DEFAULT_VALUES$1S = {
     clippingPlanes: []
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1v(publicAPI, model) {
+  function extend$23(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1q, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1S, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -12184,7 +13865,7 @@
 
   // ----------------------------------------------------------------------------
   var vtkAbstractMapper$1 = {
-    extend: extend$1v
+    extend: extend$23
   };
 
   // ----------------------------------------------------------------------------
@@ -12211,7 +13892,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const defaultValues$4 = initialValues => ({
+  const defaultValues$b = initialValues => ({
     bounds: [...vtkBoundingBox.INIT_BOUNDS],
     center: [0, 0, 0],
     viewSpecificProperties: {},
@@ -12220,9 +13901,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1u(publicAPI, model) {
+  function extend$22(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$4(initialValues));
+    Object.assign(model, defaultValues$b(initialValues));
     // Inheritance
     vtkAbstractMapper$1.extend(publicAPI, model, initialValues);
     macro.setGet(publicAPI, model, ['viewSpecificProperties']);
@@ -12232,12 +13913,12 @@
   // ----------------------------------------------------------------------------
 
   var vtkAbstractMapper3D$1 = {
-    extend: extend$1u
+    extend: extend$22
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$r,
-    vtkWarningMacro: vtkWarningMacro$5
+    vtkErrorMacro: vtkErrorMacro$w,
+    vtkWarningMacro: vtkWarningMacro$7
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -12369,7 +14050,7 @@
               destArr.insertTuples(0, arr.getTuples());
             }
           } else {
-            vtkErrorMacro$r('Unhandled case in passData');
+            vtkErrorMacro$w('Unhandled case in passData');
           }
         }
       });
@@ -12415,14 +14096,14 @@
             if (fromId1 > -1 && fromId1 < arr.getNumberOfTuples()) {
               const tId = toId > -1 ? toId : fromId1;
               destArr.interpolateTuple(tId, arr, fromId1, arr, fromId2, t);
-              vtkWarningMacro$5('Unexpected case in interpolateData');
+              vtkWarningMacro$7('Unexpected case in interpolateData');
             } else {
               // if `fromId` is not provided, just copy all (or as much possible)
               // from `arr` to `destArr`.
               destArr.insertTuples(arr.getTuples());
             }
           } else {
-            vtkErrorMacro$r('Unhandled case in interpolateData');
+            vtkErrorMacro$w('Unhandled case in interpolateData');
           }
         }
       });
@@ -12478,29 +14159,29 @@
       return result;
     };
   }
-  const DEFAULT_VALUES$1p = {
+  const DEFAULT_VALUES$1R = {
     arrays: [],
     copyFieldFlags: [],
     // fields not to copy
     doCopyAllOn: true,
     doCopyAllOff: false
   };
-  function extend$1t(publicAPI, model) {
+  function extend$21(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1p, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1R, initialValues);
     macro.obj(publicAPI, model);
     vtkFieldData(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1t = macro.newInstance(extend$1t, 'vtkFieldData');
+  const newInstance$1M = macro.newInstance(extend$21, 'vtkFieldData');
 
   // ----------------------------------------------------------------------------
 
   var vtkFieldData$1 = {
-    newInstance: newInstance$1t,
-    extend: extend$1t
+    newInstance: newInstance$1M,
+    extend: extend$21
   };
 
   const AttributeTypes$1 = {
@@ -12555,7 +14236,7 @@
     DOUBLE: 2 // use Float64Array
   };
 
-  var Constants$b = {
+  var Constants$f = {
     AttributeCopyOperations: AttributeCopyOperations$1,
     AttributeLimitTypes,
     AttributeTypes: AttributeTypes$1,
@@ -12568,9 +14249,9 @@
   const {
     AttributeTypes,
     AttributeCopyOperations
-  } = Constants$b;
+  } = Constants$f;
   const {
-    vtkWarningMacro: vtkWarningMacro$4
+    vtkWarningMacro: vtkWarningMacro$6
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -12600,11 +14281,11 @@
     publicAPI.setAttribute = (arr, uncleanAttType) => {
       const attType = cleanAttributeType(uncleanAttType);
       if (arr && attType.toUpperCase() === 'PEDIGREEIDS' && !arr.isA('vtkDataArray')) {
-        vtkWarningMacro$4(`Cannot set attribute ${attType}. The attribute must be a vtkDataArray.`);
+        vtkWarningMacro$6(`Cannot set attribute ${attType}. The attribute must be a vtkDataArray.`);
         return -1;
       }
       if (arr && !publicAPI.checkNumberOfComponents(arr, attType)) {
-        vtkWarningMacro$4(`Cannot set attribute ${attType}. Incorrect number of components.`);
+        vtkWarningMacro$6(`Cannot set attribute ${attType}. Incorrect number of components.`);
         return -1;
       }
       let currentAttribute = model[`active${attType}`];
@@ -12632,11 +14313,11 @@
         if (attType.toUpperCase() !== 'PEDIGREEIDS') {
           const arr = publicAPI.getArrayByIndex(arrayIdx);
           if (!arr.isA('vtkDataArray')) {
-            vtkWarningMacro$4(`Cannot set attribute ${attType}. Only vtkDataArray subclasses can be set as active attributes.`);
+            vtkWarningMacro$6(`Cannot set attribute ${attType}. Only vtkDataArray subclasses can be set as active attributes.`);
             return -1;
           }
           if (!publicAPI.checkNumberOfComponents(arr, attType)) {
-            vtkWarningMacro$4(`Cannot set attribute ${attType}. Incorrect number of components.`);
+            vtkWarningMacro$6(`Cannot set attribute ${attType}. Incorrect number of components.`);
             return -1;
           }
         }
@@ -12734,7 +14415,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1o = {
+  const DEFAULT_VALUES$1Q = {
     activeScalars: -1,
     activeVectors: -1,
     activeTensors: -1,
@@ -12746,9 +14427,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1s(publicAPI, model) {
+  function extend$20(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1o, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1Q, initialValues);
 
     // Object methods
     vtkFieldData$1.extend(publicAPI, model, initialValues);
@@ -12763,14 +14444,14 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1s = macro.newInstance(extend$1s, 'vtkDataSetAttributes');
+  const newInstance$1L = macro.newInstance(extend$20, 'vtkDataSetAttributes');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSetAttributes$1 = {
-    newInstance: newInstance$1s,
-    extend: extend$1s,
-    ...Constants$b
+    newInstance: newInstance$1L,
+    extend: extend$20,
+    ...Constants$f
   };
 
   // Specify how data arrays can be used by data objects
@@ -12820,7 +14501,7 @@
     FIELD_ASSOCIATION_ROWS: 6,
     NUMBER_OF_ASSOCIATIONS: 7
   };
-  var Constants$a = {
+  var Constants$e = {
     FieldDataTypes,
     FieldAssociations: FieldAssociations$5
   };
@@ -12893,7 +14574,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1n = {
+  const DEFAULT_VALUES$1P = {
     // pointData: null,
     // cellData: null,
     // fieldData: null,
@@ -12901,9 +14582,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1r(publicAPI, model) {
+  function extend$1$(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1n, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1P, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -12915,14 +14596,14 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1r = macro.newInstance(extend$1r, 'vtkDataSet');
+  const newInstance$1K = macro.newInstance(extend$1$, 'vtkDataSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSet$1 = {
-    newInstance: newInstance$1r,
-    extend: extend$1r,
-    ...Constants$a
+    newInstance: newInstance$1K,
+    extend: extend$1$,
+    ...Constants$e
   };
 
   const StructuredType$1 = {
@@ -12937,13 +14618,13 @@
     XYZ_GRID: 8,
     EMPTY: 9
   };
-  var Constants$9 = {
+  var Constants$d = {
     StructuredType: StructuredType$1
   };
 
   const {
     StructuredType
-  } = Constants$9;
+  } = Constants$d;
   function getDataDescriptionFromExtent(inExt) {
     let dataDim = 0;
     for (let i = 0; i < 3; ++i) {
@@ -12979,11 +14660,11 @@
   }
   var vtkStructuredData = {
     getDataDescriptionFromExtent,
-    ...Constants$9
+    ...Constants$d
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$q
+    vtkErrorMacro: vtkErrorMacro$v
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -12995,7 +14676,7 @@
     model.classHierarchy.push('vtkImageData');
     publicAPI.setExtent = function () {
       if (model.deleted) {
-        vtkErrorMacro$q('instance deleted - cannot call any method');
+        vtkErrorMacro$v('instance deleted - cannot call any method');
         return false;
       }
       for (var _len = arguments.length, inExtent = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -13018,7 +14699,7 @@
       let j;
       let k;
       if (model.deleted) {
-        vtkErrorMacro$q('instance deleted - cannot call any method');
+        vtkErrorMacro$v('instance deleted - cannot call any method');
         return;
       }
       if (arguments.length === 1) {
@@ -13031,7 +14712,7 @@
         j = arguments.length <= 1 ? undefined : arguments[1];
         k = arguments.length <= 2 ? undefined : arguments[2];
       } else {
-        vtkErrorMacro$q('Bad dimension specification');
+        vtkErrorMacro$v('Bad dimension specification');
         return;
       }
       publicAPI.setExtent(0, i - 1, 0, j - 1, 0, k - 1);
@@ -13057,7 +14738,7 @@
     publicAPI.getPoint = index => {
       const dims = publicAPI.getDimensions();
       if (dims[0] === 0 || dims[1] === 0 || dims[2] === 0) {
-        vtkErrorMacro$q('Requesting a point from an empty image.');
+        vtkErrorMacro$v('Requesting a point from an empty image.');
         return null;
       }
       const ijk = new Float64Array(3);
@@ -13093,7 +14774,7 @@
           ijk[2] = index / (dims[0] * dims[1]);
           break;
         default:
-          vtkErrorMacro$q('Invalid dataDescription');
+          vtkErrorMacro$v('Invalid dataDescription');
           break;
       }
       const coords = [0, 0, 0];
@@ -13263,7 +14944,7 @@
       // Confirm indexed i,j,k coords are within the bounds of the volume
       for (let idx = 0; idx < 3; ++idx) {
         if (index[idx] < extent[idx * 2] || index[idx] > extent[idx * 2 + 1]) {
-          vtkErrorMacro$q(`GetScalarPointer: Pixel ${index} is not in memory. Current extent = ${extent}`);
+          vtkErrorMacro$v(`GetScalarPointer: Pixel ${index} is not in memory. Current extent = ${extent}`);
           return NaN;
         }
       }
@@ -13280,7 +14961,7 @@
       let comp = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       const numberOfComponents = publicAPI.getPointData().getScalars().getNumberOfComponents();
       if (comp < 0 || comp >= numberOfComponents) {
-        vtkErrorMacro$q(`GetScalarPointer: Scalar Component ${comp} is not within bounds. Current Scalar numberOfComponents: ${numberOfComponents}`);
+        vtkErrorMacro$v(`GetScalarPointer: Scalar Component ${comp} is not within bounds. Current Scalar numberOfComponents: ${numberOfComponents}`);
         return NaN;
       }
       const offsetIndex = publicAPI.getOffsetIndexFromWorld(xyz);
@@ -13296,7 +14977,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1m = {
+  const DEFAULT_VALUES$1O = {
     direction: null,
     // a mat3
     indexToWorld: null,
@@ -13311,14 +14992,14 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1q(publicAPI, model) {
+  function extend$1_(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1m, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1O, initialValues);
 
     // Inheritance
     vtkDataSet$1.extend(publicAPI, model, initialValues);
     if (!model.direction) {
-      model.direction = identity$4(new Float64Array(9));
+      model.direction = identity$5(new Float64Array(9));
     } else if (Array.isArray(model.direction)) {
       model.direction = new Float64Array(model.direction.slice(0, 9));
     }
@@ -13337,13 +15018,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1q = macro.newInstance(extend$1q, 'vtkImageData');
+  const newInstance$1J = macro.newInstance(extend$1_, 'vtkImageData');
 
   // ----------------------------------------------------------------------------
 
   var vtkImageData$1 = {
-    newInstance: newInstance$1q,
-    extend: extend$1q
+    newInstance: newInstance$1J,
+    extend: extend$1_
   };
 
   const VectorMode$3 = {
@@ -13379,7 +15060,7 @@
     BY_ID: 0,
     BY_NAME: 1
   };
-  var Constants$8 = {
+  var Constants$c = {
     ColorMode: ColorMode$3,
     GetArray: GetArray$2,
     ScalarMode: ScalarMode$5
@@ -13394,9 +15075,9 @@
   } = vtkDataArray$1;
   const {
     ColorMode: ColorMode$2
-  } = Constants$8;
+  } = Constants$c;
   const {
-    vtkErrorMacro: vtkErrorMacro$p
+    vtkErrorMacro: vtkErrorMacro$u
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -13436,7 +15117,7 @@
         return;
       }
       if (values && annotations && values.length !== annotations.length) {
-        vtkErrorMacro$p('Values and annotations do not have the same number of tuples so ignoring');
+        vtkErrorMacro$u('Values and annotations do not have the same number of tuples so ignoring');
         return;
       }
       model.annotationArray = [];
@@ -13809,7 +15490,7 @@
           publicAPI.rGBAToRGBA(newColors, colors, alpha, convtFun);
           break;
         default:
-          vtkErrorMacro$p('Cannot convert colors');
+          vtkErrorMacro$u('Cannot convert colors');
           return null;
       }
       return newColors;
@@ -13843,7 +15524,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1l = {
+  const DEFAULT_VALUES$1N = {
     alpha: 1.0,
     vectorComponent: 0,
     vectorSize: -1,
@@ -13856,9 +15537,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1p(publicAPI, model) {
+  function extend$1Z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1l, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1N, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -13883,18 +15564,18 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1p = macro.newInstance(extend$1p, 'vtkScalarsToColors');
+  const newInstance$1I = macro.newInstance(extend$1Z, 'vtkScalarsToColors');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarsToColors$1 = {
-    newInstance: newInstance$1p,
-    extend: extend$1p,
+    newInstance: newInstance$1I,
+    extend: extend$1Z,
     ...vtkScalarsToColors$2
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$o
+    vtkErrorMacro: vtkErrorMacro$t
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -14100,11 +15781,11 @@
         return true;
       }
       if (table.getNumberOfComponents() !== 4) {
-        vtkErrorMacro$o('Expected 4 components for RGBA colors');
+        vtkErrorMacro$t('Expected 4 components for RGBA colors');
         return false;
       }
       if (table.getDataType() !== VtkDataTypes$5.UNSIGNED_CHAR) {
-        vtkErrorMacro$o('Expected unsigned char values for RGBA colors');
+        vtkErrorMacro$t('Expected unsigned char values for RGBA colors');
         return false;
       }
       model.numberOfColors = table.getNumberOfTuples();
@@ -14181,7 +15862,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1k = {
+  const DEFAULT_VALUES$1M = {
     numberOfColors: 256,
     // table: null,
 
@@ -14202,9 +15883,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1o(publicAPI, model) {
+  function extend$1Y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1k, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1M, initialValues);
 
     // Inheritance
     vtkScalarsToColors$1.extend(publicAPI, model, initialValues);
@@ -14245,13 +15926,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1o = macro.newInstance(extend$1o, 'vtkLookupTable');
+  const newInstance$1H = macro.newInstance(extend$1Y, 'vtkLookupTable');
 
   // ----------------------------------------------------------------------------
 
   var vtkLookupTable$1 = {
-    newInstance: newInstance$1o,
-    extend: extend$1o
+    newInstance: newInstance$1H,
+    extend: extend$1Y
   };
 
   let resolveCoincidentTopologyPolygonOffsetFaces = 1;
@@ -14404,7 +16085,7 @@
     ID_HIGH24: 3,
     MAX_KNOWN_PASS: 3
   };
-  var Constants$7 = {
+  var Constants$b = {
     PassTypes: PassTypes$1
   };
 
@@ -14419,7 +16100,7 @@
     ColorMode: ColorMode$1,
     ScalarMode: ScalarMode$4,
     GetArray: GetArray$1
-  } = Constants$8;
+  } = Constants$c;
   const {
     VectorMode: VectorMode$1
   } = vtkScalarsToColors$2;
@@ -14859,7 +16540,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1j = {
+  const DEFAULT_VALUES$1L = {
     colorMapColors: null,
     // Same as this->Colors
 
@@ -14889,9 +16570,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1n(publicAPI, model) {
+  function extend$1X(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1j, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1L, initialValues);
 
     // Inheritance
     vtkAbstractMapper3D$1.extend(publicAPI, model, initialValues);
@@ -14908,16 +16589,16 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1n = macro.newInstance(extend$1n, 'vtkMapper');
+  const newInstance$1G = macro.newInstance(extend$1X, 'vtkMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper$1 = {
-    newInstance: newInstance$1n,
-    extend: extend$1n,
+    newInstance: newInstance$1G,
+    extend: extend$1X,
     ...staticOffsetAPI,
     ...otherStaticMethods,
-    ...Constants$8
+    ...Constants$c
   };
 
   // ----------------------------------------------------------------------------
@@ -15026,7 +16707,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$3(initialValues) {
+  function defaultValues$a(initialValues) {
     return {
       empty: true,
       numberOfComponents: 1,
@@ -15037,26 +16718,26 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1m(publicAPI, model) {
+  function extend$1W(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    vtkDataArray$1.extend(publicAPI, model, defaultValues$3(initialValues));
+    vtkDataArray$1.extend(publicAPI, model, defaultValues$a(initialValues));
     vtkCellArray(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1m = macro.newInstance(extend$1m, 'vtkCellArray');
+  const newInstance$1F = macro.newInstance(extend$1W, 'vtkCellArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArray$1 = {
-    newInstance: newInstance$1m,
-    extend: extend$1m,
+    newInstance: newInstance$1F,
+    extend: extend$1W,
     ...STATIC$7
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$n
+    vtkErrorMacro: vtkErrorMacro$s
   } = macro;
   const INVALID_BOUNDS = [1, -1, 1, -1, 1, -1];
 
@@ -15102,7 +16783,7 @@
         return model.bounds;
       }
       if (publicAPI.getNumberOfComponents() !== 2) {
-        vtkErrorMacro$n(`getBounds called on an array with components of
+        vtkErrorMacro$s(`getBounds called on an array with components of
         ${publicAPI.getNumberOfComponents()}`);
         return INVALID_BOUNDS;
       }
@@ -15128,7 +16809,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1i = {
+  const DEFAULT_VALUES$1K = {
     empty: true,
     numberOfComponents: 3,
     dataType: VtkDataTypes$5.FLOAT,
@@ -15137,22 +16818,22 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1l(publicAPI, model) {
+  function extend$1V(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1i, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1K, initialValues);
     vtkDataArray$1.extend(publicAPI, model, initialValues);
     vtkPoints(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1l = macro.newInstance(extend$1l, 'vtkPoints');
+  const newInstance$1E = macro.newInstance(extend$1V, 'vtkPoints');
 
   // ----------------------------------------------------------------------------
 
   var vtkPoints$1 = {
-    newInstance: newInstance$1l,
-    extend: extend$1l
+    newInstance: newInstance$1E,
+    extend: extend$1V
   };
 
   // ----------------------------------------------------------------------------
@@ -15257,16 +16938,16 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1h = {
+  const DEFAULT_VALUES$1J = {
     bounds: [-1, -1, -1, -1, -1, -1],
     pointsIds: []
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1k(publicAPI, model) {
+  function extend$1U(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1h, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1J, initialValues);
     macro.obj(publicAPI, model);
     if (!model.points) {
       model.points = vtkPoints$1.newInstance();
@@ -15277,13 +16958,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1k = macro.newInstance(extend$1k, 'vtkCell');
+  const newInstance$1D = macro.newInstance(extend$1U, 'vtkCell');
 
   // ----------------------------------------------------------------------------
 
   var vtkCell$1 = {
-    newInstance: newInstance$1k,
-    extend: extend$1k
+    newInstance: newInstance$1D,
+    extend: extend$1U
   };
 
   function resize(model, sz) {
@@ -15505,7 +17186,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1g = {
+  const DEFAULT_VALUES$1I = {
     array: null,
     // pointer to data
     maxId: 0,
@@ -15515,22 +17196,22 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1j(publicAPI, model) {
+  function extend$1T(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1g, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1I, initialValues);
     macro.obj(publicAPI, model);
     vtkCellLinks(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1j = macro.newInstance(extend$1j, 'vtkCellLinks');
+  const newInstance$1C = macro.newInstance(extend$1T, 'vtkCellLinks');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellLinks$1 = {
-    newInstance: newInstance$1j,
-    extend: extend$1j
+    newInstance: newInstance$1C,
+    extend: extend$1T
   };
 
   const CellType = {
@@ -15768,7 +17449,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1f = {
+  const DEFAULT_VALUES$1H = {
     // typeArray: null, // pointer to types array
     // locationArray: null;   // pointer to array of offsets
     size: 0,
@@ -15780,9 +17461,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1i(publicAPI, model) {
+  function extend$1S(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1f, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1H, initialValues);
     macro.obj(publicAPI, model);
     macro.get(publicAPI, model, ['size', 'maxId', 'extend']);
     macro.getArray(publicAPI, model, ['typeArray', 'locationArray']);
@@ -15791,13 +17472,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1i = macro.newInstance(extend$1i, 'vtkCellTypes');
+  const newInstance$1B = macro.newInstance(extend$1S, 'vtkCellTypes');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellTypes$1 = {
-    newInstance: newInstance$1i,
-    extend: extend$1i,
+    newInstance: newInstance$1B,
+    extend: extend$1S,
     ...STATIC$6
   };
 
@@ -15806,13 +17487,13 @@
     YES_INTERSECTION: 1,
     ON_LINE: 2
   };
-  var Constants$6 = {
+  var Constants$a = {
     IntersectionState: IntersectionState$1
   };
 
   const {
     IntersectionState
-  } = Constants$6;
+  } = Constants$a;
 
   // ----------------------------------------------------------------------------
   // Global methods
@@ -16035,15 +17716,15 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1e = {
+  const DEFAULT_VALUES$1G = {
     orientations: null // an array of two quat or null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1h(publicAPI, model) {
+  function extend$1R(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1e, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1G, initialValues);
     vtkCell$1.extend(publicAPI, model, initialValues);
     macro.setGet(publicAPI, model, ['orientations']);
     vtkLine(publicAPI, model);
@@ -16051,15 +17732,15 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1h = macro.newInstance(extend$1h, 'vtkLine');
+  const newInstance$1A = macro.newInstance(extend$1R, 'vtkLine');
 
   // ----------------------------------------------------------------------------
 
   var vtkLine$1 = {
-    newInstance: newInstance$1h,
-    extend: extend$1h,
+    newInstance: newInstance$1A,
+    extend: extend$1R,
     ...STATIC$5,
-    ...Constants$6
+    ...Constants$a
   };
 
   // ----------------------------------------------------------------------------
@@ -16098,15 +17779,15 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1d = {
+  const DEFAULT_VALUES$1F = {
     // points: null,
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$1g(publicAPI, model) {
+  function extend$1Q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1d, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1F, initialValues);
 
     // Inheritance
     vtkDataSet$1.extend(publicAPI, model, initialValues);
@@ -16118,13 +17799,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1g = macro.newInstance(extend$1g, 'vtkPointSet');
+  const newInstance$1z = macro.newInstance(extend$1Q, 'vtkPointSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkPointSet$1 = {
-    newInstance: newInstance$1g,
-    extend: extend$1g
+    newInstance: newInstance$1z,
+    extend: extend$1Q
   };
 
   // ----------------------------------------------------------------------------
@@ -16671,33 +18352,33 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1c = {};
+  const DEFAULT_VALUES$1E = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$1f(publicAPI, model) {
+  function extend$1P(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1c, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1E, initialValues);
     vtkCell$1.extend(publicAPI, model, initialValues);
     vtkTriangle(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1f = macro.newInstance(extend$1f, 'vtkTriangle');
+  const newInstance$1y = macro.newInstance(extend$1P, 'vtkTriangle');
 
   // ----------------------------------------------------------------------------
 
   var vtkTriangle$1 = {
-    newInstance: newInstance$1f,
-    extend: extend$1f,
+    newInstance: newInstance$1y,
+    extend: extend$1P,
     ...STATIC$4
   };
 
   const POLYDATA_FIELDS = ['verts', 'lines', 'polys', 'strips'];
 
   const {
-    vtkWarningMacro: vtkWarningMacro$3
+    vtkWarningMacro: vtkWarningMacro$5
   } = macro;
   const CELL_FACTORY = {
     [CellType.VTK_LINE]: vtkLine$1,
@@ -16769,7 +18450,7 @@
           pLocs[index] = nextCellPts;
           pTypes[index] = numCellPts > 2 ? CellType.VTK_POLY_LINE : CellType.VTK_LINE;
           if (numCellPts === 1) {
-            vtkWarningMacro$3('Building VTK_LINE ', index, ' with only one point, but VTK_LINE needs at least two points. Check the input.');
+            vtkWarningMacro$5('Building VTK_LINE ', index, ' with only one point, but VTK_LINE needs at least two points. Check the input.');
           }
           nextCellPts += numCellPts + 1;
         });
@@ -16794,7 +18475,7 @@
               break;
           }
           if (numCellPts < 3) {
-            vtkWarningMacro$3('Building VTK_TRIANGLE ', index, ' with less than three points, but VTK_TRIANGLE needs at least three points. Check the input.');
+            vtkWarningMacro$5('Building VTK_TRIANGLE ', index, ' with less than three points, but VTK_TRIANGLE needs at least three points. Check the input.');
           }
           nextCellPts += numCellPts + 1;
         });
@@ -16892,7 +18573,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1b = {
+  const DEFAULT_VALUES$1D = {
     // verts: null,
     // lines: null,
     // polys: null,
@@ -16903,9 +18584,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1e(publicAPI, model) {
+  function extend$1O(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1b, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1D, initialValues);
 
     // Inheritance
     vtkPointSet$1.extend(publicAPI, model, initialValues);
@@ -16918,13 +18599,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1e = macro.newInstance(extend$1e, 'vtkPolyData');
+  const newInstance$1x = macro.newInstance(extend$1O, 'vtkPolyData');
 
   // ----------------------------------------------------------------------------
 
   var vtkPolyData$1 = {
-    newInstance: newInstance$1e,
-    extend: extend$1e
+    newInstance: newInstance$1x,
+    extend: extend$1O
   };
 
   // ----------------------------------------------------------------------------
@@ -17131,7 +18812,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1a = {
+  const DEFAULT_VALUES$1C = {
     image: null,
     canvas: null,
     jsImageData: null,
@@ -17145,9 +18826,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1d(publicAPI, model) {
+  function extend$1N(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1a, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1C, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -17159,7 +18840,7 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1d = macro.newInstance(extend$1d, 'vtkTexture');
+  const newInstance$1w = macro.newInstance(extend$1N, 'vtkTexture');
   const STATIC$3 = {
     generateMipmaps
   };
@@ -17167,8 +18848,8 @@
   // ----------------------------------------------------------------------------
 
   var vtkTexture$1 = {
-    newInstance: newInstance$1d,
-    extend: extend$1d,
+    newInstance: newInstance$1w,
+    extend: extend$1N,
     ...STATIC$3
   };
 
@@ -17838,7 +19519,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$2(initialValues) {
+  function defaultValues$9(initialValues) {
     return {
       boundsScaleFactor: 1.3,
       camera: null,
@@ -17866,9 +19547,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1c(publicAPI, model) {
+  function extend$1M(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$2(initialValues));
+    Object.assign(model, defaultValues$9(initialValues));
 
     // Inheritance
     vtkActor$1.extend(publicAPI, model, initialValues);
@@ -17907,13 +19588,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1c = macro.newInstance(extend$1c, 'vtkCubeAxesActor');
+  const newInstance$1v = macro.newInstance(extend$1M, 'vtkCubeAxesActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkCubeAxesActor$1 = {
-    newInstance: newInstance$1c,
-    extend: extend$1c,
+    newInstance: newInstance$1v,
+    extend: extend$1M,
     newCubeAxesActorHelper
   };
 
@@ -17951,13 +19632,13 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$19 = {};
+  const DEFAULT_VALUES$1B = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$1b(publicAPI, model) {
+  function extend$1L(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$19, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1B, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -17969,23 +19650,23 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1b = newInstance$1I(extend$1b, 'vtkOpenGLCubeAxesActor');
+  const newInstance$1u = newInstance$1$(extend$1L, 'vtkOpenGLCubeAxesActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCubeAxesActor', newInstance$1b);
+  registerOverride$1('vtkCubeAxesActor', newInstance$1u);
 
   const ObjectType$1 = {
     ARRAY_BUFFER: 0,
     ELEMENT_ARRAY_BUFFER: 1,
     TEXTURE_BUFFER: 2
   };
-  var Constants$5 = {
+  var Constants$9 = {
     ObjectType: ObjectType$1
   };
 
   const {
     ObjectType
-  } = Constants$5;
+  } = Constants$9;
 
   // ----------------------------------------------------------------------------
   // Global methods
@@ -18096,7 +19777,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$18 = {
+  const DEFAULT_VALUES$1A = {
     objectType: ObjectType.ARRAY_BUFFER,
     // _openGLRenderWindow: null,
     context: null,
@@ -18105,9 +19786,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1a(publicAPI, model) {
+  function extend$1K(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$18, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1A, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -18118,19 +19799,19 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1a = macro.newInstance(extend$1a);
+  const newInstance$1t = macro.newInstance(extend$1K);
 
   // ----------------------------------------------------------------------------
 
   var vtkBufferObject = {
-    newInstance: newInstance$1a,
-    extend: extend$1a,
+    newInstance: newInstance$1t,
+    extend: extend$1K,
     ...STATIC$2,
-    ...Constants$5
+    ...Constants$9
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$m
+    vtkErrorMacro: vtkErrorMacro$r
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -18458,11 +20139,11 @@
     };
     publicAPI.setCoordShiftAndScale = (coordShift, coordScale) => {
       if (coordShift !== null && (coordShift.constructor !== Float64Array || coordShift.length !== 3)) {
-        vtkErrorMacro$m('Wrong type for coordShift, expected vec3 or null');
+        vtkErrorMacro$r('Wrong type for coordShift, expected vec3 or null');
         return;
       }
       if (coordScale !== null && (coordScale.constructor !== Float64Array || coordScale.length !== 3)) {
-        vtkErrorMacro$m('Wrong type for coordScale, expected vec3 or null');
+        vtkErrorMacro$r('Wrong type for coordScale, expected vec3 or null');
         return;
       }
       if (model.coordShift === null || coordShift === null || !equals$1(coordShift, model.coordShift)) {
@@ -18484,7 +20165,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$17 = {
+  const DEFAULT_VALUES$1z = {
     elementCount: 0,
     stride: 0,
     colorBOStride: 0,
@@ -18504,9 +20185,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$19(publicAPI, model) {
+  function extend$1J(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$17, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1z, initialValues);
 
     // Inheritance
     vtkBufferObject.extend(publicAPI, model, initialValues);
@@ -18519,17 +20200,17 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$19 = macro.newInstance(extend$19);
+  const newInstance$1s = macro.newInstance(extend$1J);
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArrayBufferObject = {
-    newInstance: newInstance$19,
-    extend: extend$19
+    newInstance: newInstance$1s,
+    extend: extend$1J
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$l
+    vtkErrorMacro: vtkErrorMacro$q
   } = macro;
 
   // export const SHADER_TYPES = ['Vertex', 'Fragment', 'Geometry', 'Unknown'];
@@ -18570,7 +20251,7 @@
       const isCompiled = model.context.getShaderParameter(model.handle, model.context.COMPILE_STATUS);
       if (!isCompiled) {
         const lastError = model.context.getShaderInfoLog(model.handle);
-        vtkErrorMacro$l(`Error compiling shader '${model.source}': ${lastError}`);
+        vtkErrorMacro$q(`Error compiling shader '${model.source}': ${lastError}`);
         model.context.deleteShader(model.handle);
         model.handle = 0;
         return false;
@@ -18593,7 +20274,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$16 = {
+  const DEFAULT_VALUES$1y = {
     shaderType: 'Unknown',
     source: '',
     error: '',
@@ -18604,9 +20285,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$18(publicAPI, model) {
+  function extend$1I(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$16, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1y, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -18618,17 +20299,17 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$18 = macro.newInstance(extend$18, 'vtkShader');
+  const newInstance$1r = macro.newInstance(extend$1I, 'vtkShader');
 
   // ----------------------------------------------------------------------------
 
   var vtkShader$1 = {
-    newInstance: newInstance$18,
-    extend: extend$18
+    newInstance: newInstance$1r,
+    extend: extend$1I
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$k
+    vtkErrorMacro: vtkErrorMacro$p
   } = macro;
 
   // perform in place string substitutions, indicate if a substitution was done
@@ -18661,26 +20342,26 @@
     model.classHierarchy.push('vtkShaderProgram');
     publicAPI.compileShader = () => {
       if (!model.vertexShader.compile()) {
-        vtkErrorMacro$k(model.vertexShader.getSource().split('\n').map((line, index) => `${index}: ${line}`).join('\n'));
-        vtkErrorMacro$k(model.vertexShader.getError());
+        vtkErrorMacro$p(model.vertexShader.getSource().split('\n').map((line, index) => `${index}: ${line}`).join('\n'));
+        vtkErrorMacro$p(model.vertexShader.getError());
         return 0;
       }
       if (!model.fragmentShader.compile()) {
-        vtkErrorMacro$k(model.fragmentShader.getSource().split('\n').map((line, index) => `${index}: ${line}`).join('\n'));
-        vtkErrorMacro$k(model.fragmentShader.getError());
+        vtkErrorMacro$p(model.fragmentShader.getSource().split('\n').map((line, index) => `${index}: ${line}`).join('\n'));
+        vtkErrorMacro$p(model.fragmentShader.getError());
         return 0;
       }
       // skip geometry for now
       if (!publicAPI.attachShader(model.vertexShader)) {
-        vtkErrorMacro$k(model.error);
+        vtkErrorMacro$p(model.error);
         return 0;
       }
       if (!publicAPI.attachShader(model.fragmentShader)) {
-        vtkErrorMacro$k(model.error);
+        vtkErrorMacro$p(model.error);
         return 0;
       }
       if (!publicAPI.link()) {
-        vtkErrorMacro$k(`Links failed: ${model.error}`);
+        vtkErrorMacro$p(`Links failed: ${model.error}`);
         return 0;
       }
       publicAPI.setCompiled(true);
@@ -18736,7 +20417,7 @@
       const isCompiled = model.context.getProgramParameter(model.handle, model.context.LINK_STATUS);
       if (!isCompiled) {
         const lastError = model.context.getProgramInfoLog(model.handle);
-        vtkErrorMacro$k(`Error linking shader ${lastError}`);
+        vtkErrorMacro$p(`Error linking shader ${lastError}`);
         model.handle = 0;
         return false;
       }
@@ -18992,7 +20673,7 @@
         return loc !== null;
       }
       if (!model.linked) {
-        vtkErrorMacro$k('attempt to find uniform when the shader program is not linked');
+        vtkErrorMacro$p('attempt to find uniform when the shader program is not linked');
         return false;
       }
       loc = model.context.getUniformLocation(model.handle, name);
@@ -19012,7 +20693,7 @@
         return true;
       }
       if (!model.linked) {
-        vtkErrorMacro$k('attempt to find uniform when the shader program is not linked');
+        vtkErrorMacro$p('attempt to find uniform when the shader program is not linked');
         return false;
       }
       const loc = model.context.getAttribLocation(model.handle, name);
@@ -19126,7 +20807,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$15 = {
+  const DEFAULT_VALUES$1x = {
     vertexShaderHandle: 0,
     fragmentShaderHandle: 0,
     geometryShaderHandle: 0,
@@ -19148,9 +20829,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$17(publicAPI, model) {
+  function extend$1H(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$15, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1x, initialValues);
 
     // Instantiate internal objects
     model.attributesLocs = {};
@@ -19173,13 +20854,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$17 = macro.newInstance(extend$17, 'vtkShaderProgram');
+  const newInstance$1q = macro.newInstance(extend$1H, 'vtkShaderProgram');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderProgram$1 = {
-    newInstance: newInstance$17,
-    extend: extend$17,
+    newInstance: newInstance$1q,
+    extend: extend$1H,
     substitute: substitute$1
   };
 
@@ -19451,7 +21132,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$14 = {
+  const DEFAULT_VALUES$1w = {
     forceEmulation: false,
     handleVAO: 0,
     handleProgram: 0,
@@ -19463,9 +21144,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$16(publicAPI, model) {
+  function extend$1G(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$14, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1w, initialValues);
 
     // Internal objects initialization
     model.buffers = [];
@@ -19487,13 +21168,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$16 = macro.newInstance(extend$16, 'vtkOpenGLVertexArrayObject');
+  const newInstance$1p = macro.newInstance(extend$1G, 'vtkOpenGLVertexArrayObject');
 
   // ----------------------------------------------------------------------------
 
   var vtkVertexArrayObject = {
-    newInstance: newInstance$16,
-    extend: extend$16
+    newInstance: newInstance$1p,
+    extend: extend$1G
   };
 
   const primTypes$2 = {
@@ -19667,7 +21348,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$13 = {
+  const DEFAULT_VALUES$1v = {
     context: null,
     program: null,
     shaderSourceTime: null,
@@ -19680,9 +21361,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$15(publicAPI, model) {
+  function extend$1F(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$13, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1v, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -19701,13 +21382,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$15 = macro.newInstance(extend$15);
+  const newInstance$1o = macro.newInstance(extend$1F);
 
   // ----------------------------------------------------------------------------
 
   var vtkHelper = {
-    newInstance: newInstance$15,
-    extend: extend$15,
+    newInstance: newInstance$1o,
+    extend: extend$1F,
     primTypes: primTypes$2
   };
 
@@ -19724,7 +21405,7 @@
     LINEAR_MIPMAP_NEAREST: 4,
     LINEAR_MIPMAP_LINEAR: 5
   };
-  var Constants$4 = {
+  var Constants$8 = {
     Wrap: Wrap$2,
     Filter: Filter$2
   };
@@ -19794,14 +21475,14 @@
   const {
     Wrap: Wrap$1,
     Filter: Filter$1
-  } = Constants$4;
+  } = Constants$8;
   const {
     VtkDataTypes: VtkDataTypes$2
   } = vtkDataArray$1;
   const {
-    vtkDebugMacro: vtkDebugMacro$6,
-    vtkErrorMacro: vtkErrorMacro$j,
-    vtkWarningMacro: vtkWarningMacro$2
+    vtkDebugMacro: vtkDebugMacro$7,
+    vtkErrorMacro: vtkErrorMacro$o,
+    vtkWarningMacro: vtkWarningMacro$4
   } = macro$1;
   const {
     toHalf
@@ -20023,7 +21704,7 @@
             target = model.context.TEXTURE_BINDING_2D;
             break;
           default:
-            vtkWarningMacro$2('impossible case');
+            vtkWarningMacro$4('impossible case');
             break;
         }
         const oid = model.context.getIntegerv(target);
@@ -20058,10 +21739,10 @@
         model.internalFormat = publicAPI.getDefaultInternalFormat(vtktype, numComps);
       }
       if (!model.internalFormat) {
-        vtkDebugMacro$6(`Unable to find suitable internal format for T=${vtktype} NC= ${numComps}`);
+        vtkDebugMacro$7(`Unable to find suitable internal format for T=${vtktype} NC= ${numComps}`);
       }
       if ([model.context.R32F, model.context.RG32F, model.context.RGB32F, model.context.RGBA32F].includes(model.internalFormat) && !model.context.getExtension('OES_texture_float_linear')) {
-        vtkWarningMacro$2('Failed to load OES_texture_float_linear. Texture filtering is not available for *32F internal formats.');
+        vtkWarningMacro$4('Failed to load OES_texture_float_linear. Texture filtering is not available for *32F internal formats.');
       }
       return model.internalFormat;
     };
@@ -20075,8 +21756,8 @@
         return result;
       }
       if (!result) {
-        vtkDebugMacro$6('Unsupported internal texture type!');
-        vtkDebugMacro$6(`Unable to find suitable internal format for T=${vtktype} NC= ${numComps}`);
+        vtkDebugMacro$7('Unsupported internal texture type!');
+        vtkDebugMacro$7(`Unable to find suitable internal format for T=${vtktype} NC= ${numComps}`);
       }
       return result;
     };
@@ -20453,7 +22134,7 @@
       publicAPI.getInternalFormat(dataType, numComps);
       publicAPI.getFormat(dataType, numComps);
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
       model.target = model.context.TEXTURE_2D;
@@ -20502,7 +22183,7 @@
       publicAPI.getInternalFormat(dataType, numComps);
       publicAPI.getFormat(dataType, numComps);
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
       model.target = model.context.TEXTURE_CUBE_MAP;
@@ -20591,7 +22272,7 @@
         model.internalFormat = model.context.DEPTH_COMPONENT;
       }
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
       model.target = model.context.TEXTURE_2D;
@@ -20630,7 +22311,7 @@
       publicAPI.getInternalFormat(VtkDataTypes$2.UNSIGNED_CHAR, 4);
       publicAPI.getFormat(VtkDataTypes$2.UNSIGNED_CHAR, 4);
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
       model.target = model.context.TEXTURE_2D;
@@ -20773,7 +22454,7 @@
       publicAPI.getInternalFormat(dataType, numComps);
       publicAPI.getFormat(dataType, numComps);
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
       model.target = model.context.TEXTURE_3D;
@@ -20934,7 +22615,7 @@
       publicAPI.getInternalFormat(dataTypeToUse, numComps);
       publicAPI.getFormat(dataTypeToUse, numComps);
       if (!model.internalFormat || !model.format || !model.openGLDataType) {
-        vtkErrorMacro$j('Failed to determine texture parameters.');
+        vtkErrorMacro$o('Failed to determine texture parameters.');
         return false;
       }
 
@@ -21058,7 +22739,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$12 = {
+  const DEFAULT_VALUES$1u = {
     _openGLRenderWindow: null,
     _forceInternalFormat: false,
     context: null,
@@ -21095,9 +22776,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$14(publicAPI, model) {
+  function extend$1E(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$12, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1u, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -21122,18 +22803,18 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$14 = newInstance$1I(extend$14, 'vtkOpenGLTexture');
+  const newInstance$1n = newInstance$1$(extend$1E, 'vtkOpenGLTexture');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLTexture$1 = {
-    newInstance: newInstance$14,
-    extend: extend$14,
-    ...Constants$4
+    newInstance: newInstance$1n,
+    extend: extend$1E,
+    ...Constants$8
   };
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkTexture', newInstance$14);
+  registerOverride$1('vtkTexture', newInstance$1n);
 
   var vtkPolyDataVS = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexMC;\n\n// frag position in VC\n//VTK::PositionVC::Dec\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\n// picking support\n//VTK::Picking::Dec\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::PrimID::Impl\n\n  //VTK::PositionVC::Impl\n\n  //VTK::Light::Impl\n\n  //VTK::Picking::Impl\n}\n";
 
@@ -21261,7 +22942,7 @@
     Wrap
   } = vtkOpenGLTexture$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$i
+    vtkErrorMacro: vtkErrorMacro$n
   } = macro$1;
   const StartEvent$1 = {
     type: 'StartEvent'
@@ -21446,7 +23127,7 @@
           FSSource = vtkShaderProgram$1.substitute(FSSource, '//VTK::Light::Impl', sstring, false).result;
           break;
         default:
-          vtkErrorMacro$i('bad light complexity');
+          vtkErrorMacro$n('bad light complexity');
       }
       shaders.Fragment = FSSource;
     };
@@ -21784,12 +23465,12 @@
         const lastLightComplexity = model.lastBoundBO.getReferenceByName('lastLightComplexity');
         if (cellBO.getProgram().isAttributeUsed('vertexMC')) {
           if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), 'vertexMC', cellBO.getCABO().getVertexOffset(), cellBO.getCABO().getStride(), model.context.FLOAT, 3, false)) {
-            vtkErrorMacro$i('Error setting vertexMC in shader VAO.');
+            vtkErrorMacro$n('Error setting vertexMC in shader VAO.');
           }
         }
         if (cellBO.getProgram().isAttributeUsed('normalMC') && cellBO.getCABO().getNormalOffset() && lastLightComplexity > 0) {
           if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), 'normalMC', cellBO.getCABO().getNormalOffset(), cellBO.getCABO().getStride(), model.context.FLOAT, 3, false)) {
-            vtkErrorMacro$i('Error setting normalMC in shader VAO.');
+            vtkErrorMacro$n('Error setting normalMC in shader VAO.');
           }
         } else {
           cellBO.getVAO().removeAttributeArray('normalMC');
@@ -21797,20 +23478,20 @@
         model.renderable.getCustomShaderAttributes().forEach((attrName, idx) => {
           if (cellBO.getProgram().isAttributeUsed(`${attrName}MC`)) {
             if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), `${attrName}MC`, cellBO.getCABO().getCustomData()[idx].offset, cellBO.getCABO().getStride(), model.context.FLOAT, cellBO.getCABO().getCustomData()[idx].components, false)) {
-              vtkErrorMacro$i(`Error setting ${attrName}MC in shader VAO.`);
+              vtkErrorMacro$n(`Error setting ${attrName}MC in shader VAO.`);
             }
           }
         });
         if (cellBO.getProgram().isAttributeUsed('tcoordMC') && cellBO.getCABO().getTCoordOffset()) {
           if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), 'tcoordMC', cellBO.getCABO().getTCoordOffset(), cellBO.getCABO().getStride(), model.context.FLOAT, cellBO.getCABO().getTCoordComponents(), false)) {
-            vtkErrorMacro$i('Error setting tcoordMC in shader VAO.');
+            vtkErrorMacro$n('Error setting tcoordMC in shader VAO.');
           }
         } else {
           cellBO.getVAO().removeAttributeArray('tcoordMC');
         }
         if (cellBO.getProgram().isAttributeUsed('scalarColor') && cellBO.getCABO().getColorComponents()) {
           if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO().getColorBO(), 'scalarColor', cellBO.getCABO().getColorOffset(), cellBO.getCABO().getColorBOStride(), model.context.UNSIGNED_BYTE, 4, true)) {
-            vtkErrorMacro$i('Error setting scalarColor in shader VAO.');
+            vtkErrorMacro$n('Error setting scalarColor in shader VAO.');
           }
         } else {
           cellBO.getVAO().removeAttributeArray('scalarColor');
@@ -21968,7 +23649,7 @@
       } : model.openGLActor.getKeyMatrices();
       if (actor.getCoordinateSystem() === CoordinateSystem$3.DISPLAY) {
         const size = model._openGLRenderer.getTiledSizeAndOrigin();
-        identity$3(model.tmpMat4);
+        identity$4(model.tmpMat4);
         model.tmpMat4[0] = 2.0 / size.usize;
         model.tmpMat4[12] = -1.0;
         model.tmpMat4[5] = 2.0 / size.vsize;
@@ -22135,7 +23816,7 @@
       model.currentInput = model.renderable.getInputData();
       publicAPI.invokeEvent(EndEvent$1);
       if (!model.currentInput) {
-        vtkErrorMacro$i('No input!');
+        vtkErrorMacro$n('No input!');
         return;
       }
 
@@ -22328,7 +24009,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$11 = {
+  const DEFAULT_VALUES$1t = {
     context: null,
     VBOBuildTime: 0,
     VBOBuildString: null,
@@ -22356,9 +24037,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$13(publicAPI, model) {
+  function extend$1D(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$11, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1t, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -22366,8 +24047,8 @@
     vtkReplacementShaderMapper.implementBuildShadersWithReplacements(publicAPI, model, initialValues);
     model.primitives = [];
     model.primTypes = primTypes$1;
-    model.tmpMat3 = identity$4(new Float64Array(9));
-    model.tmpMat4 = identity$3(new Float64Array(16));
+    model.tmpMat3 = identity$5(new Float64Array(9));
+    model.tmpMat4 = identity$4(new Float64Array(16));
     for (let i = primTypes$1.Start; i < primTypes$1.End; i++) {
       model.primitives[i] = vtkHelper.newInstance();
       model.primitives[i].setPrimitiveType(i);
@@ -22395,16 +24076,16 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$13 = newInstance$1I(extend$13, 'vtkOpenGLPolyDataMapper');
+  const newInstance$1m = newInstance$1$(extend$1D, 'vtkOpenGLPolyDataMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper', newInstance$13);
+  registerOverride$1('vtkMapper', newInstance$1m);
 
   const {
     ColorMode,
     ScalarMode: ScalarMode$2,
     GetArray
-  } = Constants$8;
+  } = Constants$c;
 
   // ---------------------------------------------------------------------------
   // vtkMapper2D methods
@@ -22529,7 +24210,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$10 = {
+  const DEFAULT_VALUES$1s = {
     static: false,
     lookupTable: null,
     scalarVisibility: false,
@@ -22548,9 +24229,9 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$12(publicAPI, model) {
+  function extend$1C(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$10, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1s, initialValues);
 
     // Inheritance
     vtkAbstractMapper$1.extend(publicAPI, model, initialValues);
@@ -22569,13 +24250,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$12 = macro.newInstance(extend$12, 'vtkMapper2D');
+  const newInstance$1l = macro.newInstance(extend$1C, 'vtkMapper2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper2D$1 = {
-    newInstance: newInstance$12,
-    extend: extend$12
+    newInstance: newInstance$1l,
+    extend: extend$1C
   };
 
   var vtkPolyData2DFS = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyData2DFS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nuniform int PrimitiveIDOffset;\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// Scalar coloring\n//VTK::Color::Dec\n\n// Depth Peeling\n//VTK::DepthPeeling::Dec\n\n// picking support\n//VTK::Picking::Dec\n\n// the output of this shader\n//VTK::Output::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\nvoid main()\n{\n  // Apple Bug\n  //VTK::PrimID::Impl\n\n  //VTK::Color::Impl\n  //VTK::TCoord::Impl\n\n  //VTK::DepthPeeling::Impl\n  //VTK::Picking::Impl\n\n  if (gl_FragData[0].a <= 0.0)\n    {\n    discard;\n    }\n}\n";
@@ -22586,7 +24267,7 @@
     BACKGROUND: 0,
     FOREGROUND: 1
   };
-  var Constants$3 = {
+  var Constants$7 = {
     DisplayLocation: DisplayLocation$2
   };
 
@@ -22598,7 +24279,7 @@
     ScalarMode: ScalarMode$1
   } = vtkMapper2D$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$h
+    vtkErrorMacro: vtkErrorMacro$m
   } = macro$1;
   const StartEvent = {
     type: 'StartEvent'
@@ -22652,7 +24333,7 @@
       model.currentInput = model.renderable.getInputData();
       publicAPI.invokeEvent(EndEvent);
       if (!model.currentInput) {
-        vtkErrorMacro$h('No input!');
+        vtkErrorMacro$m('No input!');
         return;
       }
 
@@ -22863,20 +24544,20 @@
       }
       if (cellBO.getProgram().isAttributeUsed('vertexWC')) {
         if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), 'vertexWC', cellBO.getCABO().getVertexOffset(), cellBO.getCABO().getStride(), model.context.FLOAT, 3, false)) {
-          vtkErrorMacro$h('Error setting vertexWC in shader VAO.');
+          vtkErrorMacro$m('Error setting vertexWC in shader VAO.');
         }
       }
       if (cellBO.getCABO().getElementCount() && (model.VBOBuildTime.getMTime() > cellBO.getAttributeUpdateTime().getMTime() || cellBO.getShaderSourceTime().getMTime() > cellBO.getAttributeUpdateTime().getMTime())) {
         model.renderable.getCustomShaderAttributes().forEach((attrName, idx) => {
           if (cellBO.getProgram().isAttributeUsed(`${attrName}MC`)) {
             if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), `${attrName}MC`, cellBO.getCABO().getCustomData()[idx].offset, cellBO.getCABO().getStride(), model.context.FLOAT, cellBO.getCABO().getCustomData()[idx].components, false)) {
-              vtkErrorMacro$h(`Error setting ${attrName}MC in shader VAO.`);
+              vtkErrorMacro$m(`Error setting ${attrName}MC in shader VAO.`);
             }
           }
         });
         if (cellBO.getProgram().isAttributeUsed('tcoordMC') && cellBO.getCABO().getTCoordOffset()) {
           if (!cellBO.getVAO().addAttributeArray(cellBO.getProgram(), cellBO.getCABO(), 'tcoordMC', cellBO.getCABO().getTCoordOffset(), cellBO.getCABO().getStride(), model.context.FLOAT, cellBO.getCABO().getTCoordComponents(), false)) {
-            vtkErrorMacro$h('Error setting tcoordMC in shader VAO.');
+            vtkErrorMacro$m('Error setting tcoordMC in shader VAO.');
           }
         } else {
           cellBO.getVAO().removeAttributeArray('tcoordMC');
@@ -22973,7 +24654,7 @@
       }
 
       // compute the combined ModelView matrix and send it down to save time in the shader
-      const tmpMat4 = identity$3(new Float64Array(16));
+      const tmpMat4 = identity$4(new Float64Array(16));
       tmpMat4[0] = 2.0 / (right - left);
       tmpMat4[1 * 4 + 1] = 2.0 / (top - bottom);
       tmpMat4[0 * 4 + 3] = -1.0 * (right + left) / (right - left);
@@ -22998,7 +24679,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$$ = {
+  const DEFAULT_VALUES$1r = {
     context: null,
     VBOBuildTime: 0,
     VBOBuildString: null,
@@ -23009,9 +24690,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$11(publicAPI, model) {
+  function extend$1B(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$$, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1r, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -23019,7 +24700,7 @@
     vtkReplacementShaderMapper.implementBuildShadersWithReplacements(publicAPI, model, initialValues);
     model.primitives = [];
     model.primTypes = primTypes;
-    model.tmpMat4 = identity$3(new Float64Array(16));
+    model.tmpMat4 = identity$4(new Float64Array(16));
     for (let i = primTypes.Start; i < primTypes.End; i++) {
       model.primitives[i] = vtkHelper.newInstance();
       model.primitives[i].setPrimitiveType(i);
@@ -23043,10 +24724,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$11 = newInstance$1I(extend$11, 'vtkOpenGLPolyDataMapper2D');
+  const newInstance$1k = newInstance$1$(extend$1B, 'vtkOpenGLPolyDataMapper2D');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper2D', newInstance$11);
+  registerOverride$1('vtkMapper2D', newInstance$1k);
 
   const {
     VectorMode
@@ -23770,7 +25451,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$1(initialValues) {
+  function defaultValues$8(initialValues) {
     return {
       automated: true,
       autoLayout: null,
@@ -23804,9 +25485,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$10(publicAPI, model) {
+  function extend$1A(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$1(initialValues));
+    Object.assign(model, defaultValues$8(initialValues));
     if (!model.autoLayout) model.autoLayout = defaultAutoLayout(publicAPI, model);
     if (!model.generateTicks) model.generateTicks = defaultGenerateTicks();
 
@@ -23825,13 +25506,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$10 = macro.newInstance(extend$10, 'vtkScalarBarActor');
+  const newInstance$1j = macro.newInstance(extend$1A, 'vtkScalarBarActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarBarActor$1 = {
-    newInstance: newInstance$10,
-    extend: extend$10,
+    newInstance: newInstance$1j,
+    extend: extend$1A,
     newScalarBarActorHelper
   };
 
@@ -23869,13 +25550,13 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$_ = {};
+  const DEFAULT_VALUES$1q = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$$(publicAPI, model) {
+  function extend$1z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$_, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1q, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -23887,13 +25568,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$$ = newInstance$1I(extend$$, 'vtkOpenGLScalarBarActor');
+  const newInstance$1i = newInstance$1$(extend$1z, 'vtkOpenGLScalarBarActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkScalarBarActor', newInstance$$);
+  registerOverride$1('vtkScalarBarActor', newInstance$1i);
 
   const {
-    vtkErrorMacro: vtkErrorMacro$g
+    vtkErrorMacro: vtkErrorMacro$l
   } = macro$1;
 
   // ----------------------------------------------------------------------------
@@ -24048,14 +25729,14 @@
         model.tris.getShaderSourceTime().modified();
         model.tris.getVAO().bind();
         if (!model.tris.getVAO().addAttributeArray(model.tris.getProgram(), model.tris.getCABO(), 'vertexMC', model.tris.getCABO().getVertexOffset(), model.tris.getCABO().getStride(), model.context.FLOAT, 3, model.context.FALSE)) {
-          vtkErrorMacro$g('Error setting vertexMC in shader VAO.');
+          vtkErrorMacro$l('Error setting vertexMC in shader VAO.');
         }
       }
 
       // set/update the texture map if needed
       const tmaps = model.renderable.getTextures();
       if (!tmaps.length) {
-        vtkErrorMacro$g('vtkSkybox requires a texture map');
+        vtkErrorMacro$l('vtkSkybox requires a texture map');
       }
       if (model.openGLTexture.getRenderable() !== tmaps[0]) {
         model.openGLTexture.releaseGraphicsResources(model._openGLRenderWindow);
@@ -24068,15 +25749,15 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$Z = {
+  const DEFAULT_VALUES$1p = {
     context: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$_(publicAPI, model) {
+  function extend$1y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$Z, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1p, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -24087,8 +25768,8 @@
       mtime: 0
     });
     model.keyMatrices = {
-      normalMatrix: identity$4(new Float64Array(9)),
-      mcwc: identity$3(new Float64Array(16))
+      normalMatrix: identity$5(new Float64Array(9)),
+      mcwc: identity$4(new Float64Array(16))
     };
 
     // Build VTK API
@@ -24101,14 +25782,14 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$_ = newInstance$1I(extend$_);
+  const newInstance$1h = newInstance$1$(extend$1y);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkSkybox', newInstance$_);
+  registerOverride$1('vtkSkybox', newInstance$1h);
 
   // import { mat4, vec3 }     from 'gl-matrix';
   const {
-    vtkDebugMacro: vtkDebugMacro$5
+    vtkDebugMacro: vtkDebugMacro$6
   } = macro$1;
 
   // ----------------------------------------------------------------------------
@@ -24134,7 +25815,7 @@
         // Here we need to use vtkFramebuffer to save current settings (bindings/buffers)
         const fb = renderPass.getFramebuffer();
         if (!fb) {
-          vtkDebugMacro$5('No framebuffer to save/restore');
+          vtkDebugMacro$6('No framebuffer to save/restore');
         } else {
           // save framebuffer settings
           fb.saveCurrentBindingsAndBuffers();
@@ -24169,13 +25850,13 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$Y = {};
+  const DEFAULT_VALUES$1o = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$Z(publicAPI, model) {
+  function extend$1x(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$Y, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1o, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -24186,10 +25867,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Z = newInstance$1I(extend$Z, 'vtkOpenGLPixelSpaceCallbackMapper');
+  const newInstance$1g = newInstance$1$(extend$1x, 'vtkOpenGLPixelSpaceCallbackMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$Z);
+  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$1g);
 
   const CLASS_MAPPING = Object.create(null);
   function registerOverride(className, fn) {
@@ -24209,13 +25890,13 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$X = {};
+  const DEFAULT_VALUES$1n = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$Y(publicAPI, model) {
+  function extend$1w(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$X, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1n, initialValues);
 
     // Static class mapping shared across instances
     model.overrides = CLASS_MAPPING;
@@ -24229,13 +25910,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Y = macro.newInstance(extend$Y, 'vtkWebGPUViewNodeFactory');
+  const newInstance$1f = macro.newInstance(extend$1w, 'vtkWebGPUViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUViewNodeFactory$1 = {
-    newInstance: newInstance$Y,
-    extend: extend$Y
+    newInstance: newInstance$1f,
+    extend: extend$1w
   };
 
   // ----------------------------------------------------------------------------
@@ -24246,7 +25927,7 @@
     // Set our className
     model.classHierarchy.push('vtkWebGPUCamera');
     publicAPI.getProjectionMatrix = (outMat, aspect, cRange, windowCenter) => {
-      identity$3(outMat);
+      identity$4(outMat);
       if (model.renderable.getParallelProjection()) {
         // set up a rectangular parallelipiped
         const parallelScale = model.renderable.getParallelScale();
@@ -24328,16 +26009,16 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$W = {
+  const DEFAULT_VALUES$1m = {
     keyMatrixTime: null,
     keyMatrices: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$X(publicAPI, model) {
+  function extend$1v(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$W, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1m, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -24363,10 +26044,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$X = macro.newInstance(extend$X);
+  const newInstance$1e = macro.newInstance(extend$1v);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCamera', newInstance$X);
+  registerOverride('vtkCamera', newInstance$1e);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUBindGroup methods
@@ -24442,7 +26123,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$V = {
+  const DEFAULT_VALUES$1l = {
     device: null,
     handle: null,
     label: null
@@ -24450,9 +26131,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$W(publicAPI, model) {
+  function extend$1u(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$V, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1l, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -24468,13 +26149,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$W = macro.newInstance(extend$W);
+  const newInstance$1d = macro.newInstance(extend$1u);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBindGroup$1 = {
-    newInstance: newInstance$W,
-    extend: extend$W
+    newInstance: newInstance$1d,
+    extend: extend$1u
   };
 
   // ----------------------------------------------------------------------------
@@ -24501,16 +26182,16 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$U = {
+  const DEFAULT_VALUES$1k = {
     device: null,
     handle: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$V(publicAPI, model) {
+  function extend$1t(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$U, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1k, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -24523,13 +26204,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$V = macro.newInstance(extend$V, 'vtkWebGPUShaderModule');
+  const newInstance$1c = macro.newInstance(extend$1t, 'vtkWebGPUShaderModule');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderModule$1 = {
-    newInstance: newInstance$V,
-    extend: extend$V
+    newInstance: newInstance$1c,
+    extend: extend$1t
   };
 
   // perform in place string substitutions, indicate if a substitution was done
@@ -24586,7 +26267,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$T = {
+  const DEFAULT_VALUES$1j = {
     shaderModules: null,
     device: null,
     window: null
@@ -24594,9 +26275,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$U(publicAPI, model) {
+  function extend$1s(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$T, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1j, initialValues);
 
     // Internal objects
     model._shaderModules = new Map();
@@ -24611,13 +26292,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$U = macro.newInstance(extend$U, 'vtkWebGPUShaderCache');
+  const newInstance$1b = macro.newInstance(extend$1s, 'vtkWebGPUShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderCache$1 = {
-    newInstance: newInstance$U,
-    extend: extend$U,
+    newInstance: newInstance$1b,
+    extend: extend$1s,
     substitute
   };
 
@@ -24690,7 +26371,7 @@
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$S = {
+  const DEFAULT_VALUES$1i = {
     handle: null,
     layouts: null,
     renderEncoder: null,
@@ -24701,9 +26382,9 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$T(publicAPI, model) {
+  function extend$1r(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$S, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1i, initialValues);
 
     // Build VTK API
     obj(publicAPI, model);
@@ -24718,12 +26399,12 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$T = newInstance$1I(extend$T, 'vtkWebGPUPipeline');
+  const newInstance$1a = newInstance$1$(extend$1r, 'vtkWebGPUPipeline');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUPipeline$1 = {
-    newInstance: newInstance$T,
-    extend: extend$T
+    newInstance: newInstance$1a,
+    extend: extend$1r
   };
 
   // ----------------------------------------------------------------------------
@@ -24811,7 +26492,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$R = {
+  const DEFAULT_VALUES$1h = {
     type: null,
     // 'vertex' or 'fragment'
     hash: null,
@@ -24822,9 +26503,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$S(publicAPI, model) {
+  function extend$1q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$R, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1h, initialValues);
     model.outputNames = [];
     model.outputTypes = [];
     model.outputInterpolations = [];
@@ -24844,13 +26525,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$S = macro.newInstance(extend$S, 'vtkWebGPUShaderDescription');
+  const newInstance$19 = macro.newInstance(extend$1q, 'vtkWebGPUShaderDescription');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderDescription$1 = {
-    newInstance: newInstance$S,
-    extend: extend$S
+    newInstance: newInstance$19,
+    extend: extend$1q
   };
 
   // ----------------------------------------------------------------------------
@@ -25164,7 +26845,7 @@
     if (format in textureDetails === true) {
       return textureDetails[format];
     }
-    vtkErrorMacro$v(`unknown format ${format}`);
+    vtkErrorMacro$A(`unknown format ${format}`);
     return null;
   }
 
@@ -25183,7 +26864,7 @@
     // plugged into the formula below gives 1, 2, 4 respectively
     const num = Number(format[sizeStart]);
     if (Number.isNaN(num)) {
-      vtkErrorMacro$v(`unknown format ${format}`);
+      vtkErrorMacro$A(`unknown format ${format}`);
       return 0;
     }
     const typeSize = 5 - num / 2;
@@ -25217,7 +26898,7 @@
     } else if (format[0] === 'u') {
       result = 'Uint';
     } else {
-      vtkErrorMacro$v(`unknown format ${format}`);
+      vtkErrorMacro$A(`unknown format ${format}`);
       return undefined;
     }
 
@@ -25226,7 +26907,7 @@
     const base = format.split('x')[0];
     const num = Number(base[base.length - 1]);
     if (Number.isNaN(num)) {
-      vtkErrorMacro$v(`unknown format ${format}`);
+      vtkErrorMacro$A(`unknown format ${format}`);
       return undefined;
     }
     result += 8 * (5 - num / 2);
@@ -25242,7 +26923,7 @@
     } else if (format[0] === 'u' && format[1] === 'i') {
       dataType = 'u32';
     } else {
-      vtkErrorMacro$v(`unknown format ${format}`);
+      vtkErrorMacro$A(`unknown format ${format}`);
       return undefined;
     }
 
@@ -25272,7 +26953,7 @@
     if (format.includes('f32')) return 'Float32Array';
     if (format.includes('i32')) return 'Int32Array';
     if (format.includes('u32')) return 'Uint32Array';
-    vtkErrorMacro$v(`unknown format ${format}`);
+    vtkErrorMacro$A(`unknown format ${format}`);
     return undefined;
   }
   var vtkWebGPUTypes = {
@@ -25431,7 +27112,7 @@
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$Q = {
+  const DEFAULT_VALUES$1g = {
     inputs: null,
     bindingDescriptions: false,
     attributeDescriptions: null,
@@ -25439,9 +27120,9 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$R(publicAPI, model) {
+  function extend$1p(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$Q, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1g, initialValues);
 
     // Build VTK API
     obj(publicAPI, model);
@@ -25456,12 +27137,12 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$R = newInstance$1I(extend$R, 'vtkWebGPUVertexInput');
+  const newInstance$18 = newInstance$1$(extend$1p, 'vtkWebGPUVertexInput');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUVertexInput$1 = {
-    newInstance: newInstance$R,
-    extend: extend$R
+    newInstance: newInstance$18,
+    extend: extend$1p
   };
 
   const vtkWebGPUSimpleMapperVS = `
@@ -25755,7 +27436,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$P = {
+  const DEFAULT_VALUES$1f = {
     additionalBindables: undefined,
     bindGroup: null,
     device: null,
@@ -25774,9 +27455,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$Q(publicAPI, model) {
+  function extend$1o(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$P, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1f, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -25800,13 +27481,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Q = macro.newInstance(extend$Q, 'vtkWebGPUSimpleMapper');
+  const newInstance$17 = macro.newInstance(extend$1o, 'vtkWebGPUSimpleMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSimpleMapper$1 = {
-    newInstance: newInstance$Q,
-    extend: extend$Q
+    newInstance: newInstance$17,
+    extend: extend$1o
   };
 
   // ----------------------------------------------------------------------------
@@ -25836,13 +27517,13 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$O = {};
+  const DEFAULT_VALUES$1e = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$P(publicAPI, model) {
+  function extend$1n(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$O, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1e, initialValues);
 
     // Inheritance
     vtkWebGPUSimpleMapper$1.extend(publicAPI, model, initialValues);
@@ -25853,13 +27534,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$P = macro.newInstance(extend$P, 'vtkWebGPUFullScreenQuad');
+  const newInstance$16 = macro.newInstance(extend$1n, 'vtkWebGPUFullScreenQuad');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUFullScreenQuad$1 = {
-    newInstance: newInstance$P,
-    extend: extend$P
+    newInstance: newInstance$16,
+    extend: extend$1n
   };
 
   const BufferUsage$6 = {
@@ -25888,7 +27569,7 @@ fn main(
     TriangleStripEdges: 5,
     End: 6
   };
-  var Constants$2 = {
+  var Constants$6 = {
     BufferUsage: BufferUsage$6,
     PrimitiveTypes: PrimitiveTypes$5
   };
@@ -25958,7 +27639,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$N = {
+  const DEFAULT_VALUES$1d = {
     device: null,
     handle: null,
     sizeInBytes: 0,
@@ -25971,9 +27652,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$O(publicAPI, model) {
+  function extend$1m(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$N, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1d, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -25984,14 +27665,14 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$O = macro.newInstance(extend$O);
+  const newInstance$15 = macro.newInstance(extend$1m);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBuffer$1 = {
-    newInstance: newInstance$O,
-    extend: extend$O,
-    ...Constants$2
+    newInstance: newInstance$15,
+    extend: extend$1m,
+    ...Constants$6
   };
 
   const {
@@ -25999,7 +27680,7 @@ fn main(
   } = vtkProperty$1;
   const {
     PrimitiveTypes: PrimitiveTypes$4
-  } = Constants$2;
+  } = Constants$6;
 
   // Simulate a small map of pointId to flatId for a cell. The original code
   // used a map and was 2.6x slower (4.7 to 1.9 seconds). Using two fixed
@@ -26320,7 +28001,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$M = {
+  const DEFAULT_VALUES$1c = {
     flatIdToPointId: null,
     flatIdToCellId: null,
     flatSize: 0,
@@ -26329,9 +28010,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$N(publicAPI, model) {
+  function extend$1l(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$M, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1c, initialValues);
 
     // Inheritance
     vtkWebGPUBuffer$1.extend(publicAPI, model, initialValues);
@@ -26341,21 +28022,21 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$N = macro.newInstance(extend$N);
+  const newInstance$14 = macro.newInstance(extend$1l);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUIndexBuffer$1 = {
-    newInstance: newInstance$N,
-    extend: extend$N,
-    ...Constants$2
+    newInstance: newInstance$14,
+    extend: extend$1l,
+    ...Constants$6
   };
 
   const {
     BufferUsage: BufferUsage$5
-  } = Constants$2;
+  } = Constants$6;
   const {
-    vtkErrorMacro: vtkErrorMacro$f
+    vtkErrorMacro: vtkErrorMacro$k
   } = macro$1;
   const {
     VtkDataTypes: VtkDataTypes$1
@@ -26404,7 +28085,7 @@ fn main(
       case 3:
         // only 32bit types support x3
         if (!format.includes('32')) {
-          vtkErrorMacro$f(`unsupported x3 type for ${format}`);
+          vtkErrorMacro$k(`unsupported x3 type for ${format}`);
         }
         format += 'x3';
         break;
@@ -26678,16 +28359,16 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$L = {
+  const DEFAULT_VALUES$1b = {
     device: null,
     fullScreenQuadBuffer: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$M(publicAPI, model) {
+  function extend$1k(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$L, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1b, initialValues);
 
     // Object methods
     obj(publicAPI, model);
@@ -26697,22 +28378,22 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$M = newInstance$1I(extend$M);
+  const newInstance$13 = newInstance$1$(extend$1k);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBufferManager$1 = {
-    newInstance: newInstance$M,
-    extend: extend$M,
+    newInstance: newInstance$13,
+    extend: extend$1k,
     ...STATIC$1,
-    ...Constants$2
+    ...Constants$6
   };
 
   const {
     BufferUsage: BufferUsage$4
   } = vtkWebGPUBufferManager$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$e
+    vtkErrorMacro: vtkErrorMacro$j
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -26731,7 +28412,7 @@ fn main(
     model.classHierarchy.push('vtkWebGPUStorageBuffer');
     publicAPI.addEntry = (name, type) => {
       if (model._bufferEntryNames.has(name)) {
-        vtkErrorMacro$e(`entry named ${name} already exists`);
+        vtkErrorMacro$j(`entry named ${name} already exists`);
         return;
       }
       model._bufferEntryNames.set(name, model.bufferEntries.length);
@@ -26771,7 +28452,7 @@ fn main(
     publicAPI.setValue = (name, instance, val) => {
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$e(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$j(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -26782,7 +28463,7 @@ fn main(
     publicAPI.setArray = (name, instance, arr) => {
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$e(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$j(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -26796,7 +28477,7 @@ fn main(
     publicAPI.setAllInstancesFromArray = (name, arr) => {
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$e(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$j(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -26813,7 +28494,7 @@ fn main(
     publicAPI.setAllInstancesFromArrayColorToFloat = (name, arr) => {
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$e(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$j(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -26830,7 +28511,7 @@ fn main(
     publicAPI.setAllInstancesFromArray3x3To4x4 = (name, arr) => {
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$e(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$j(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -26886,7 +28567,7 @@ struct ${model.label}Struct
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$K = {
+  const DEFAULT_VALUES$1a = {
     bufferEntries: null,
     bufferEntryNames: null,
     sizeInBytes: 0,
@@ -26896,9 +28577,9 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  function extend$L(publicAPI, model) {
+  function extend$1j(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$K, initialValues);
+    Object.assign(model, DEFAULT_VALUES$1a, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -26930,20 +28611,20 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$L = macro.newInstance(extend$L, 'vtkWebGPUStorageBuffer');
+  const newInstance$12 = macro.newInstance(extend$1j, 'vtkWebGPUStorageBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUStorageBuffer$1 = {
-    newInstance: newInstance$L,
-    extend: extend$L
+    newInstance: newInstance$12,
+    extend: extend$1j
   };
 
   const {
     BufferUsage: BufferUsage$3
   } = vtkWebGPUBufferManager$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$d
+    vtkErrorMacro: vtkErrorMacro$i
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -26955,7 +28636,7 @@ struct ${model.label}Struct
     model.classHierarchy.push('vtkWebGPUUniformBuffer');
     publicAPI.addEntry = (name, type) => {
       if (model._bufferEntryNames.has(name)) {
-        vtkErrorMacro$d(`entry named ${name} already exists`);
+        vtkErrorMacro$i(`entry named ${name} already exists`);
         return;
       }
       model.sortDirty = true;
@@ -27157,7 +28838,7 @@ struct ${model.label}Struct
       publicAPI.sortBufferEntries();
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$d(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$i(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -27173,7 +28854,7 @@ struct ${model.label}Struct
       publicAPI.sortBufferEntries();
       const idx = model._bufferEntryNames.get(name);
       if (idx === undefined) {
-        vtkErrorMacro$d(`entry named ${name} not found in UBO`);
+        vtkErrorMacro$i(`entry named ${name} not found in UBO`);
         return;
       }
       const entry = model.bufferEntries[idx];
@@ -27217,7 +28898,7 @@ struct ${model.label}Struct
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$J = {
+  const DEFAULT_VALUES$19 = {
     bufferEntries: null,
     bufferEntryNames: null,
     sizeInBytes: 0,
@@ -27228,9 +28909,9 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  function extend$K(publicAPI, model) {
+  function extend$1i(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$J, initialValues);
+    Object.assign(model, DEFAULT_VALUES$19, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -27264,17 +28945,17 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$K = macro.newInstance(extend$K, 'vtkWebGPUUniformBuffer');
+  const newInstance$11 = macro.newInstance(extend$1i, 'vtkWebGPUUniformBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUUniformBuffer$1 = {
-    newInstance: newInstance$K,
-    extend: extend$K
+    newInstance: newInstance$11,
+    extend: extend$1i
   };
 
   const {
-    vtkDebugMacro: vtkDebugMacro$4
+    vtkDebugMacro: vtkDebugMacro$5
   } = macro$1;
   const clearFragColorTemplate = `
 //VTK::Renderer::Dec
@@ -27441,7 +29122,7 @@ fn main(
         }
       }
       if (!count) {
-        vtkDebugMacro$4('No lights are on, creating one.');
+        vtkDebugMacro$5('No lights are on, creating one.');
         model.renderable.createLight();
       }
       return count;
@@ -27707,7 +29388,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$I = {
+  const DEFAULT_VALUES$18 = {
     bindGroup: null,
     selector: null,
     renderEncoder: null,
@@ -27718,9 +29399,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$J(publicAPI, model) {
+  function extend$1h(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$I, initialValues);
+    Object.assign(model, DEFAULT_VALUES$18, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -27751,7 +29432,7 @@ fn main(
       label: 'rendererBG'
     });
     model.bindGroup.setBindables([model.UBO, model.SSBO]);
-    model.tmpMat4 = identity$3(new Float64Array(16));
+    model.tmpMat4 = identity$4(new Float64Array(16));
     model.stabilizedTime = {};
     obj(model.stabilizedTime, {
       mtime: 0
@@ -27768,10 +29449,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$J = newInstance$1I(extend$J, 'vtkWebGPURenderer');
+  const newInstance$10 = newInstance$1$(extend$1h, 'vtkWebGPURenderer');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkRenderer', newInstance$J);
+  registerOverride('vtkRenderer', newInstance$10);
 
   const {
     CoordinateSystem: CoordinateSystem$2
@@ -27856,7 +29537,7 @@ fn main(
         }
         transpose(model.keyMatrices.bcwc, mcwc);
         if (model.renderable.getIsIdentity()) {
-          identity$3(model.keyMatrices.normalMatrix);
+          identity$4(model.keyMatrices.normalMatrix);
         } else {
           // we use bcwc BEFORE the translate below (just to get transposed mcvc)
           copy$1(model.keyMatrices.normalMatrix, model.keyMatrices.bcwc);
@@ -27887,7 +29568,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$H = {
+  const DEFAULT_VALUES$17 = {
     keyMatricesTime: null,
     keyMatrices: null,
     propID: undefined,
@@ -27896,9 +29577,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$I(publicAPI, model) {
+  function extend$1g(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$H, initialValues);
+    Object.assign(model, DEFAULT_VALUES$17, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -27920,10 +29601,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$I = macro.newInstance(extend$I);
+  const newInstance$$ = macro.newInstance(extend$1g);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor', newInstance$I);
+  registerOverride('vtkActor', newInstance$$);
 
   const {
     CoordinateSystem: CoordinateSystem$1
@@ -28003,8 +29684,8 @@ fn main(
           model.bufferShift[1] -= center[1];
           model.bufferShift[2] -= center[2];
         }
-        identity$3(model.keyMatrices.bcwc);
-        identity$3(model.keyMatrices.normalMatrix);
+        identity$4(model.keyMatrices.bcwc);
+        identity$4(model.keyMatrices.normalMatrix);
 
         // only meed the buffer shift to get to world
         translate(model.keyMatrices.bcwc, model.keyMatrices.bcwc, [-model.bufferShift[0], -model.bufferShift[1], -model.bufferShift[2]]);
@@ -28025,7 +29706,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$G = {
+  const DEFAULT_VALUES$16 = {
     keyMatricesTime: null,
     keyMatrices: null,
     propID: undefined,
@@ -28034,9 +29715,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$H(publicAPI, model) {
+  function extend$1f(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$G, initialValues);
+    Object.assign(model, DEFAULT_VALUES$16, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -28058,10 +29739,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$H = macro.newInstance(extend$H);
+  const newInstance$_ = macro.newInstance(extend$1f);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor2D', newInstance$H);
+  registerOverride('vtkActor2D', newInstance$_);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUCubeAxesActor methods
@@ -28097,13 +29778,13 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$F = {};
+  const DEFAULT_VALUES$15 = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$G(publicAPI, model) {
+  function extend$1e(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$F, initialValues);
+    Object.assign(model, DEFAULT_VALUES$15, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -28115,14 +29796,14 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$G = newInstance$1I(extend$G, 'vtkWebGPUCubeAxesActor');
+  const newInstance$Z = newInstance$1$(extend$1e, 'vtkWebGPUCubeAxesActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCubeAxesActor', newInstance$G);
+  registerOverride('vtkCubeAxesActor', newInstance$Z);
 
   const {
     DisplayLocation: DisplayLocation$1
-  } = Constants$3;
+  } = Constants$7;
 
   // ----------------------------------------------------------------------------
   // vtkProperty2D methods
@@ -28142,7 +29823,7 @@ fn main(
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$E = {
+  const DEFAULT_VALUES$14 = {
     color: [1, 1, 1],
     opacity: 1,
     pointSize: 1,
@@ -28153,9 +29834,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$F(publicAPI, model) {
+  function extend$1d(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$E, initialValues);
+    Object.assign(model, DEFAULT_VALUES$14, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -28168,14 +29849,14 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$F = macro.newInstance(extend$F, 'vtkProperty2D');
+  const newInstance$Y = macro.newInstance(extend$1d, 'vtkProperty2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty2D$1 = {
-    newInstance: newInstance$F,
-    extend: extend$F,
-    ...Constants$3
+    newInstance: newInstance$Y,
+    extend: extend$1d,
+    ...Constants$7
   };
 
   const {
@@ -29178,7 +30859,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$D = {
+  const DEFAULT_VALUES$13 = {
     is2D: false,
     cellArray: null,
     currentInput: null,
@@ -29191,16 +30872,16 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$E(publicAPI, model) {
+  function extend$1c(publicAPI, model) {
     let initiaLalues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$D, initiaLalues);
+    Object.assign(model, DEFAULT_VALUES$13, initiaLalues);
 
     // Inheritance
     vtkWebGPUSimpleMapper$1.extend(publicAPI, model, initiaLalues);
     model.fragmentShaderTemplate = vtkWebGPUPolyDataFS;
     model.vertexShaderTemplate = vtkWebGPUPolyDataVS;
-    model._tmpMat3 = identity$4(new Float64Array(9));
-    model._tmpMat4 = identity$3(new Float64Array(16));
+    model._tmpMat3 = identity$5(new Float64Array(9));
+    model._tmpMat4 = identity$4(new Float64Array(16));
 
     // UBO
     model.UBO = vtkWebGPUUniformBuffer$1.newInstance({
@@ -29241,13 +30922,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$E = newInstance$1I(extend$E, 'vtkWebGPUCellArrayMapper');
+  const newInstance$X = newInstance$1$(extend$1c, 'vtkWebGPUCellArrayMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUCellArrayMapper$1 = {
-    newInstance: newInstance$E,
-    extend: extend$E
+    newInstance: newInstance$X,
+    extend: extend$1c
   };
 
   const {
@@ -29325,15 +31006,15 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$C = {
+  const DEFAULT_VALUES$12 = {
     primitives: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$D(publicAPI, model) {
+  function extend$1b(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$C, initialValues);
+    Object.assign(model, DEFAULT_VALUES$12, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -29345,10 +31026,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$D = newInstance$1I(extend$D, 'vtkWebGPUPolyDataMapper');
+  const newInstance$W = newInstance$1$(extend$1b, 'vtkWebGPUPolyDataMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper', newInstance$D);
+  registerOverride('vtkMapper', newInstance$W);
 
   const {
     PrimitiveTypes: PrimitiveTypes$1
@@ -29408,7 +31089,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues(initialValues) {
+  function defaultValues$7(initialValues) {
     return {
       primitives: [],
       ...initialValues
@@ -29416,9 +31097,9 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  function extend$C(publicAPI, model) {
+  function extend$1a(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues(initialValues));
+    Object.assign(model, defaultValues$7(initialValues));
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -29430,10 +31111,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$C = newInstance$1I(extend$C, 'vtkWebGPUPolyDataMapper2D');
+  const newInstance$V = newInstance$1$(extend$1a, 'vtkWebGPUPolyDataMapper2D');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper2D', newInstance$C);
+  registerOverride('vtkMapper2D', newInstance$V);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUScalarBarActor methods
@@ -29469,13 +31150,13 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$B = {};
+  const DEFAULT_VALUES$11 = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$B(publicAPI, model) {
+  function extend$19(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$B, initialValues);
+    Object.assign(model, DEFAULT_VALUES$11, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -29487,10 +31168,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$B = newInstance$1I(extend$B, 'vtkWebGPUScalarBarActor');
+  const newInstance$U = newInstance$1$(extend$19, 'vtkWebGPUScalarBarActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkScalarBarActor', newInstance$B);
+  registerOverride('vtkScalarBarActor', newInstance$U);
 
   /* eslint-disable no-bitwise */
 
@@ -29530,7 +31211,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$A = {
+  const DEFAULT_VALUES$10 = {
     device: null,
     handle: null,
     label: null,
@@ -29539,9 +31220,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$A(publicAPI, model) {
+  function extend$18(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$A, initialValues);
+    Object.assign(model, DEFAULT_VALUES$10, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -29565,13 +31246,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$A = macro.newInstance(extend$A);
+  const newInstance$T = macro.newInstance(extend$18);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSampler$1 = {
-    newInstance: newInstance$A,
-    extend: extend$A
+    newInstance: newInstance$T,
+    extend: extend$18
   };
 
   // ----------------------------------------------------------------------------
@@ -29657,7 +31338,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$z = {
+  const DEFAULT_VALUES$$ = {
     texture: null,
     handle: null,
     sampler: null,
@@ -29666,9 +31347,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$z(publicAPI, model) {
+  function extend$17(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$z, initialValues);
+    Object.assign(model, DEFAULT_VALUES$$, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -29694,13 +31375,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$z = macro.newInstance(extend$z);
+  const newInstance$S = macro.newInstance(extend$17);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureView$1 = {
-    newInstance: newInstance$z,
-    extend: extend$z
+    newInstance: newInstance$S,
+    extend: extend$17
   };
 
   const {
@@ -29944,7 +31625,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$y = {
+  const DEFAULT_VALUES$_ = {
     device: null,
     handle: null,
     buffer: null,
@@ -29954,9 +31635,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$y(publicAPI, model) {
+  function extend$16(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$y, initialValues);
+    Object.assign(model, DEFAULT_VALUES$_, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -29967,13 +31648,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$y = macro.newInstance(extend$y);
+  const newInstance$R = macro.newInstance(extend$16);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTexture$1 = {
-    newInstance: newInstance$y,
-    extend: extend$y
+    newInstance: newInstance$R,
+    extend: extend$16
   };
 
   // ----------------------------------------------------------------------------
@@ -29998,13 +31679,13 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$x = {};
+  const DEFAULT_VALUES$Z = {};
 
   // ----------------------------------------------------------------------------
 
-  function extend$x(publicAPI, model) {
+  function extend$15(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$x, initialValues);
+    Object.assign(model, DEFAULT_VALUES$Z, initialValues);
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -30015,13 +31696,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$x = macro.newInstance(extend$x, 'vtkWebGPUPixelSpaceCallbackMapper');
+  const newInstance$Q = macro.newInstance(extend$15, 'vtkWebGPUPixelSpaceCallbackMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$x);
+  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$Q);
 
   const {
-    vtkDebugMacro: vtkDebugMacro$3
+    vtkDebugMacro: vtkDebugMacro$4
   } = macro;
 
   /* eslint-disable new-cap */
@@ -30048,13 +31729,13 @@ fn main(
     const origin = new Float64Array(3);
     const dopbasis = new Float64Array([0.0, 0.0, -1.0]);
     const upbasis = new Float64Array([0.0, 1.0, 0.0]);
-    const tmpMatrix = identity$3(new Float64Array(16));
-    const tmpMatrix2 = identity$3(new Float64Array(16));
+    const tmpMatrix = identity$4(new Float64Array(16));
+    const tmpMatrix2 = identity$4(new Float64Array(16));
     const tmpvec1 = new Float64Array(3);
     const tmpvec2 = new Float64Array(3);
     const tmpvec3 = new Float64Array(3);
-    const rotateMatrix = identity$3(new Float64Array(16));
-    const trans = identity$3(new Float64Array(16));
+    const rotateMatrix = identity$4(new Float64Array(16));
+    const trans = identity$4(new Float64Array(16));
     const newPosition = new Float64Array(3);
     const newFocalPoint = new Float64Array(3);
 
@@ -30103,7 +31784,7 @@ fn main(
       model.distance = d;
       if (model.distance < 1e-20) {
         model.distance = 1e-20;
-        vtkDebugMacro$3('Distance is set to minimum.');
+        vtkDebugMacro$4('Distance is set to minimum.');
       }
 
       // we want to keep the camera pointing in the same direction
@@ -30125,7 +31806,7 @@ fn main(
       model.distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
       if (model.distance < 1e-20) {
         model.distance = 1e-20;
-        vtkDebugMacro$3('Distance is set to minimum.');
+        vtkDebugMacro$4('Distance is set to minimum.');
         const vec = model.directionOfProjection;
 
         // recalculate FocalPoint
@@ -30157,7 +31838,7 @@ fn main(
       const at = model.focalPoint;
       const up = model.viewUp;
       const viewUpVec4 = new Float64Array([up[0], up[1], up[2], 0.0]);
-      identity$3(rotateMatrix);
+      identity$4(rotateMatrix);
       const viewDir = new Float64Array([at[0] - eye[0], at[1] - eye[1], at[2] - eye[2]]);
       rotate(rotateMatrix, rotateMatrix, radiansFromDegrees(angle), viewDir);
       transformMat4(viewUpVec4, viewUpVec4, rotateMatrix);
@@ -30168,7 +31849,7 @@ fn main(
     };
     publicAPI.azimuth = angle => {
       const fp = model.focalPoint;
-      identity$3(trans);
+      identity$4(trans);
 
       // translate the focal point to the origin,
       // rotate about view up,
@@ -30183,7 +31864,7 @@ fn main(
     };
     publicAPI.yaw = angle => {
       const position = model.position;
-      identity$3(trans);
+      identity$4(trans);
 
       // translate the camera to the origin,
       // rotate about axis,
@@ -30202,7 +31883,7 @@ fn main(
       // get the eye / camera position from the viewMatrix
       const vt = publicAPI.getViewMatrix();
       const axis = [-vt[0], -vt[1], -vt[2]];
-      identity$3(trans);
+      identity$4(trans);
 
       // translate the focal point to the origin,
       // rotate about view up,
@@ -30219,7 +31900,7 @@ fn main(
       const position = model.position;
       const vt = publicAPI.getViewMatrix();
       const axis = [vt[0], vt[1], vt[2]];
-      identity$3(trans);
+      identity$4(trans);
 
       // translate the camera to the origin,
       // rotate about axis,
@@ -30273,7 +31954,7 @@ fn main(
       let t = thickness;
       if (t < 1e-20) {
         t = 1e-20;
-        vtkDebugMacro$3('Thickness is set to minimum.');
+        vtkDebugMacro$4('Thickness is set to minimum.');
       }
       publicAPI.setClippingRange(model.clippingRange[0], model.clippingRange[0] + t);
     };
@@ -30281,7 +31962,7 @@ fn main(
       let t = thickness;
       if (t < 1e-20) {
         t = 1e-20;
-        vtkDebugMacro$3('Thickness is set to minimum.');
+        vtkDebugMacro$4('Thickness is set to minimum.');
       }
       publicAPI.setClippingRange(model.distance - t / 2, model.distance + t / 2);
     };
@@ -30305,7 +31986,7 @@ fn main(
       invert(tmpMatrix, tmpMatrix);
       fromScaling(tmpMatrix2, [model.distance, model.distance, model.distance]);
       multiply$1(tmpMatrix, tmpMatrix, tmpMatrix2);
-      identity$3(model.cameraLightTransform);
+      identity$4(model.cameraLightTransform);
       translate(model.cameraLightTransform, tmpMatrix, [0.0, 0.0, -1.0]);
     };
     publicAPI.deepCopy = sourceCamera => {};
@@ -30328,7 +32009,7 @@ fn main(
       invert(result, result);
     };
     publicAPI.getWorldToPhysicalMatrix = result => {
-      identity$3(result);
+      identity$4(result);
 
       // now the physical to vtk world rotation tform
       const physVRight = [3];
@@ -30419,7 +32100,7 @@ fn main(
     };
     publicAPI.getProjectionMatrix = (aspect, nearz, farz) => {
       const result = new Float64Array(16);
-      identity$3(result);
+      identity$4(result);
       if (model.projectionMatrix) {
         const scale = 1 / model.physicalScale;
         set$1(tmpvec1, scale, scale, scale);
@@ -30428,7 +32109,7 @@ fn main(
         transpose(result, result);
         return result;
       }
-      identity$3(tmpMatrix);
+      identity$4(tmpMatrix);
 
       // FIXME: Not sure what to do about adjust z buffer here
       // adjust Z-buffer range
@@ -30521,7 +32202,7 @@ fn main(
       cross(model.physicalViewNorth, model.physicalViewUp, physVRight);
 
       // phone to physical coordinates
-      const rotmat = identity$3(new Float64Array(16));
+      const rotmat = identity$4(new Float64Array(16));
       rotate(rotmat, rotmat, radiansFromDegrees(alpha), model.physicalViewUp);
       rotate(rotmat, rotmat, radiansFromDegrees(beta), physVRight);
       rotate(rotmat, rotmat, radiansFromDegrees(gamma), model.physicalViewNorth);
@@ -30535,7 +32216,7 @@ fn main(
       publicAPI.modified();
     };
     publicAPI.setOrientationWXYZ = (degrees, x, y, z) => {
-      const quatMat = identity$3(new Float64Array(16));
+      const quatMat = identity$4(new Float64Array(16));
       if (degrees !== 0.0 && (x !== 0.0 || y !== 0.0 || z !== 0.0)) {
         // convert to radians
         const angle = radiansFromDegrees(degrees);
@@ -30582,7 +32263,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$w = {
+  const DEFAULT_VALUES$Y = {
     position: [0, 0, 1],
     focalPoint: [0, 0, 0],
     viewUp: [0, 1, 0],
@@ -30611,9 +32292,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$w(publicAPI, model) {
+  function extend$14(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$w, initialValues);
+    Object.assign(model, DEFAULT_VALUES$Y, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -30629,13 +32310,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$w = macro.newInstance(extend$w, 'vtkCamera');
+  const newInstance$P = macro.newInstance(extend$14, 'vtkCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkCamera$1 = {
-    newInstance: newInstance$w,
-    extend: extend$w
+    newInstance: newInstance$P,
+    extend: extend$14
   };
 
   // ----------------------------------------------------------------------------
@@ -30707,7 +32388,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$v = {
+  const DEFAULT_VALUES$X = {
     switch: true,
     intensity: 1,
     color: [1, 1, 1],
@@ -30727,9 +32408,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$v(publicAPI, model) {
+  function extend$13(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$v, initialValues);
+    Object.assign(model, DEFAULT_VALUES$X, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -30742,21 +32423,21 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$v = macro.newInstance(extend$v, 'vtkLight');
+  const newInstance$O = macro.newInstance(extend$13, 'vtkLight');
 
   // ----------------------------------------------------------------------------
 
   var vtkLight$1 = {
-    newInstance: newInstance$v,
-    extend: extend$v,
+    newInstance: newInstance$O,
+    extend: extend$13,
     LIGHT_TYPES
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$c
+    vtkErrorMacro: vtkErrorMacro$h
   } = macro;
   function notImplemented$1(method) {
-    return () => vtkErrorMacro$c(`vtkViewport::${method} - NOT IMPLEMENTED`);
+    return () => vtkErrorMacro$h(`vtkViewport::${method} - NOT IMPLEMENTED`);
   }
 
   // ----------------------------------------------------------------------------
@@ -30816,9 +32497,9 @@ fn main(
       });
       return model.actors2D;
     };
-    publicAPI.displayToView = () => vtkErrorMacro$c('call displayToView on your view instead');
-    publicAPI.viewToDisplay = () => vtkErrorMacro$c('callviewtodisplay on your view instead');
-    publicAPI.getSize = () => vtkErrorMacro$c('call getSize on your View instead');
+    publicAPI.displayToView = () => vtkErrorMacro$h('call displayToView on your view instead');
+    publicAPI.viewToDisplay = () => vtkErrorMacro$h('callviewtodisplay on your view instead');
+    publicAPI.getSize = () => vtkErrorMacro$h('call getSize on your View instead');
     publicAPI.normalizedDisplayToProjection = (x, y, z) => {
       // first to normalized viewport
       const nvp = publicAPI.normalizedDisplayToNormalizedViewport(x, y, z);
@@ -30850,7 +32531,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$u = {
+  const DEFAULT_VALUES$W = {
     // _vtkWindow: null,
     background: [0, 0, 0],
     background2: [0.2, 0.2, 0.2],
@@ -30864,9 +32545,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$u(publicAPI, model) {
+  function extend$12(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$u, initialValues);
+    Object.assign(model, DEFAULT_VALUES$W, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -30878,22 +32559,22 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$u = macro.newInstance(extend$u, 'vtkViewport');
+  const newInstance$N = macro.newInstance(extend$12, 'vtkViewport');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewport$1 = {
-    newInstance: newInstance$u,
-    extend: extend$u
+    newInstance: newInstance$N,
+    extend: extend$12
   };
 
   const {
-    vtkDebugMacro: vtkDebugMacro$2,
-    vtkErrorMacro: vtkErrorMacro$b,
-    vtkWarningMacro: vtkWarningMacro$1
+    vtkDebugMacro: vtkDebugMacro$3,
+    vtkErrorMacro: vtkErrorMacro$g,
+    vtkWarningMacro: vtkWarningMacro$3
   } = macro$1;
   function notImplemented(method) {
-    return () => vtkErrorMacro$b(`vtkRenderer::${method} - NOT IMPLEMENTED`);
+    return () => vtkErrorMacro$g(`vtkRenderer::${method} - NOT IMPLEMENTED`);
   }
 
   // ----------------------------------------------------------------------------
@@ -30919,7 +32600,7 @@ fn main(
     };
     publicAPI.updateCamera = () => {
       if (!model.activeCamera) {
-        vtkDebugMacro$2('No cameras are on, creating one.');
+        vtkDebugMacro$3('No cameras are on, creating one.');
         // the get method will automagically create a camera
         // and reset it since one hasn't been specified yet.
         publicAPI.getActiveCameraAndResetIfCreated();
@@ -30943,7 +32624,7 @@ fn main(
         } else if (light.lightTypeIsCameraLight()) {
           light.setTransformMatrix(camera.getCameraLightTransformMatrix(create$3()));
         } else {
-          vtkErrorMacro$b('light has unknown light type', light.get());
+          vtkErrorMacro$g('light has unknown light type', light.get());
         }
       });
     };
@@ -30960,7 +32641,7 @@ fn main(
     publicAPI.updateGeometry = notImplemented('updateGeometry');
     publicAPI.getVTKWindow = () => model._renderWindow;
     publicAPI.setLayer = layer => {
-      vtkDebugMacro$2(publicAPI.getClassName(), publicAPI, 'setting Layer to ', layer);
+      vtkDebugMacro$3(publicAPI.getClassName(), publicAPI, 'setting Layer to ', layer);
       if (model.layer !== layer) {
         model.layer = layer;
         publicAPI.modified();
@@ -31100,7 +32781,7 @@ fn main(
     // requires the aspect ratio of the viewport as X/Y
     publicAPI.viewToWorld = (x, y, z) => {
       if (model.activeCamera === null) {
-        vtkErrorMacro$b('ViewToWorld: no active camera, cannot compute view to world, returning 0,0,0');
+        vtkErrorMacro$g('ViewToWorld: no active camera, cannot compute view to world, returning 0,0,0');
         return [0, 0, 0];
       }
 
@@ -31116,7 +32797,7 @@ fn main(
     };
     publicAPI.projectionToView = (x, y, z, aspect) => {
       if (model.activeCamera === null) {
-        vtkErrorMacro$b('ProjectionToView: no active camera, cannot compute projection to view, returning 0,0,0');
+        vtkErrorMacro$g('ProjectionToView: no active camera, cannot compute projection to view, returning 0,0,0');
         return [0, 0, 0];
       }
 
@@ -31134,7 +32815,7 @@ fn main(
     // Convert world point coordinates to view coordinates.
     publicAPI.worldToView = (x, y, z) => {
       if (model.activeCamera === null) {
-        vtkErrorMacro$b('WorldToView: no active camera, cannot compute view to world, returning 0,0,0');
+        vtkErrorMacro$g('WorldToView: no active camera, cannot compute view to world, returning 0,0,0');
         return [0, 0, 0];
       }
 
@@ -31150,7 +32831,7 @@ fn main(
     // requires the aspect ratio of the viewport as X/Y
     publicAPI.viewToProjection = (x, y, z, aspect) => {
       if (model.activeCamera === null) {
-        vtkErrorMacro$b('ViewToProjection: no active camera, cannot compute view to projection, returning 0,0,0');
+        vtkErrorMacro$g('ViewToProjection: no active camera, cannot compute view to projection, returning 0,0,0');
         return [0, 0, 0];
       }
 
@@ -31201,7 +32882,7 @@ fn main(
       }
       if (nothingVisible) {
         uninitializeBounds(model.allBounds);
-        vtkDebugMacro$2("Can't compute bounds, no 3D props are visible");
+        vtkDebugMacro$3("Can't compute bounds, no 3D props are visible");
       }
       return model.allBounds;
     };
@@ -31210,14 +32891,14 @@ fn main(
       const boundsToUse = bounds || publicAPI.computeVisiblePropBounds();
       const center = [0, 0, 0];
       if (!areBoundsInitialized(boundsToUse)) {
-        vtkDebugMacro$2('Cannot reset camera!');
+        vtkDebugMacro$3('Cannot reset camera!');
         return false;
       }
       let vn = null;
       if (publicAPI.getActiveCamera()) {
         vn = model.activeCamera.getViewPlaneNormal();
       } else {
-        vtkErrorMacro$b('Trying to reset non-existent camera');
+        vtkErrorMacro$g('Trying to reset non-existent camera');
         return false;
       }
 
@@ -31261,7 +32942,7 @@ fn main(
       // check view-up vector against view plane normal
       const vup = model.activeCamera.getViewUp();
       if (Math.abs(dot(vup, vn)) > 0.999) {
-        vtkWarningMacro$1('Resetting view-up since view plane normal is parallel');
+        vtkWarningMacro$3('Resetting view-up since view plane normal is parallel');
         model.activeCamera.setViewUp(-vup[2], vup[0], vup[1]);
       }
 
@@ -31286,14 +32967,14 @@ fn main(
       let bounds = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       const boundsToUse = bounds || publicAPI.computeVisiblePropBounds();
       if (!areBoundsInitialized(boundsToUse)) {
-        vtkDebugMacro$2('Cannot reset camera clipping range!');
+        vtkDebugMacro$3('Cannot reset camera clipping range!');
         return false;
       }
 
       // Make sure we have an active camera
       publicAPI.getActiveCameraAndResetIfCreated();
       if (!model.activeCamera) {
-        vtkErrorMacro$b('Trying to reset clipping range of non-existent camera');
+        vtkErrorMacro$g('Trying to reset clipping range of non-existent camera');
         return false;
       }
 
@@ -31375,7 +33056,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$t = {
+  const DEFAULT_VALUES$V = {
     pickedProp: null,
     activeCamera: null,
     allBounds: [],
@@ -31419,9 +33100,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$t(publicAPI, model) {
+  function extend$11(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$t, initialValues);
+    Object.assign(model, DEFAULT_VALUES$V, initialValues);
 
     // Inheritance
     vtkViewport$1.extend(publicAPI, model, initialValues);
@@ -31444,13 +33125,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$t = newInstance$1I(extend$t, 'vtkRenderer');
+  const newInstance$M = newInstance$1$(extend$11, 'vtkRenderer');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderer$1 = {
-    newInstance: newInstance$t,
-    extend: extend$t
+    newInstance: newInstance$M,
+    extend: extend$11
   };
 
   const DEFAULT_VIEW_API = 'WebGL';
@@ -31595,7 +33276,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$s = {
+  const DEFAULT_VALUES$U = {
     defaultViewAPI: DEFAULT_VIEW_API,
     renderers: [],
     views: [],
@@ -31606,9 +33287,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$s(publicAPI, model) {
+  function extend$10(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$s, initialValues);
+    Object.assign(model, DEFAULT_VALUES$U, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -31624,13 +33305,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$s = macro.newInstance(extend$s, 'vtkRenderWindow');
+  const newInstance$L = macro.newInstance(extend$10, 'vtkRenderWindow');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindow$1 = {
-    newInstance: newInstance$s,
-    extend: extend$s,
+    newInstance: newInstance$L,
+    extend: extend$10,
     registerViewConstructor,
     listViewAPIs,
     newAPISpecificView
@@ -31659,7 +33340,7 @@ fn main(
     ThumbstickX: 3,
     ThumbstickY: 4
   };
-  var Constants$1 = {
+  var Constants$5 = {
     Device: Device$1,
     Input: Input$1,
     Axis
@@ -31668,10 +33349,10 @@ fn main(
   const {
     Device,
     Input
-  } = Constants$1;
+  } = Constants$5;
   const {
-    vtkWarningMacro,
-    vtkErrorMacro: vtkErrorMacro$a,
+    vtkWarningMacro: vtkWarningMacro$2,
+    vtkErrorMacro: vtkErrorMacro$f,
     normalizeWheel,
     vtkOnceErrorMacro
   } = macro;
@@ -31752,7 +33433,7 @@ fn main(
 
     //----------------------------------------------------------------------
     publicAPI.setRenderWindow = aren => {
-      vtkErrorMacro$a('you want to call setView(view) instead of setRenderWindow on a vtk.js interactor');
+      vtkErrorMacro$f('you want to call setView(view) instead of setRenderWindow on a vtk.js interactor');
     };
 
     //----------------------------------------------------------------------
@@ -31778,7 +33459,7 @@ fn main(
     };
     publicAPI.enable = () => publicAPI.setEnabled(true);
     publicAPI.disable = () => publicAPI.setEnabled(false);
-    publicAPI.startEventLoop = () => vtkWarningMacro('empty event loop');
+    publicAPI.startEventLoop = () => vtkWarningMacro$2('empty event loop');
     function updateCurrentRenderer(x, y) {
       if (!model._forcedRenderer) {
         model.currentRenderer = publicAPI.findPokedRenderer(x, y);
@@ -31955,7 +33636,7 @@ fn main(
       }
       model.container.setPointerCapture(event.pointerId);
       if (pointerCache.has(event.pointerId)) {
-        vtkWarningMacro('[RenderWindowInteractor] duplicate pointerId detected');
+        vtkWarningMacro$2('[RenderWindowInteractor] duplicate pointerId detected');
       }
       pointerCache.set(event.pointerId, {
         pointerId: event.pointerId,
@@ -32039,7 +33720,7 @@ fn main(
           publicAPI.rightButtonPressEvent(callData);
           break;
         default:
-          vtkErrorMacro$a(`Unknown mouse button pressed: ${event.button}`);
+          vtkErrorMacro$f(`Unknown mouse button pressed: ${event.button}`);
           break;
       }
     };
@@ -32079,11 +33760,11 @@ fn main(
     }
     publicAPI.requestAnimation = requestor => {
       if (requestor === undefined) {
-        vtkErrorMacro$a(`undefined requester, can not start animating`);
+        vtkErrorMacro$f(`undefined requester, can not start animating`);
         return;
       }
       if (animationRequesters.has(requestor)) {
-        vtkWarningMacro(`requester is already registered for animating`);
+        vtkWarningMacro$2(`requester is already registered for animating`);
         return;
       }
       animationRequesters.add(requestor);
@@ -32113,7 +33794,7 @@ fn main(
       if (!animationRequesters.has(requestor)) {
         if (!skipWarning) {
           const requestStr = requestor && requestor.getClassName ? requestor.getClassName() : requestor;
-          vtkWarningMacro(`${requestStr} did not request an animation`);
+          vtkWarningMacro$2(`${requestStr} did not request an animation`);
         }
         return;
       }
@@ -32309,7 +33990,7 @@ fn main(
           publicAPI.rightButtonReleaseEvent(callData);
           break;
         default:
-          vtkErrorMacro$a(`Unknown mouse button released: ${event.button}`);
+          vtkErrorMacro$f(`Unknown mouse button released: ${event.button}`);
           break;
       }
     };
@@ -32678,7 +34359,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$r = {
+  const DEFAULT_VALUES$T = {
     renderWindow: null,
     interactorStyle: null,
     picker: null,
@@ -32707,9 +34388,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$r(publicAPI, model) {
+  function extend$$(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$r, initialValues);
+    Object.assign(model, DEFAULT_VALUES$T, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -32734,19 +34415,19 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$r = macro.newInstance(extend$r, 'vtkRenderWindowInteractor');
+  const newInstance$K = macro.newInstance(extend$$, 'vtkRenderWindowInteractor');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowInteractor$1 = {
-    newInstance: newInstance$r,
-    extend: extend$r,
+    newInstance: newInstance$K,
+    extend: extend$$,
     handledEvents,
-    ...Constants$1
+    ...Constants$5
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$9,
+    vtkErrorMacro: vtkErrorMacro$e,
     VOID
   } = macro;
 
@@ -32757,7 +34438,7 @@ fn main(
   //----------------------------------------------------------------------------
   // Description:
   // Transform from world to display coordinates.
-  function computeWorldToDisplay(renderer, x, y, z) {
+  function computeWorldToDisplay$1(renderer, x, y, z) {
     const view = renderer.getRenderWindow().getViews()[0];
     return view.worldToDisplay(x, y, z, renderer);
   }
@@ -32774,7 +34455,7 @@ fn main(
   // Static API
   // ----------------------------------------------------------------------------
   const STATIC = {
-    computeWorldToDisplay,
+    computeWorldToDisplay: computeWorldToDisplay$1,
     computeDisplayToWorld
   };
 
@@ -32836,7 +34517,7 @@ fn main(
         if (model._interactor) {
           subscribeToEvents();
         } else {
-          vtkErrorMacro$9(`
+          vtkErrorMacro$e(`
           The interactor must be set before subscribing to events
         `);
         }
@@ -32880,7 +34561,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$q = {
+  const DEFAULT_VALUES$S = {
     enabled: true,
     // _interactor: null,
     priority: 0.0,
@@ -32890,9 +34571,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$q(publicAPI, model) {
+  function extend$_(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$q, initialValues);
+    Object.assign(model, DEFAULT_VALUES$S, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -32915,13 +34596,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$q = macro.newInstance(extend$q, 'vtkInteractorObserver');
+  const newInstance$J = macro.newInstance(extend$_, 'vtkInteractorObserver');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorObserver$1 = {
-    newInstance: newInstance$q,
-    extend: extend$q,
+    newInstance: newInstance$J,
+    extend: extend$_,
     ...STATIC
   };
 
@@ -33054,7 +34735,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$p = {
+  const DEFAULT_VALUES$R = {
     state: States$1.IS_NONE,
     handleObservers: 1,
     autoAdjustCameraClippingRange: 1
@@ -33062,9 +34743,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$p(publicAPI, model) {
+  function extend$Z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$p, initialValues);
+    Object.assign(model, DEFAULT_VALUES$R, initialValues);
 
     // Inheritance
     vtkInteractorObserver$1.extend(publicAPI, model, initialValues);
@@ -33075,13 +34756,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$p = macro.newInstance(extend$p, 'vtkInteractorStyle');
+  const newInstance$I = macro.newInstance(extend$Z, 'vtkInteractorStyle');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyle$1 = {
-    newInstance: newInstance$p,
-    extend: extend$p,
+    newInstance: newInstance$I,
+    extend: extend$Z,
     ...vtkInteractorStyleConstants
   };
 
@@ -33414,16 +35095,16 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$o = {
+  const DEFAULT_VALUES$Q = {
     motionFactor: 10.0,
     zoomFactor: 10.0
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$o(publicAPI, model) {
+  function extend$Y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$o, initialValues);
+    Object.assign(model, DEFAULT_VALUES$Q, initialValues);
 
     // Inheritance
     vtkInteractorStyle$1.extend(publicAPI, model, initialValues);
@@ -33439,13 +35120,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$o = macro.newInstance(extend$o, 'vtkInteractorStyleTrackballCamera');
+  const newInstance$H = macro.newInstance(extend$Y, 'vtkInteractorStyleTrackballCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyleTrackballCamera$1 = {
-    newInstance: newInstance$o,
-    extend: extend$o
+    newInstance: newInstance$H,
+    extend: extend$Y
   };
 
   function identity(i) {
@@ -33511,7 +35192,7 @@ fn main(
     };
     publicAPI.saveCurrentBindings = modeIn => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling saveCurrentBindings');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling saveCurrentBindings');
         return;
       }
       const gl = model.context;
@@ -33528,7 +35209,7 @@ fn main(
     };
     publicAPI.restorePreviousBindings = modeIn => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling restorePreviousBindings');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling restorePreviousBindings');
         return;
       }
       const gl = model.context;
@@ -33552,7 +35233,7 @@ fn main(
     };
     publicAPI.create = (width, height) => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling create');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling create');
         return;
       }
       model.glFramebuffer = model.context.createFramebuffer();
@@ -33563,7 +35244,7 @@ fn main(
       let attachment = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       const gl = model.context;
       if (!gl) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling setColorBuffer');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling setColorBuffer');
         return;
       }
       let glAttachment = gl.COLOR_ATTACHMENT0;
@@ -33571,7 +35252,7 @@ fn main(
         if (model._openGLRenderWindow.getWebgl2()) {
           glAttachment += attachment;
         } else {
-          vtkErrorMacro$v('Using multiple framebuffer attachments requires WebGL 2');
+          vtkErrorMacro$A('Using multiple framebuffer attachments requires WebGL 2');
           return;
         }
       }
@@ -33582,7 +35263,7 @@ fn main(
       let attachment = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       const gl = model.context;
       if (!gl) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling removeColorBuffer');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling removeColorBuffer');
         return;
       }
       let glAttachment = gl.COLOR_ATTACHMENT0;
@@ -33590,7 +35271,7 @@ fn main(
         if (model._openGLRenderWindow.getWebgl2()) {
           glAttachment += attachment;
         } else {
-          vtkErrorMacro$v('Using multiple framebuffer attachments requires WebGL 2');
+          vtkErrorMacro$A('Using multiple framebuffer attachments requires WebGL 2');
           return;
         }
       }
@@ -33599,26 +35280,26 @@ fn main(
     };
     publicAPI.setDepthBuffer = texture => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling setDepthBuffer');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling setDepthBuffer');
         return;
       }
       if (model._openGLRenderWindow.getWebgl2()) {
         const gl = model.context;
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, texture.getHandle(), 0);
       } else {
-        vtkErrorMacro$v('Attaching depth buffer textures to fbo requires WebGL 2');
+        vtkErrorMacro$A('Attaching depth buffer textures to fbo requires WebGL 2');
       }
     };
     publicAPI.removeDepthBuffer = () => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling removeDepthBuffer');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling removeDepthBuffer');
         return;
       }
       if (model._openGLRenderWindow.getWebgl2()) {
         const gl = model.context;
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, null, 0);
       } else {
-        vtkErrorMacro$v('Attaching depth buffer textures to framebuffers requires WebGL 2');
+        vtkErrorMacro$A('Attaching depth buffer textures to framebuffers requires WebGL 2');
       }
     };
     publicAPI.getGLFramebuffer = () => model.glFramebuffer;
@@ -33648,7 +35329,7 @@ fn main(
     };
     publicAPI.populateFramebuffer = () => {
       if (!model.context) {
-        vtkErrorMacro$v('you must set the OpenGLRenderWindow before calling populateFrameBuffer');
+        vtkErrorMacro$A('you must set the OpenGLRenderWindow before calling populateFrameBuffer');
         return;
       }
       publicAPI.bind();
@@ -33675,7 +35356,7 @@ fn main(
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$n = {
+  const DEFAULT_VALUES$P = {
     // _openGLRenderWindow: null,
     glFramebuffer: null,
     colorBuffers: null,
@@ -33688,14 +35369,14 @@ fn main(
   };
 
   // ----------------------------------------------------------------------------
-  function extend$n(publicAPI, model) {
+  function extend$X(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$n, initialValues);
+    Object.assign(model, DEFAULT_VALUES$P, initialValues);
 
     // Build VTK API
     obj(publicAPI, model);
     if (model.colorBuffers) {
-      vtkErrorMacro$v('you cannot initialize colorBuffers through the constructor. You should call setColorBuffer() instead.');
+      vtkErrorMacro$A('you cannot initialize colorBuffers through the constructor. You should call setColorBuffer() instead.');
     }
     model.colorBuffers = [];
     getArray(publicAPI, model, ['colorBuffers']);
@@ -33706,12 +35387,12 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$n = newInstance$1I(extend$n, 'vtkFramebuffer');
+  const newInstance$G = newInstance$1$(extend$X, 'vtkFramebuffer');
 
   // ----------------------------------------------------------------------------
   var vtkOpenGLFramebuffer = {
-    newInstance: newInstance$n,
-    extend: extend$n
+    newInstance: newInstance$G,
+    extend: extend$X
   };
 
   // ----------------------------------------------------------------------------
@@ -33756,7 +35437,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$m = {
+  const DEFAULT_VALUES$O = {
     delegates: [],
     currentOperation: null,
     preDelegateOperations: [],
@@ -33766,9 +35447,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$m(publicAPI, model) {
+  function extend$W(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$m, initialValues);
+    Object.assign(model, DEFAULT_VALUES$O, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -33782,20 +35463,20 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$m = macro.newInstance(extend$m, 'vtkRenderPass');
+  const newInstance$F = macro.newInstance(extend$W, 'vtkRenderPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderPass$1 = {
-    newInstance: newInstance$m,
-    extend: extend$m
+    newInstance: newInstance$F,
+    extend: extend$W
   };
 
   const {
     Representation: Representation$1
   } = vtkProperty$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$8
+    vtkErrorMacro: vtkErrorMacro$d
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -33900,10 +35581,10 @@ void main()
 
       model.tris.getCABO().bind();
       if (!model.copyVAO.addAttributeArray(program, model.tris.getCABO(), 'vertexDC', model.tris.getCABO().getVertexOffset(), model.tris.getCABO().getStride(), gl.FLOAT, 3, gl.FALSE)) {
-        vtkErrorMacro$8('Error setting vertexDC in copy shader VAO.');
+        vtkErrorMacro$d('Error setting vertexDC in copy shader VAO.');
       }
       if (!model.copyVAO.addAttributeArray(program, model.tris.getCABO(), 'tcoordTC', model.tris.getCABO().getTCoordOffset(), model.tris.getCABO().getStride(), gl.FLOAT, 2, gl.FALSE)) {
-        vtkErrorMacro$8('Error setting vertexDC in copy shader VAO.');
+        vtkErrorMacro$d('Error setting vertexDC in copy shader VAO.');
       }
     };
     publicAPI.traverse = (viewNode, renNode, forwardPass) => {
@@ -34056,7 +35737,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$l = {
+  const DEFAULT_VALUES$N = {
     framebuffer: null,
     copyShader: null,
     tris: null
@@ -34064,9 +35745,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$l(publicAPI, model) {
+  function extend$V(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$l, initialValues);
+    Object.assign(model, DEFAULT_VALUES$N, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -34083,13 +35764,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$l = macro.newInstance(extend$l, 'vtkOpenGLOrderIndependentTranslucentPass');
+  const newInstance$E = macro.newInstance(extend$V, 'vtkOpenGLOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLOrderIndependentTranslucentPass$1 = {
-    newInstance: newInstance$l,
-    extend: extend$l
+    newInstance: newInstance$E,
+    extend: extend$V
   };
 
   // ----------------------------------------------------------------------------
@@ -34199,7 +35880,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$k = {
+  const DEFAULT_VALUES$M = {
     opaqueActorCount: 0,
     translucentActorCount: 0,
     volumeCount: 0,
@@ -34210,9 +35891,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$k(publicAPI, model) {
+  function extend$U(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$k, initialValues);
+    Object.assign(model, DEFAULT_VALUES$M, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -34224,13 +35905,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$k = macro.newInstance(extend$k, 'vtkForwardPass');
+  const newInstance$D = macro.newInstance(extend$U, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1$1 = {
-    newInstance: newInstance$k,
-    extend: extend$k
+    newInstance: newInstance$D,
+    extend: extend$U
   };
 
   const {
@@ -34262,16 +35943,16 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$j = {
+  const DEFAULT_VALUES$L = {
     fieldAssociation: FieldAssociations$2.FIELD_ASSOCIATION_CELLS,
     captureZValues: false
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$j(publicAPI, model) {
+  function extend$T(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$j, initialValues);
+    Object.assign(model, DEFAULT_VALUES$L, initialValues);
 
     // Inheritance
     macro.obj(publicAPI, model);
@@ -34283,13 +35964,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$j = macro.newInstance(extend$j, 'vtkHardwareSelector');
+  const newInstance$C = macro.newInstance(extend$T, 'vtkHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector$1$1 = {
-    newInstance: newInstance$j,
-    extend: extend$j
+    newInstance: newInstance$C,
+    extend: extend$T
   };
 
   /**
@@ -34329,7 +36010,7 @@ void main()
     EDGE: 4,
     ROW: 5
   };
-  var Constants = {
+  var Constants$4 = {
     SelectionContent: SelectionContent$2,
     SelectionField: SelectionField$2
   };
@@ -34348,7 +36029,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$i = {
+  const DEFAULT_VALUES$K = {
     contentType: -1,
     fieldType: -1,
     properties: null,
@@ -34357,9 +36038,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$i(publicAPI, model) {
+  function extend$S(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$i, initialValues);
+    Object.assign(model, DEFAULT_VALUES$K, initialValues);
 
     // Inheritance
     macro.obj(publicAPI, model);
@@ -34372,19 +36053,19 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$i = macro.newInstance(extend$i, 'vtkSelectionNode');
+  const newInstance$B = macro.newInstance(extend$S, 'vtkSelectionNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkSelectionNode$1 = {
-    newInstance: newInstance$i,
-    extend: extend$i,
-    ...Constants
+    newInstance: newInstance$B,
+    extend: extend$S,
+    ...Constants$4
   };
 
   const {
     PassTypes
-  } = Constants$7;
+  } = Constants$b;
   const {
     SelectionContent: SelectionContent$1,
     SelectionField: SelectionField$1
@@ -34393,7 +36074,7 @@ void main()
     FieldAssociations: FieldAssociations$1
   } = vtkDataSet$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$7
+    vtkErrorMacro: vtkErrorMacro$c
   } = macro;
   const idOffset = 1;
   function getInfoHash$1(info) {
@@ -34531,7 +36212,7 @@ void main()
           child.setFieldType(SelectionField$1.POINT);
           break;
         default:
-          vtkErrorMacro$7('Unknown field association');
+          vtkErrorMacro$c('Unknown field association');
       }
       child.getProperties().propID = value.info.propID;
       child.getProperties().prop = value.info.prop;
@@ -34709,7 +36390,7 @@ void main()
     //----------------------------------------------------------------------------
     publicAPI.captureBuffers = () => {
       if (!model._renderer || !model._openGLRenderWindow) {
-        vtkErrorMacro$7('Renderer and view must be set before calling Select.');
+        vtkErrorMacro$c('Renderer and view must be set before calling Select.');
         return false;
       }
       model._openGLRenderer = model._openGLRenderWindow.getViewNodeFor(model._renderer);
@@ -35031,7 +36712,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$h = {
+  const DEFAULT_VALUES$J = {
     area: undefined,
     // _renderer: null,
     // _openGLRenderWindow: null,
@@ -35046,9 +36727,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$h(publicAPI, model) {
+  function extend$R(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$h, initialValues);
+    Object.assign(model, DEFAULT_VALUES$J, initialValues);
 
     // Build VTK API
     vtkHardwareSelector$1$1.extend(publicAPI, model, initialValues);
@@ -35069,14 +36750,14 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$h = macro.newInstance(extend$h, 'vtkOpenGLHardwareSelector');
+  const newInstance$A = macro.newInstance(extend$R, 'vtkOpenGLHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector = {
-    newInstance: newInstance$h,
-    extend: extend$h,
-    ...Constants$7
+    newInstance: newInstance$A,
+    extend: extend$R,
+    ...Constants$b
   };
 
   var sparkMd5 = {exports: {}};
@@ -35951,7 +37632,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$g = {
+  const DEFAULT_VALUES$I = {
     lastShaderProgramBound: null,
     shaderPrograms: null,
     context: null
@@ -35960,9 +37641,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$g(publicAPI, model) {
+  function extend$Q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$g, initialValues);
+    Object.assign(model, DEFAULT_VALUES$I, initialValues);
 
     // Internal objects
     model.shaderPrograms = {};
@@ -35978,17 +37659,17 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$g = macro.newInstance(extend$g, 'vtkShaderCache');
+  const newInstance$z = macro.newInstance(extend$Q, 'vtkShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderCache$1 = {
-    newInstance: newInstance$g,
-    extend: extend$g
+    newInstance: newInstance$z,
+    extend: extend$Q
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$6
+    vtkErrorMacro: vtkErrorMacro$b
   } = macro;
 
   // ----------------------------------------------------------------------------
@@ -36006,7 +37687,7 @@ void main()
     publicAPI.deleteTable = () => {
       for (let i = 0; i < model.numberOfTextureUnits; ++i) {
         if (model.textureUnits[i] === true) {
-          vtkErrorMacro$6('some texture units  were not properly released');
+          vtkErrorMacro$b('some texture units  were not properly released');
         }
       }
       model.textureUnits = [];
@@ -36079,7 +37760,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$f = {
+  const DEFAULT_VALUES$H = {
     context: null,
     numberOfTextureUnits: 0,
     textureUnits: 0
@@ -36087,9 +37768,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$f(publicAPI, model) {
+  function extend$P(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$f, initialValues);
+    Object.assign(model, DEFAULT_VALUES$H, initialValues);
     macro.obj(publicAPI, model);
     model.textureUnits = [];
 
@@ -36103,13 +37784,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$f = macro.newInstance(extend$f, 'vtkOpenGLTextureUnitManager');
+  const newInstance$y = macro.newInstance(extend$P, 'vtkOpenGLTextureUnitManager');
 
   // ----------------------------------------------------------------------------
 
   var vtkTextureUnitManager = {
-    newInstance: newInstance$f,
-    extend: extend$f
+    newInstance: newInstance$y,
+    extend: extend$P
   };
 
   // ----------------------------------------------------------------------------
@@ -36218,16 +37899,16 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$e = {
+  const DEFAULT_VALUES$G = {
     size: undefined,
     selector: undefined
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$e(publicAPI, model) {
+  function extend$O(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$e, initialValues);
+    Object.assign(model, DEFAULT_VALUES$G, initialValues);
     if (!model.size) {
       model.size = [300, 300];
     }
@@ -36243,13 +37924,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$e = macro.newInstance(extend$e, 'vtkRenderWindowViewNode');
+  const newInstance$x = macro.newInstance(extend$O, 'vtkRenderWindowViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowViewNode$1 = {
-    newInstance: newInstance$e,
-    extend: extend$e
+    newInstance: newInstance$x,
+    extend: extend$O
   };
 
   // This is used to access the underlying 3D context
@@ -36310,8 +37991,8 @@ void main()
   }
 
   const {
-    vtkDebugMacro: vtkDebugMacro$1,
-    vtkErrorMacro: vtkErrorMacro$5
+    vtkDebugMacro: vtkDebugMacro$2,
+    vtkErrorMacro: vtkErrorMacro$a
   } = macro;
   const SCREENSHOT_PLACEHOLDER$1 = {
     position: 'absolute',
@@ -36437,7 +38118,7 @@ void main()
     publicAPI.setContainer = el => {
       if (model.el && model.el !== el) {
         if (model.canvas.parentNode !== model.el) {
-          vtkErrorMacro$5('Error: canvas parent node does not match container');
+          vtkErrorMacro$a('Error: canvas parent node does not match container');
         }
 
         // Remove canvas from previous container
@@ -36501,11 +38182,11 @@ void main()
         result = model.canvas.getContext('webgl2', options);
         if (result) {
           model.webgl2 = true;
-          vtkDebugMacro$1('using webgl2');
+          vtkDebugMacro$2('using webgl2');
         }
       }
       if (!result) {
-        vtkDebugMacro$1('using webgl1');
+        vtkDebugMacro$2('using webgl1');
         result = model.canvas.getContext('webgl', options) || model.canvas.getContext('experimental-webgl', options);
       }
       return new Proxy(result, cachingContextHandler);
@@ -36524,7 +38205,7 @@ void main()
       }
       const activeUnit = publicAPI.getTextureUnitManager().allocate();
       if (activeUnit < 0) {
-        vtkErrorMacro$5('Hardware does not support the number of textures defined.');
+        vtkErrorMacro$a('Hardware does not support the number of textures defined.');
         return;
       }
       model._textureResourceIds.set(texture, activeUnit);
@@ -36963,7 +38644,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$d = {
+  const DEFAULT_VALUES$F = {
     cullFaceEnabled: false,
     shaderCache: null,
     initialized: false,
@@ -36987,9 +38668,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$d(publicAPI, model) {
+  function extend$N(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$d, initialValues);
+    Object.assign(model, DEFAULT_VALUES$F, initialValues);
 
     // Inheritance
     vtkRenderWindowViewNode$1.extend(publicAPI, model, initialValues);
@@ -37017,7 +38698,7 @@ void main()
     model._glInformation = null;
     model.myFactory = vtkViewNodeFactory.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$d);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$w);
     /* eslint-enable no-use-before-define */
 
     model.shaderCache = vtkShaderCache$1.newInstance();
@@ -37039,13 +38720,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$d = macro.newInstance(extend$d, 'vtkOpenGLRenderWindow');
+  const newInstance$w = macro.newInstance(extend$N, 'vtkOpenGLRenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGL', newInstance$d);
+  registerViewConstructor('WebGL', newInstance$w);
 
   // methods we forward to the handle
   const forwarded = ['setBindGroup', 'setIndexBuffer', 'setVertexBuffer', 'draw', 'drawIndexed'];
@@ -37176,7 +38857,7 @@ void main()
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$c = {
+  const DEFAULT_VALUES$E = {
     description: null,
     handle: null,
     boundPipeline: null,
@@ -37188,9 +38869,9 @@ void main()
   };
 
   // ----------------------------------------------------------------------------
-  function extend$c(publicAPI, model) {
+  function extend$M(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$c, initialValues);
+    Object.assign(model, DEFAULT_VALUES$E, initialValues);
 
     // Build VTK API
     obj(publicAPI, model);
@@ -37253,12 +38934,12 @@ void main()
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$c = newInstance$1I(extend$c, 'vtkWebGPURenderEncoder');
+  const newInstance$v = newInstance$1$(extend$M, 'vtkWebGPURenderEncoder');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPURenderEncoder$1 = {
-    newInstance: newInstance$c,
-    extend: extend$c
+    newInstance: newInstance$v,
+    extend: extend$M
   };
 
   // ----------------------------------------------------------------------------
@@ -37330,7 +39011,7 @@ void main()
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$b = {
+  const DEFAULT_VALUES$D = {
     renderEncoder: null,
     colorTexture: null,
     depthTexture: null
@@ -37338,9 +39019,9 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$b(publicAPI, model) {
+  function extend$L(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$b, initialValues);
+    Object.assign(model, DEFAULT_VALUES$D, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -37352,13 +39033,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$b = macro.newInstance(extend$b, 'vtkWebGPUOpaquePass');
+  const newInstance$u = macro.newInstance(extend$L, 'vtkWebGPUOpaquePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOpaquePass$1 = {
-    newInstance: newInstance$b,
-    extend: extend$b
+    newInstance: newInstance$u,
+    extend: extend$L
   };
 
   // ----------------------------------------------------------------------------
@@ -37579,16 +39260,16 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$a = {
+  const DEFAULT_VALUES$C = {
     colorTextureView: null,
     depthTextureView: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$a(publicAPI, model) {
+  function extend$K(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$a, initialValues);
+    Object.assign(model, DEFAULT_VALUES$C, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -37600,13 +39281,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$a = macro.newInstance(extend$a, 'vtkWebGPUOrderIndependentTranslucentPass');
+  const newInstance$t = macro.newInstance(extend$K, 'vtkWebGPUOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOrderIndepenentTranslucentPass = {
-    newInstance: newInstance$a,
-    extend: extend$a
+    newInstance: newInstance$t,
+    extend: extend$K
   };
 
   const BlendMode = {
@@ -38201,7 +39882,7 @@ fn main(
         const actor = webgpuvol.getRenderable();
         const volMapr = actor.getMapper();
         const image = volMapr.getInputData();
-        identity$3(tmpMat4);
+        identity$4(tmpMat4);
         translate(tmpMat4, tmpMat4, center);
         // tmpMat4 is now SC->World
 
@@ -38220,7 +39901,7 @@ fn main(
         // tmpMat4 is now SC -> Index
 
         const dims = image.getDimensions();
-        identity$3(tmp2Mat4);
+        identity$4(tmp2Mat4);
         scale$2(tmp2Mat4, tmp2Mat4, [1.0 / dims[0], 1.0 / dims[1], 1.0 / dims[2]]);
         multiply$1(tmpMat4, tmp2Mat4, tmpMat4);
         // tmpMat4 is now SC -> Tcoord
@@ -38446,7 +40127,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$9 = {
+  const DEFAULT_VALUES$B = {
     volumes: null,
     rowLength: 1024,
     lastVolumeLength: 0
@@ -38454,9 +40135,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$9(publicAPI, model) {
+  function extend$J(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$9, initialValues);
+    Object.assign(model, DEFAULT_VALUES$B, initialValues);
 
     // Inheritance
     vtkWebGPUFullScreenQuad$1.extend(publicAPI, model, initialValues);
@@ -38482,13 +40163,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$9 = macro.newInstance(extend$9, 'vtkWebGPUVolumePassFSQ');
+  const newInstance$s = macro.newInstance(extend$J, 'vtkWebGPUVolumePassFSQ');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePassFSQ$1 = {
-    newInstance: newInstance$9,
-    extend: extend$9
+    newInstance: newInstance$s,
+    extend: extend$J
   };
 
   const {
@@ -39099,7 +40780,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$8 = {
+  const DEFAULT_VALUES$A = {
     colorTextureView: null,
     depthTextureView: null,
     volumes: null
@@ -39107,9 +40788,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$8(publicAPI, model) {
+  function extend$I(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$8, initialValues);
+    Object.assign(model, DEFAULT_VALUES$A, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -39129,13 +40810,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$8 = macro.newInstance(extend$8, 'vtkWebGPUVolumePass');
+  const newInstance$r = macro.newInstance(extend$I, 'vtkWebGPUVolumePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePass$1 = {
-    newInstance: newInstance$8,
-    extend: extend$8
+    newInstance: newInstance$r,
+    extend: extend$I
   };
 
   const finalBlitFragTemplate = `
@@ -39308,7 +40989,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$7 = {
+  const DEFAULT_VALUES$z = {
     opaqueActorCount: 0,
     translucentActorCount: 0,
     volumes: null,
@@ -39319,9 +41000,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$7(publicAPI, model) {
+  function extend$H(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$7, initialValues);
+    Object.assign(model, DEFAULT_VALUES$z, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -39333,13 +41014,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$7 = macro.newInstance(extend$7, 'vtkForwardPass');
+  const newInstance$q = macro.newInstance(extend$H, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1 = {
-    newInstance: newInstance$7,
-    extend: extend$7
+    newInstance: newInstance$q,
+    extend: extend$H
   };
 
   const {
@@ -39498,16 +41179,16 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$6 = {
+  const DEFAULT_VALUES$y = {
     handle: null,
     device: null
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$6(publicAPI, model) {
+  function extend$G(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$6, initialValues);
+    Object.assign(model, DEFAULT_VALUES$y, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -39517,13 +41198,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$6 = macro.newInstance(extend$6);
+  const newInstance$p = macro.newInstance(extend$G);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureManager$1 = {
-    newInstance: newInstance$6,
-    extend: extend$6
+    newInstance: newInstance$p,
+    extend: extend$G
   };
 
   /**
@@ -39664,7 +41345,7 @@ fn main(
   // ----------------------------------------------------------------------------
   // Object factory
   // ----------------------------------------------------------------------------
-  const DEFAULT_VALUES$5 = {
+  const DEFAULT_VALUES$x = {
     handle: null,
     pipelines: null,
     shaderCache: null,
@@ -39674,9 +41355,9 @@ fn main(
   };
 
   // ----------------------------------------------------------------------------
-  function extend$5(publicAPI, model) {
+  function extend$F(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$5, initialValues);
+    Object.assign(model, DEFAULT_VALUES$x, initialValues);
 
     // Build VTK API
     obj(publicAPI, model);
@@ -39703,12 +41384,12 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$5 = newInstance$1I(extend$5, 'vtkWebGPUDevice');
+  const newInstance$o = newInstance$1$(extend$F, 'vtkWebGPUDevice');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUDevice$1 = {
-    newInstance: newInstance$5,
-    extend: extend$5
+    newInstance: newInstance$o,
+    extend: extend$F
   };
 
   // ----------------------------------------------------------------------------
@@ -39813,7 +41494,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$4 = {
+  const DEFAULT_VALUES$w = {
     selectionRenderEncoder: null,
     colorTexture: null,
     depthTexture: null
@@ -39821,9 +41502,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$4(publicAPI, model) {
+  function extend$E(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$4, initialValues);
+    Object.assign(model, DEFAULT_VALUES$w, initialValues);
 
     // Build VTK API
     vtkRenderPass$1.extend(publicAPI, model, initialValues);
@@ -39835,13 +41516,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$4 = macro.newInstance(extend$4, 'vtkWebGPUHardwareSelectionPass');
+  const newInstance$n = macro.newInstance(extend$E, 'vtkWebGPUHardwareSelectionPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelectionPass$1 = {
-    newInstance: newInstance$4,
-    extend: extend$4
+    newInstance: newInstance$n,
+    extend: extend$E
   };
 
   const {
@@ -39852,7 +41533,7 @@ fn main(
     FieldAssociations
   } = vtkDataSet$1;
   const {
-    vtkErrorMacro: vtkErrorMacro$4
+    vtkErrorMacro: vtkErrorMacro$9
   } = macro;
   function getInfoHash(info) {
     return `${info.propID} ${info.compositeID}`;
@@ -39955,7 +41636,7 @@ fn main(
           child.setFieldType(SelectionField.POINT);
           break;
         default:
-          vtkErrorMacro$4('Unknown field association');
+          vtkErrorMacro$9('Unknown field association');
       }
       child.getProperties().propID = value.info.propID;
       const wprop = buffdata.webGPURenderer.getPropFromID(value.info.propID);
@@ -40031,7 +41712,7 @@ fn main(
     // render the full size window and copy it to the buffers.
     publicAPI.getSourceDataAsync = async renderer => {
       if (!renderer || !model._WebGPURenderWindow) {
-        vtkErrorMacro$4('Renderer and view must be set before calling Select.');
+        vtkErrorMacro$9('Renderer and view must be set before calling Select.');
         return false;
       }
 
@@ -40153,15 +41834,15 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$3 = {
+  const DEFAULT_VALUES$v = {
     // WebGPURenderWindow: null,
   };
 
   // ----------------------------------------------------------------------------
 
-  function extend$3(publicAPI, model) {
+  function extend$D(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$3, initialValues);
+    Object.assign(model, DEFAULT_VALUES$v, initialValues);
 
     // Build VTK API
     vtkHardwareSelector$1$1.extend(publicAPI, model, initialValues);
@@ -40175,17 +41856,17 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$3 = macro.newInstance(extend$3, 'vtkWebGPUHardwareSelector');
+  const newInstance$m = macro.newInstance(extend$D, 'vtkWebGPUHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelector$1 = {
-    newInstance: newInstance$3,
-    extend: extend$3
+    newInstance: newInstance$m,
+    extend: extend$D
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$3
+    vtkErrorMacro: vtkErrorMacro$8
   } = macro;
   // const IS_CHROME = navigator.userAgent.indexOf('Chrome') !== -1;
   const SCREENSHOT_PLACEHOLDER = {
@@ -40294,7 +41975,7 @@ fn main(
       if (!model.initializing) {
         model.initializing = true;
         if (!navigator.gpu) {
-          vtkErrorMacro$3('WebGPU is not enabled.');
+          vtkErrorMacro$8('WebGPU is not enabled.');
           return;
         }
         publicAPI.create3DContextAsync().then(() => {
@@ -40309,7 +41990,7 @@ fn main(
     publicAPI.setContainer = el => {
       if (model.el && model.el !== el) {
         if (model.canvas.parentNode !== model.el) {
-          vtkErrorMacro$3('Error: canvas parent node does not match container');
+          vtkErrorMacro$8('Error: canvas parent node does not match container');
         }
 
         // Remove canvas from previous container
@@ -40683,7 +42364,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$2 = {
+  const DEFAULT_VALUES$u = {
     initialized: false,
     context: null,
     adapter: null,
@@ -40704,9 +42385,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$2(publicAPI, model) {
+  function extend$C(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$2, initialValues);
+    Object.assign(model, DEFAULT_VALUES$u, initialValues);
 
     // Create internal instances
     model.canvas = document.createElement('canvas');
@@ -40725,7 +42406,7 @@ fn main(
     vtkRenderWindowViewNode$1.extend(publicAPI, model, initialValues);
     model.myFactory = vtkWebGPUViewNodeFactory$1.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$2);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$l);
     /* eslint-enable no-use-before-define */
 
     // setup default forward pass rendering
@@ -40749,13 +42430,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$2 = macro.newInstance(extend$2, 'vtkWebGPURenderWindow');
+  const newInstance$l = macro.newInstance(extend$C, 'vtkWebGPURenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGPU', newInstance$2);
+  registerViewConstructor('WebGPU', newInstance$l);
 
   // Process arguments from URL
   const userParams = vtkURLExtract.extractURLParameters();
@@ -40902,7 +42583,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES$1 = {
+  const DEFAULT_VALUES$t = {
     background: [0.32, 0.34, 0.43],
     containerStyle: null,
     controlPanelStyle: null,
@@ -40914,9 +42595,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1(publicAPI, model) {
+  function extend$B(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES$1, initialValues);
+    Object.assign(model, DEFAULT_VALUES$t, initialValues);
 
     // Object methods
     macro.obj(publicAPI, model);
@@ -40928,13 +42609,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1 = macro.newInstance(extend$1);
+  const newInstance$k = macro.newInstance(extend$B);
 
   // ----------------------------------------------------------------------------
 
   var vtkFullScreenRenderWindow$1 = {
-    newInstance: newInstance$1,
-    extend: extend$1
+    newInstance: newInstance$k,
+    extend: extend$B
   };
 
   /**
@@ -41002,14 +42683,14 @@ fn main(
     registerType
   };
 
-  const NoOp = v => v;
+  const NoOp$1 = v => v;
   const EPSILON = 1e-6;
   class Transform {
     constructor() {
       let useDegree = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-      this.matrix = identity$3(new Float64Array(16));
+      this.matrix = identity$4(new Float64Array(16));
       this.tmp = new Float64Array(3);
-      this.angleConv = useDegree ? toRadian : NoOp;
+      this.angleConv = useDegree ? toRadian : NoOp$1;
     }
     rotateFromDirections(originDirection, targetDirection) {
       const src = new Float64Array(3);
@@ -41077,7 +42758,7 @@ fn main(
       return this;
     }
     identity() {
-      identity$3(this.matrix);
+      identity$4(this.matrix);
       return this;
     }
 
@@ -41159,11 +42840,11 @@ fn main(
   };
 
   const {
-    vtkErrorMacro: vtkErrorMacro$2,
-    vtkDebugMacro
+    vtkErrorMacro: vtkErrorMacro$7,
+    vtkDebugMacro: vtkDebugMacro$1
   } = macro;
   const REJECT_COMPRESSION = () => {
-    vtkErrorMacro$2('LiteHttpDataAccessHelper does not support compression. Need to register HttpDataAccessHelper instead.');
+    vtkErrorMacro$7('LiteHttpDataAccessHelper does not support compression. Need to register HttpDataAccessHelper instead.');
     return Promise.reject(new Error('LiteHttpDataAccessHelper does not support compression. Need to register HttpDataAccessHelper instead.'));
   };
 
@@ -41231,13 +42912,13 @@ fn main(
               } else {
                 if (Endian.ENDIANNESS !== array.ref.encode && Endian.ENDIANNESS) {
                   // Need to swap bytes
-                  vtkDebugMacro(`Swap bytes of ${array.name}`);
+                  vtkDebugMacro$1(`Swap bytes of ${array.name}`);
                   Endian.swapBytes(array.buffer, DataTypeByteSize[array.dataType]);
                 }
                 array.values = macro.newTypedArray(array.dataType, array.buffer);
               }
               if (array.values.length !== array.size) {
-                vtkErrorMacro$2(`Error in FetchArray: ${array.name}, does not have the proper array size. Got ${array.values.length}, instead of ${array.size}`);
+                vtkErrorMacro$7(`Error in FetchArray: ${array.name}, does not have the proper array size. Got ${array.values.length}, instead of ${array.size}`);
               }
 
               // Done with the ref and work
@@ -41375,7 +43056,7 @@ fn main(
   // import 'vtk.js/Sources/IO/Core/DataAccessHelper/JSZipDataAccessHelper'; // zip
 
   const {
-    vtkErrorMacro: vtkErrorMacro$1
+    vtkErrorMacro: vtkErrorMacro$6
   } = macro;
   function parseHeader(headerString) {
     const headerSubStr = headerString.split(' ');
@@ -41573,7 +43254,7 @@ fn main(
             mat4[0] = -1;
             break;
           default:
-            vtkErrorMacro$1(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
+            vtkErrorMacro$6(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
             return;
         }
         switch (XYZ[1]) {
@@ -41584,7 +43265,7 @@ fn main(
             mat4[5] = -1;
             break;
           default:
-            vtkErrorMacro$1(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
+            vtkErrorMacro$6(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
             return;
         }
         switch (XYZ[2]) {
@@ -41595,7 +43276,7 @@ fn main(
             mat4[10] = -1;
             break;
           default:
-            vtkErrorMacro$1(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
+            vtkErrorMacro$6(`Can not convert STL file from ${XYZ} to LPS space: ` + `permutations not supported. Use itk.js STL reader instead.`);
             return;
         }
         vtkMatrixBuilder.buildFromDegree().setMatrix(mat4).apply(pointValues).apply(normalValues);
@@ -41655,7 +43336,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const DEFAULT_VALUES = {
+  const DEFAULT_VALUES$s = {
     // baseURL: null,
     // dataAccessHelper: null,
     // url: null,
@@ -41663,9 +43344,9 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend(publicAPI, model) {
+  function extend$A(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, DEFAULT_VALUES, initialValues);
+    Object.assign(model, DEFAULT_VALUES$s, initialValues);
 
     // Build VTK API
     macro.obj(publicAPI, model);
@@ -41687,21 +43368,5492 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance = macro.newInstance(extend, 'vtkSTLReader');
+  const newInstance$j = macro.newInstance(extend$A, 'vtkSTLReader');
 
   // ----------------------------------------------------------------------------
 
   var vtkSTLReader$1 = {
-    extend,
-    newInstance
+    extend: extend$A,
+    newInstance: newInstance$j
   };
+
+  const DEFAULT_LABEL = 'default';
+  function removeObjectInArray(array, obj) {
+    const idx = array.indexOf(obj);
+    if (idx !== -1) {
+      array.splice(idx, 1);
+    }
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function vtkWidgetState(publicAPI, model) {
+    model.classHierarchy.push('vtkWidgetState');
+    const subscriptions = [];
+    model.labels = {};
+    model.nestedStates = [];
+
+    // --------------------------------------------------------------------------
+    // labels can be a string or an array of strings.
+    // If nothing (or empty array) provided the default label will be used.
+    // --------------------------------------------------------------------------
+
+    publicAPI.bindState = function (nested) {
+      let labels = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [DEFAULT_LABEL];
+      model.nestedStates.push(nested);
+      subscriptions.push(nested.onModified(publicAPI.modified));
+      if (Array.isArray(labels) && labels.length) {
+        for (let i = 0; i < labels.length; i++) {
+          const label = labels[i];
+          if (!model.labels[label]) {
+            model.labels[label] = [];
+          }
+          model.labels[label].push(nested);
+        }
+      } else {
+        // Need to bind to a label
+        const labelToUse = Array.isArray(labels) ? DEFAULT_LABEL : labels || DEFAULT_LABEL;
+        if (!model.labels[labelToUse]) {
+          model.labels[labelToUse] = [];
+        }
+        model.labels[labelToUse].push(nested);
+      }
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.unbindState = nested => {
+      while (subscriptions.length) {
+        subscriptions.pop().unsubscribe();
+      }
+      removeObjectInArray(model.nestedStates, nested);
+      for (let i = 0; i < model.nestedStates.length; i++) {
+        subscriptions.push(model.nestedStates[i].onModified(publicAPI.modified));
+      }
+      Object.keys(model.labels).forEach(label => {
+        const list = model.labels[label];
+        removeObjectInArray(list, nested);
+      });
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.unbindAll = () => {
+      while (subscriptions.length) {
+        subscriptions.pop().unsubscribe();
+      }
+      model.nestedStates = [];
+    };
+
+    // --------------------------------------------------------------------------
+    // Active flag API
+    // --------------------------------------------------------------------------
+
+    publicAPI.activate = () => publicAPI.setActive(true);
+    publicAPI.deactivate = excludingState => {
+      if (excludingState !== publicAPI) {
+        publicAPI.setActive(false);
+      }
+      for (let i = 0; i < model.nestedStates.length; i++) {
+        model.nestedStates[i].deactivate(excludingState);
+      }
+    };
+    publicAPI.activateOnly = subState => {
+      if (subState) {
+        subState.setActive(true);
+      }
+      // deactivate current state, but exclude the sub-state
+      publicAPI.deactivate(subState);
+    };
+
+    // --------------------------------------------------------------------------
+    // Nested state methods
+    // --------------------------------------------------------------------------
+
+    publicAPI.getStatesWithLabel = name => model.labels[name];
+    publicAPI.getAllNestedStates = () => model.nestedStates;
+
+    // --------------------------------------------------------------------------
+    // Clean on delete
+    // --------------------------------------------------------------------------
+
+    publicAPI.delete = macro.chain(publicAPI.unbindAll, publicAPI.delete);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$r = {
+    active: false
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$z(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$r, initialValues);
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['active']);
+    vtkWidgetState(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var vtkWidgetState$1 = {
+    extend: extend$z
+  };
+
+  function vtkBoundsMixin(publicAPI, model) {
+    const sourceBounds = [];
+    const bbox = [...vtkBoundingBox.INIT_BOUNDS];
+    publicAPI.containsPoint = (x, y, z) => {
+      if (Array.isArray(x)) {
+        return vtkBoundingBox.containsPoint(bbox, x[0], x[1], x[2]);
+      }
+      return vtkBoundingBox.containsPoint(bbox, x, y, z);
+    };
+    publicAPI.placeWidget = bounds => {
+      model.bounds = [];
+      const center = [(bounds[0] + bounds[1]) / 2.0, (bounds[2] + bounds[3]) / 2.0, (bounds[4] + bounds[5]) / 2.0];
+      for (let i = 0; i < 6; i++) {
+        const axisCenter = center[Math.floor(i / 2)];
+        sourceBounds[i] = bounds[i];
+        model.bounds[i] = (bounds[i] - axisCenter) * model.placeFactor + axisCenter;
+      }
+      vtkBoundingBox.setBounds(bbox, model.bounds);
+      publicAPI.invokeBoundsChange(model.bounds);
+      publicAPI.modified();
+    };
+    publicAPI.setPlaceFactor = factor => {
+      if (model.placeFactor !== factor) {
+        model.placeFactor = factor;
+        model.bounds = [];
+        const center = [(sourceBounds[0] + sourceBounds[1]) / 2.0, (sourceBounds[2] + sourceBounds[3]) / 2.0, (sourceBounds[4] + sourceBounds[5]) / 2.0];
+        for (let i = 0; i < 6; i++) {
+          const axisCenter = center[Math.floor(i / 2)];
+          model.bounds[i] = (sourceBounds[i] - axisCenter) * model.placeFactor + axisCenter;
+        }
+        vtkBoundingBox.setBounds(bbox, model.bounds);
+        publicAPI.invokeBoundsChange(model.bounds);
+        publicAPI.modified();
+      }
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$q = {
+    bounds: [-1, 1, -1, 1, -1, 1],
+    placeFactor: 1
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$y(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$q, initialValues);
+    macro.setGetArray(publicAPI, model, ['bounds'], 6);
+    macro.get(publicAPI, model, ['placeFactor']);
+    macro.event(publicAPI, model, 'BoundsChange');
+    model.bounds = model.bounds.slice();
+    vtkBoundsMixin(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var bounds = {
+    extend: extend$y
+  };
+
+  /**
+   * Scalar color mixin.
+   * Scalar value [0, 1] references a color in the mapper LUT.
+   * Not to be used in conjunction with `color3` mixin.
+   * @see color3
+   */
+
+  const DEFAULT_VALUES$p = {
+    color: 0.5
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$x(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$p, initialValues);
+    macro.setGet(publicAPI, model, ['color']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var color$1 = {
+    extend: extend$x
+  };
+
+  /**
+   * RGB Uint8 color mixin. Not to be used in conjunction with `color` mixin.
+   * @see color
+   */
+  const DEFAULT_VALUES$o = {
+    color3: [255, 255, 255],
+    opacity: 255
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$w(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$o, initialValues);
+    macro.setGetArray(publicAPI, model, ['color3'], 3, 255);
+    macro.setGet(publicAPI, model, ['opacity']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var color3$1 = {
+    extend: extend$w
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function vtkCornerMixin(publicAPI, model) {
+    publicAPI.translate = (dx, dy, dz) => {
+      const [x, y, z] = publicAPI.getCornerByReference();
+      publicAPI.setCorner(x + dx, y + dy, z + dz);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$n = {
+    corner: [0, 0, 0]
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$v(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$n, initialValues);
+    macro.setGetArray(publicAPI, model, ['corner'], 3);
+    vtkCornerMixin(publicAPI);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var corner = {
+    extend: extend$v
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function vtkDirectionMixin(publicAPI, model) {
+    const transform = model.angleUnit === 'degree' ? vtkMatrixBuilder.buildFromDegree() : vtkMatrixBuilder.buildFromRadian();
+    publicAPI.rotateFromDirections = (originDirection, targetDirection) => {
+      transform.identity().rotateFromDirections(originDirection, targetDirection).apply(model.direction);
+      publicAPI.modified();
+    };
+    publicAPI.rotate = (angle, axis) => {
+      transform.identity().rotate(angle, axis).apply(model.direction);
+    };
+    publicAPI.rotateX = angle => {
+      transform.identity().rotateX(angle).apply(model.direction);
+    };
+    publicAPI.rotateY = angle => {
+      transform.identity().rotateY(angle).apply(model.direction);
+    };
+    publicAPI.rotateZ = angle => {
+      transform.identity().rotateZ(angle).apply(model.direction);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$m = {
+    direction: [1, 0, 0]
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$u(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$m, initialValues);
+    macro.setGetArray(publicAPI, model, ['direction'], 3);
+    vtkDirectionMixin(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var direction$1 = {
+    extend: extend$u
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function vtkManipulatorMixin(publicAPI, model) {
+    publicAPI.updateManipulator = () => {
+      if (model.manipulator) {
+        const {
+          origin,
+          normal,
+          direction
+        } = model;
+        const {
+          setHandleOrigin,
+          setHandleCenter,
+          setHandleNormal,
+          setHandleDirection
+        } = model.manipulator;
+        if (origin && setHandleOrigin) {
+          setHandleOrigin(origin);
+        } else if (origin && setHandleCenter) {
+          setHandleCenter(origin);
+        }
+        if (direction && setHandleDirection) {
+          setHandleDirection(direction);
+        } else if (direction && !normal && setHandleNormal) {
+          setHandleNormal(direction);
+        } else if (normal && setHandleDirection) {
+          setHandleDirection(normal);
+        }
+      }
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$l = {
+    manipulator: null
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$t(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$l, initialValues);
+    macro.setGet(publicAPI, model, ['manipulator']);
+    vtkManipulatorMixin(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var manipulator = {
+    extend: extend$t
+  };
+
+  const DEFAULT_VALUES$k = {
+    name: ''
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$s(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$k, initialValues);
+    macro.setGet(publicAPI, model, ['name']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var name = {
+    extend: extend$s
+  };
+
+  function eq(v1, v2) {
+    return v1.length === 3 && v2.length === 3 && v1[0] === v2[0] && v1[1] === v2[1] && v1[2] === v2[2];
+  }
+  function isSame(o, p1, p2, before) {
+    return eq(o, before.o) && eq(p1, before.p1) && eq(p2, before.p2);
+  }
+
+  // function axis(o, p1, p2) {
+  //   if (o[0] === p1[0] && p1[0] === p2[0]) {
+  //     return 'X';
+  //   }
+  //   if (o[1] === p1[1] && p1[1] === p2[1]) {
+  //     return 'Y';
+  //   }
+  //   if (o[2] === p1[2] && p1[2] === p2[2]) {
+  //     return 'Z';
+  //   }
+  //   return '?';
+  // }
+
+  // ----------------------------------------------------------------------------
+
+  function vtkOrientationMixin(publicAPI, model) {
+    const previousPoints = {
+      o: [],
+      p1: [],
+      p2: []
+    };
+    publicAPI.normalize = () => {
+      normalize(model.up);
+      normalize(model.right);
+      normalize(model.direction);
+      publicAPI.modified();
+    };
+    publicAPI.updateFromOriginRightUp = (o, p1, p2) => {
+      if (isSame(o, p1, p2, previousPoints)) {
+        return;
+      }
+      previousPoints.o = o.slice();
+      previousPoints.p1 = p1.slice();
+      previousPoints.p2 = p2.slice();
+      model.up = [p2[0] - o[0], p2[1] - o[1], p2[2] - o[2]];
+      model.right = [p1[0] - o[0], p1[1] - o[1], p1[2] - o[2]];
+      cross(model.up, model.right, model.direction);
+      cross(model.direction, model.up, model.right);
+      publicAPI.normalize();
+      publicAPI.modified();
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$j = {
+    up: [0, 1, 0],
+    right: [1, 0, 0],
+    direction: [0, 0, 1]
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$r(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$j, initialValues);
+    macro.setGetArray(publicAPI, model, ['up', 'right', 'direction'], 3);
+    vtkOrientationMixin(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var orientation = {
+    extend: extend$r
+  };
+
+  const ViewTypes$1 = {
+    DEFAULT: 0,
+    GEOMETRY: 1,
+    SLICE: 2,
+    VOLUME: 3,
+    YZ_PLANE: 4,
+    // Sagittal
+    XZ_PLANE: 5,
+    // Coronal
+    XY_PLANE: 6 // Axial
+  };
+
+  const RenderingTypes$1 = {
+    PICKING_BUFFER: 0,
+    FRONT_BUFFER: 1
+  };
+  const CaptureOn$1 = {
+    MOUSE_MOVE: 0,
+    MOUSE_RELEASE: 1
+  };
+  var WidgetManagerConst = {
+    ViewTypes: ViewTypes$1,
+    RenderingTypes: RenderingTypes$1,
+    CaptureOn: CaptureOn$1
+  };
+
+  const WIDGET_PRIORITY = 0.5;
+
+  const {
+    ViewTypes,
+    RenderingTypes,
+    CaptureOn
+  } = WidgetManagerConst;
+  const {
+    vtkErrorMacro: vtkErrorMacro$5
+  } = macro;
+  let viewIdCount = 1;
+
+  // ----------------------------------------------------------------------------
+  // Helper
+  // ----------------------------------------------------------------------------
+
+  function extractRenderingComponents(renderer) {
+    const camera = renderer.getActiveCamera();
+    const renderWindow = renderer.getRenderWindow();
+    const interactor = renderWindow.getInteractor();
+    const apiSpecificRenderWindow = interactor.getView();
+    return {
+      renderer,
+      renderWindow,
+      interactor,
+      apiSpecificRenderWindow,
+      camera
+    };
+  }
+  function getPixelWorldHeightAtCoord(worldCoord, displayScaleParams) {
+    const {
+      dispHeightFactor,
+      cameraPosition,
+      cameraDir,
+      isParallel,
+      rendererPixelDims
+    } = displayScaleParams;
+    let scale = 1;
+    if (isParallel) {
+      scale = dispHeightFactor;
+    } else {
+      const worldCoordToCamera = [...worldCoord];
+      vtkMath.subtract(worldCoordToCamera, cameraPosition, worldCoordToCamera);
+      scale = vtkMath.dot(worldCoordToCamera, cameraDir) * dispHeightFactor;
+    }
+    const rHeight = rendererPixelDims[1];
+    return scale / rHeight;
+  }
+  // ----------------------------------------------------------------------------
+  // vtkWidgetManager methods
+  // ----------------------------------------------------------------------------
+
+  function vtkWidgetManager(publicAPI, model) {
+    if (!model.viewId) {
+      model.viewId = `view-${viewIdCount++}`;
+    }
+    model.classHierarchy.push('vtkWidgetManager');
+    const propsWeakMap = new WeakMap();
+    const subscriptions = [];
+
+    // --------------------------------------------------------------------------
+    // API internal
+    // --------------------------------------------------------------------------
+
+    function updateWidgetWeakMap(widget) {
+      const representations = widget.getRepresentations();
+      for (let i = 0; i < representations.length; i++) {
+        const representation = representations[i];
+        const origin = {
+          widget,
+          representation
+        };
+        const actors = representation.getActors();
+        for (let j = 0; j < actors.length; j++) {
+          const actor = actors[j];
+          propsWeakMap.set(actor, origin);
+        }
+      }
+    }
+    function getViewWidget(widget) {
+      return widget && (widget.isA('vtkAbstractWidget') ? widget : widget.getWidgetForView({
+        viewId: model.viewId
+      }));
+    }
+
+    // --------------------------------------------------------------------------
+    // Widget scaling
+    // --------------------------------------------------------------------------
+
+    function updateDisplayScaleParams() {
+      const {
+        _apiSpecificRenderWindow,
+        _camera,
+        _renderer
+      } = model;
+      if (_renderer && _apiSpecificRenderWindow && _camera) {
+        const [rwW, rwH] = _apiSpecificRenderWindow.getSize();
+        const [vxmin, vymin, vxmax, vymax] = _renderer.getViewport();
+        const pixelRatio = _apiSpecificRenderWindow.getComputedDevicePixelRatio();
+        const rendererPixelDims = [rwW * (vxmax - vxmin) / pixelRatio, rwH * (vymax - vymin) / pixelRatio];
+        const cameraPosition = _camera.getPosition();
+        const cameraDir = _camera.getDirectionOfProjection();
+        const isParallel = _camera.getParallelProjection();
+        const dispHeightFactor = isParallel ? 2 * _camera.getParallelScale() : 2 * Math.tan(vtkMath.radiansFromDegrees(_camera.getViewAngle()) / 2);
+        model.widgets.forEach(w => {
+          w.getNestedProps().forEach(r => {
+            if (r.getScaleInPixels()) {
+              r.setDisplayScaleParams({
+                dispHeightFactor,
+                cameraPosition,
+                cameraDir,
+                isParallel,
+                rendererPixelDims
+              });
+            }
+          });
+        });
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // API public
+    // --------------------------------------------------------------------------
+
+    async function updateSelection(callData, fromTouchEvent, callID) {
+      const {
+        position
+      } = callData;
+      const {
+        requestCount,
+        selectedState,
+        representation,
+        widget
+      } = await publicAPI.getSelectedDataForXY(position.x, position.y);
+      if (requestCount || callID !== model._currentUpdateSelectionCallID) {
+        // requestCount > 0: Call activate only once
+        // callID check: drop old calls
+        return;
+      }
+      function activateHandle(w) {
+        if (fromTouchEvent) {
+          // release any previous left button interaction
+          model._interactor.invokeLeftButtonRelease(callData);
+        }
+        w.activateHandle({
+          selectedState,
+          representation
+        });
+        if (fromTouchEvent) {
+          // re-trigger the left button press to pick the now-active widget
+          model._interactor.invokeLeftButtonPress(callData);
+        }
+      }
+
+      // Default cursor behavior
+      model._apiSpecificRenderWindow.setCursor(widget ? 'pointer' : 'default');
+      model.activeWidget = null;
+      let wantRender = false;
+      if (model.widgetInFocus === widget && widget.hasFocus()) {
+        activateHandle(widget);
+        model.activeWidget = widget;
+        wantRender = true;
+      } else {
+        for (let i = 0; i < model.widgets.length; i++) {
+          const w = model.widgets[i];
+          if (w === widget && w.getNestedPickable()) {
+            activateHandle(w);
+            model.activeWidget = w;
+            wantRender = true;
+          } else {
+            wantRender ||= !!w.getActiveState();
+            w.deactivateAllHandles();
+          }
+        }
+      }
+      if (wantRender) {
+        model._interactor.render();
+      }
+    }
+    const handleEvent = async function (callData) {
+      let fromTouchEvent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      if (!model.isAnimating && model.pickingEnabled && callData.pokedRenderer === model._renderer) {
+        const callID = Symbol('UpdateSelection');
+        model._currentUpdateSelectionCallID = callID;
+        await updateSelection(callData, fromTouchEvent, callID);
+      }
+    };
+    function updateWidgetForRender(w) {
+      w.updateRepresentationForRender(model.renderingType);
+    }
+    function renderPickingBuffer() {
+      model.renderingType = RenderingTypes.PICKING_BUFFER;
+      model.widgets.forEach(updateWidgetForRender);
+    }
+    function renderFrontBuffer() {
+      model.renderingType = RenderingTypes.FRONT_BUFFER;
+      model.widgets.forEach(updateWidgetForRender);
+    }
+    async function captureBuffers(x1, y1, x2, y2) {
+      if (model._captureInProgress) {
+        await model._captureInProgress;
+        return;
+      }
+      renderPickingBuffer();
+      model._capturedBuffers = null;
+      model._captureInProgress = model._selector.getSourceDataAsync(model._renderer, x1, y1, x2, y2);
+      model._capturedBuffers = await model._captureInProgress;
+      model._captureInProgress = null;
+      model.previousSelectedData = null;
+      renderFrontBuffer();
+    }
+    publicAPI.enablePicking = () => {
+      model.pickingEnabled = true;
+      publicAPI.renderWidgets();
+    };
+    publicAPI.renderWidgets = () => {
+      if (model.pickingEnabled && model.captureOn === CaptureOn.MOUSE_RELEASE) {
+        const [w, h] = model._apiSpecificRenderWindow.getSize();
+        captureBuffers(0, 0, w, h);
+      }
+      renderFrontBuffer();
+      publicAPI.modified();
+    };
+    publicAPI.disablePicking = () => {
+      model.pickingEnabled = false;
+    };
+    publicAPI.setRenderer = renderer => {
+      const renderingComponents = extractRenderingComponents(renderer);
+      Object.assign(model, renderingComponents);
+      macro.moveToProtected({}, model, Object.keys(renderingComponents));
+      while (subscriptions.length) {
+        subscriptions.pop().unsubscribe();
+      }
+      model._selector = model._apiSpecificRenderWindow.createSelector();
+      model._selector.setFieldAssociation(FieldAssociations$5.FIELD_ASSOCIATION_POINTS);
+      subscriptions.push(model._apiSpecificRenderWindow.onWindowResizeEvent(updateDisplayScaleParams));
+      subscriptions.push(model._camera.onModified(updateDisplayScaleParams));
+      updateDisplayScaleParams();
+      subscriptions.push(model._interactor.onStartAnimation(() => {
+        model.isAnimating = true;
+      }));
+      subscriptions.push(model._interactor.onEndAnimation(() => {
+        model.isAnimating = false;
+        publicAPI.renderWidgets();
+      }));
+      subscriptions.push(model._interactor.onMouseMove(eventData => {
+        handleEvent(eventData);
+        return macro.VOID;
+      }));
+
+      // must be handled after widgets, hence the given priority.
+      subscriptions.push(model._interactor.onLeftButtonPress(eventData => {
+        const {
+          deviceType
+        } = eventData;
+        const touchEvent = deviceType === 'touch' || deviceType === 'pen';
+        // only try selection if the left button press is from touch.
+        if (touchEvent) {
+          handleEvent(eventData, touchEvent);
+        }
+        return macro.VOID;
+      }, WIDGET_PRIORITY / 2));
+      publicAPI.modified();
+      if (model.pickingEnabled) {
+        publicAPI.enablePicking();
+      }
+    };
+    function addWidgetInternal(viewWidget) {
+      viewWidget.setWidgetManager(publicAPI);
+      updateWidgetWeakMap(viewWidget);
+      updateDisplayScaleParams();
+
+      // Register to renderer
+      model._renderer.addActor(viewWidget);
+    }
+    publicAPI.addWidget = (widget, viewType, initialValues) => {
+      if (!model._renderer) {
+        vtkErrorMacro$5('Widget manager MUST BE link to a view before registering widgets');
+        return null;
+      }
+      const {
+        viewId,
+        _renderer
+      } = model;
+      const w = widget.getWidgetForView({
+        viewId,
+        renderer: _renderer,
+        viewType: viewType || ViewTypes.DEFAULT,
+        initialValues
+      });
+      if (w != null && model.widgets.indexOf(w) === -1) {
+        model.widgets.push(w);
+        addWidgetInternal(w);
+        publicAPI.modified();
+      }
+      return w;
+    };
+    function removeWidgetInternal(viewWidget) {
+      model._renderer.removeActor(viewWidget);
+      viewWidget.delete();
+    }
+    function onWidgetRemoved() {
+      model._renderer.getRenderWindow().getInteractor().render();
+      publicAPI.renderWidgets();
+    }
+    publicAPI.removeWidgets = () => {
+      model.widgets.forEach(removeWidgetInternal);
+      model.widgets = [];
+      model.widgetInFocus = null;
+      onWidgetRemoved();
+    };
+    publicAPI.removeWidget = widget => {
+      const viewWidget = getViewWidget(widget);
+      const index = model.widgets.indexOf(viewWidget);
+      if (index !== -1) {
+        model.widgets.splice(index, 1);
+        const isWidgetInFocus = model.widgetInFocus === viewWidget;
+        if (isWidgetInFocus) {
+          publicAPI.releaseFocus();
+        }
+        removeWidgetInternal(viewWidget);
+        onWidgetRemoved();
+      }
+    };
+    publicAPI.getSelectedDataForXY = async (x, y) => {
+      model.selections = null;
+      if (model.pickingEnabled) {
+        // do we require a new capture?
+        if (!model._capturedBuffers || model.captureOn === CaptureOn.MOUSE_MOVE) {
+          await captureBuffers(x, y, x, y);
+        } else {
+          // or do we need a pixel that is outside the last capture?
+          const capturedRegion = model._capturedBuffers.area;
+          if (x < capturedRegion[0] || x > capturedRegion[2] || y < capturedRegion[1] || y > capturedRegion[3]) {
+            await captureBuffers(x, y, x, y);
+          }
+        }
+        model.selections = model._capturedBuffers.generateSelection(x, y, x, y);
+      }
+      return publicAPI.getSelectedData();
+    };
+    publicAPI.getSelectedData = () => {
+      if (!model.selections || !model.selections.length) {
+        model.previousSelectedData = null;
+        return {};
+      }
+      const {
+        propID,
+        compositeID,
+        prop
+      } = model.selections[0].getProperties();
+      let {
+        widget,
+        representation
+      } = model.selections[0].getProperties();
+      // widget is undefined for handle representation.
+      if (model.previousSelectedData && model.previousSelectedData.prop === prop && model.previousSelectedData.widget === widget && model.previousSelectedData.compositeID === compositeID) {
+        model.previousSelectedData.requestCount++;
+        return model.previousSelectedData;
+      }
+      if (propsWeakMap.has(prop)) {
+        const props = propsWeakMap.get(prop);
+        widget = props.widget;
+        representation = props.representation;
+      }
+      if (widget && representation) {
+        const selectedState = representation.getSelectedState(prop, compositeID);
+        model.previousSelectedData = {
+          requestCount: 0,
+          propID,
+          compositeID,
+          prop,
+          widget,
+          representation,
+          selectedState
+        };
+        return model.previousSelectedData;
+      }
+      model.previousSelectedData = null;
+      return {};
+    };
+    publicAPI.grabFocus = widget => {
+      const viewWidget = getViewWidget(widget);
+      if (model.widgetInFocus && model.widgetInFocus !== viewWidget) {
+        model.widgetInFocus.loseFocus();
+      }
+      model.widgetInFocus = viewWidget;
+      if (model.widgetInFocus) {
+        model.widgetInFocus.grabFocus();
+      }
+    };
+    publicAPI.releaseFocus = () => publicAPI.grabFocus(null);
+    const superDelete = publicAPI.delete;
+    publicAPI.delete = () => {
+      while (subscriptions.length) {
+        subscriptions.pop().unsubscribe();
+      }
+      superDelete();
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$i = {
+    // _camera: null,
+    // _selector: null,
+    // _currentUpdateSelectionCallID: null,
+    viewId: null,
+    widgets: [],
+    activeWidget: null,
+    renderer: null,
+    viewType: ViewTypes.DEFAULT,
+    isAnimating: false,
+    pickingEnabled: true,
+    selections: null,
+    previousSelectedData: null,
+    widgetInFocus: null,
+    captureOn: CaptureOn.MOUSE_MOVE
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$q(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$i, initialValues);
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['captureOn', {
+      type: 'enum',
+      name: 'viewType',
+      enum: ViewTypes
+    }]);
+    macro.get(publicAPI, model, ['selections', 'widgets', 'viewId', 'pickingEnabled', 'activeWidget']);
+
+    // Object specific methods
+    vtkWidgetManager(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$i = macro.newInstance(extend$q, 'vtkWidgetManager');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkWidgetManager$1 = {
+    newInstance: newInstance$i,
+    extend: extend$q,
+    Constants: WidgetManagerConst,
+    getPixelWorldHeightAtCoord
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function vtkOriginMixin(publicAPI, model) {
+    const superClass = {
+      ...publicAPI
+    };
+    publicAPI.translate = (dx, dy, dz) => {
+      const [x, y, z] = publicAPI.getOriginByReference();
+      publicAPI.setOrigin(x + dx, y + dy, z + dz);
+    };
+    publicAPI.getOrigin = displayScaleParams => {
+      const origin = superClass.getOrigin();
+      if (!model.offset) {
+        return origin;
+      }
+      if (!displayScaleParams) {
+        return vtkMath.add(origin, model.offset, origin);
+      }
+      const pixelWorldHeight = getPixelWorldHeightAtCoord(origin, displayScaleParams);
+      const {
+        rendererPixelDims
+      } = displayScaleParams;
+      const totalSize = Math.min(rendererPixelDims[0], rendererPixelDims[1]);
+      return vtkMath.multiplyAccumulate(origin, model.offset, totalSize * pixelWorldHeight, origin);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  /**
+   * offset: optional offset that can be scaled to pixel screen space.
+   */
+  const DEFAULT_VALUES$h = {
+    origin: null,
+    offset: null
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$p(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$h, initialValues);
+    macro.setGetArray(publicAPI, model, ['origin', 'offset'], 3);
+    vtkOriginMixin(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var origin$1 = {
+    extend: extend$p
+  };
+
+  const DEFAULT_VALUES$g = {
+    scale1: 0.5
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$o(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$g, initialValues);
+    macro.setGet(publicAPI, model, ['scale1']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var scale1$1 = {
+    extend: extend$o
+  };
+
+  const DEFAULT_VALUES$f = {
+    scale3: [1, 1, 1]
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$n(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$f, initialValues);
+    macro.setGetArray(publicAPI, model, ['scale3'], 3);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var scale3$1 = {
+    extend: extend$n
+  };
+
+  const DEFAULT_VALUES$e = {
+    text: 'DefaultText'
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$m(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$e, initialValues);
+    macro.setGet(publicAPI, model, ['text']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var text = {
+    extend: extend$m
+  };
+
+  const DEFAULT_VALUES$d = {
+    visible: true
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$l(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$d, initialValues);
+    macro.setGet(publicAPI, model, ['visible']);
+    publicAPI.isVisible = publicAPI.getVisible;
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var visible = {
+    extend: extend$l
+  };
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$c = {
+    shape: ''
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$k(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$c, initialValues);
+    macro.setGet(publicAPI, model, ['shape']);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var shape = {
+    extend: extend$k
+  };
+
+  const {
+    vtkErrorMacro: vtkErrorMacro$4
+  } = macro;
+
+  // ----------------------------------------------------------------------------
+  // Global type lookup map
+  // ----------------------------------------------------------------------------
+
+  const MIXINS = {
+    bounds,
+    color: color$1,
+    color3: color3$1,
+    corner,
+    direction: direction$1,
+    manipulator,
+    name,
+    orientation,
+    origin: origin$1,
+    scale1: scale1$1,
+    scale3: scale3$1,
+    text,
+    visible,
+    shape
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function newInstance$h(mixins, initialValues) {
+    let publicAPI = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    let model = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    let skipWidgetState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    if (!skipWidgetState) {
+      vtkWidgetState$1.extend(publicAPI, model, initialValues);
+    }
+    for (let i = 0; i < mixins.length; i++) {
+      const mixin = MIXINS[mixins[i]];
+      if (mixin) {
+        mixin.extend(publicAPI, model, initialValues);
+      } else {
+        vtkErrorMacro$4('Invalid mixin name:', mixins[i]);
+      }
+    }
+    macro.safeArrays(model);
+    return Object.freeze(publicAPI);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  class Builder {
+    constructor() {
+      this.publicAPI = {};
+      this.model = {};
+      vtkWidgetState$1.extend(this.publicAPI, this.model);
+      // The root state should always have the bounds/placeWidget/widgetFactor
+      bounds.extend(this.publicAPI, this.model);
+    }
+
+    /* eslint-disable no-shadow */
+    addDynamicMixinState(_ref) {
+      let {
+        labels,
+        mixins,
+        name,
+        initialValues
+      } = _ref;
+      const listName = `${name}List`;
+      this.model[listName] = [];
+      // Create new Instance method
+      this.publicAPI[`add${macro.capitalize(name)}`] = values => {
+        const instance = newInstance$h(mixins, {
+          ...initialValues,
+          ...values
+        });
+        this.publicAPI.bindState(instance, labels);
+        this.model[listName].push(instance);
+        this.publicAPI.modified();
+        return instance;
+      };
+      this.publicAPI[`remove${macro.capitalize(name)}`] = instanceOrIndex => {
+        let removeIndex = this.model[listName].indexOf(instanceOrIndex);
+        if (removeIndex === -1 && instanceOrIndex < this.model[listName].length) {
+          removeIndex = instanceOrIndex;
+        }
+        const instance = this.model[listName][removeIndex];
+        if (instance) {
+          this.publicAPI.unbindState(instance);
+        }
+        this.model[listName].splice(removeIndex, 1);
+        this.publicAPI.modified();
+      };
+      this.publicAPI[`get${macro.capitalize(name)}List`] = () => this.model[listName].slice();
+      this.publicAPI[`clear${macro.capitalize(name)}List`] = () => {
+        while (this.model[listName].length) {
+          const instance = this.model[listName].pop();
+          if (instance) {
+            this.publicAPI.unbindState(instance);
+          }
+        }
+        this.publicAPI.modified();
+      };
+      return this;
+    }
+    addStateFromMixin(_ref2) {
+      let {
+        labels,
+        mixins,
+        name,
+        initialValues
+      } = _ref2;
+      const instance = newInstance$h(mixins, initialValues);
+      this.model[name] = instance;
+      this.publicAPI.bindState(instance, labels);
+      macro.setGet(this.publicAPI, this.model, [name]);
+      return this;
+    }
+    addStateFromInstance(_ref3) {
+      let {
+        labels,
+        name,
+        instance
+      } = _ref3;
+      this.model[name] = instance;
+      this.publicAPI.bindState(instance, labels);
+      macro.setGet(this.publicAPI, this.model, [name]);
+      return this;
+    }
+    addField(_ref4) {
+      let {
+        name,
+        initialValue
+      } = _ref4;
+      if (Array.isArray(initialValue)) {
+        macro.setGetArray(this.publicAPI, this.model, [name], initialValue.length);
+      } else {
+        macro.setGet(this.publicAPI, this.model, [name]);
+      }
+      this.model[name] = initialValue;
+      return this;
+    }
+    build() {
+      for (var _len = arguments.length, mixins = new Array(_len), _key = 0; _key < _len; _key++) {
+        mixins[_key] = arguments[_key];
+      }
+      return newInstance$h(mixins, {}, this.publicAPI, this.model, true);
+    }
+  }
+
+  // ----------------------------------------------------------------------------
+  // Public API
+  // ----------------------------------------------------------------------------
+
+  function createBuilder() {
+    return new Builder();
+  }
+  var vtkStateBuilder = {
+    createBuilder
+  };
+
+  // make line position a sub-state so we can listen to it
+  // separately from the rest of the widget state.
+
+  const linePosState = vtkStateBuilder.createBuilder().addField({
+    name: 'posOnLine',
+    initialValue: 0.5
+  }).build();
+  function generateState() {
+    return vtkStateBuilder.createBuilder().addStateFromMixin({
+      labels: ['moveHandle'],
+      mixins: ['origin', 'color', 'scale1', 'visible', 'manipulator', 'shape'],
+      name: 'moveHandle',
+      initialValues: {
+        scale1: 30,
+        visible: true
+      }
+    }).addStateFromMixin({
+      labels: ['handle1'],
+      mixins: ['origin', 'color', 'scale1', 'visible', 'manipulator', 'shape'],
+      name: 'handle1',
+      initialValues: {
+        scale1: 30
+      }
+    }).addStateFromMixin({
+      labels: ['handle2'],
+      mixins: ['origin', 'color', 'scale1', 'visible', 'manipulator', 'shape'],
+      name: 'handle2',
+      initialValues: {
+        scale1: 30
+      }
+    }).addStateFromMixin({
+      labels: ['SVGtext'],
+      mixins: ['origin', 'color', 'text', 'visible'],
+      name: 'text',
+      initialValues: {
+        /* text is empty to set a text filed in the SVGLayer and to avoid
+         * displaying text before positioning the handles */
+        text: ''
+      }
+    }).addStateFromInstance({
+      name: 'positionOnLine',
+      instance: linePosState
+    }).addField({
+      name: 'lineThickness'
+    }).build();
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function vtkAbstractWidget(publicAPI, model) {
+    model.classHierarchy.push('vtkAbstractWidget');
+    model.actorToRepresentationMap = new WeakMap();
+
+    // --------------------------------------------------------------------------
+    publicAPI.getBounds = model.widgetState.getBounds;
+    publicAPI.getNestedProps = () => model.representations;
+    // --------------------------------------------------------------------------
+
+    publicAPI.activateHandle = _ref => {
+      let {
+        selectedState,
+        representation
+      } = _ref;
+      model.widgetState.activateOnly(selectedState);
+      model.activeState = selectedState;
+      if (selectedState && selectedState.updateManipulator) {
+        selectedState.updateManipulator();
+      }
+      publicAPI.invokeActivateHandle({
+        selectedState,
+        representation
+      });
+      if (publicAPI.updateCursor) {
+        publicAPI.updateCursor();
+      }
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.deactivateAllHandles = () => {
+      model.widgetState.deactivate();
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.hasActor = actor => model.actorToRepresentationMap.has(actor);
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.grabFocus = () => {
+      model.hasFocus = true;
+    };
+    publicAPI.loseFocus = () => {
+      model.hasFocus = false;
+    };
+    publicAPI.hasFocus = () => model.hasFocus;
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.placeWidget = bounds => model.widgetState.placeWidget(bounds);
+    publicAPI.getPlaceFactor = () => model.widgetState.getPlaceFactor();
+    publicAPI.setPlaceFactor = factor => model.widgetState.setPlaceFactor(factor);
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.getRepresentationFromActor = actor => model.actorToRepresentationMap.get(actor);
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.updateRepresentationForRender = function () {
+      let renderingType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : RenderingTypes$1.FRONT_BUFFER;
+      for (let i = 0; i < model.representations.length; i++) {
+        const representation = model.representations[i];
+        representation.updateActorVisibility(renderingType, model.contextVisibility, model.handleVisibility);
+      }
+    };
+    publicAPI.getViewWidgets = () => model._factory.getViewWidgets();
+
+    // --------------------------------------------------------------------------
+    // Initialization calls
+    // --------------------------------------------------------------------------
+
+    publicAPI.setPriority(WIDGET_PRIORITY);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$b = {
+    contextVisibility: true,
+    handleVisibility: true,
+    hasFocus: false
+  };
+
+  /**
+   * @param {*} publicAPI public methods to populate
+   * @param {*} model internal values to populate
+   * @param {object} initialValues Contains at least
+   *   {viewType, _renderer, _camera, _openGLRenderWindow, _factory}
+   */
+  function extend$j(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$b, initialValues);
+    vtkProp$1.extend(publicAPI, model, initialValues);
+    vtkInteractorObserver$1.extend(publicAPI, model, initialValues);
+    macro.setGet(publicAPI, model, ['contextVisibility', 'handleVisibility', '_widgetManager']);
+    macro.get(publicAPI, model, ['representations', 'widgetState', 'activeState' // stores the last activated sub state(handle)
+    ]);
+
+    macro.moveToProtected(publicAPI, model, ['widgetManager']);
+    macro.event(publicAPI, model, 'ActivateHandle');
+    vtkAbstractWidget(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$g = macro.newInstance(extend$j, 'vtkAbstractWidget');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkAbstractWidget$1 = {
+    newInstance: newInstance$g,
+    extend: extend$j
+  };
+
+  function NoOp() {}
+
+  // ----------------------------------------------------------------------------
+
+  function vtkAbstractWidgetFactory(publicAPI, model) {
+    model.classHierarchy.push('vtkAbstractWidgetFactory');
+
+    // DO NOT share on the model ------------------------------------------------
+    const viewToWidget = {};
+    // DO NOT share on the model ------------------------------------------------
+
+    // Can be called with just ViewId after the widget has been registered
+    publicAPI.getWidgetForView = _ref => {
+      let {
+        viewId,
+        renderer,
+        viewType,
+        initialValues
+      } = _ref;
+      if (!viewToWidget[viewId]) {
+        if (!renderer) {
+          return null;
+        }
+        const {
+          interactor,
+          apiSpecificRenderWindow,
+          camera
+        } = extractRenderingComponents(renderer);
+        const widgetModel = {};
+        const widgetPublicAPI = {};
+        macro.obj(widgetPublicAPI, widgetModel);
+        Object.assign(widgetPublicAPI, {
+          onWidgetChange: publicAPI.onWidgetChange
+        });
+        Object.assign(widgetModel, {
+          widgetState: model.widgetState,
+          manipulator: model.manipulator,
+          viewType,
+          renderer,
+          camera,
+          apiSpecificRenderWindow,
+          factory: publicAPI
+        });
+        macro.moveToProtected(widgetPublicAPI, widgetModel, ['renderer', 'camera', 'apiSpecificRenderWindow', 'factory']);
+        macro.get(widgetPublicAPI, widgetModel, ['viewType']);
+        macro.safeArrays(widgetModel);
+        vtkAbstractWidget$1.extend(widgetPublicAPI, widgetModel, initialValues);
+
+        // Create representations for that view
+        /* eslint-disable no-shadow */
+        const widgetInitialValues = initialValues; // Avoid shadowing
+        widgetModel.representations = publicAPI.getRepresentationsForViewType(viewType).map(_ref2 => {
+          let {
+            builder,
+            labels,
+            initialValues
+          } = _ref2;
+          return builder.newInstance({
+            _parentProp: widgetPublicAPI,
+            labels,
+            ...initialValues,
+            ...widgetInitialValues
+          });
+        });
+        /* eslint-enable no-shadow */
+
+        widgetModel.representations.forEach(r => {
+          r.setInputData(widgetModel.widgetState);
+          r.getActors().forEach(actor => {
+            widgetModel.actorToRepresentationMap.set(actor, r);
+          });
+        });
+        model.behavior(widgetPublicAPI, widgetModel);
+        // Forward representation methods
+        ['coincidentTopologyParameters', ...(model.methodsToLink || [])].forEach(methodName => {
+          const set = `set${macro.capitalize(methodName)}`;
+          const get = `get${macro.capitalize(methodName)}`;
+          const methods = {
+            [methodName]: [],
+            [set]: [],
+            [get]: []
+          };
+          widgetModel.representations.forEach(representation => {
+            if (representation[methodName]) {
+              methods[methodName].push(representation[methodName]);
+            }
+            if (representation[set]) {
+              methods[set].push(representation[set]);
+            }
+            if (representation[get]) {
+              methods[get].push(representation[get]);
+            }
+          });
+          Object.keys(methods).forEach(name => {
+            const calls = methods[name];
+            if (calls.length === 1) {
+              widgetPublicAPI[name] = calls[0];
+            } else if (calls.length > 1) {
+              widgetPublicAPI[name] = macro.chain(...calls);
+            }
+          });
+        });
+
+        // Custom delete to detach from parent
+        widgetPublicAPI.delete = macro.chain(() => {
+          delete viewToWidget[viewId];
+        }, widgetPublicAPI.delete);
+        widgetPublicAPI.setInteractor(interactor);
+        const viewWidget = Object.freeze(widgetPublicAPI);
+        viewToWidget[viewId] = viewWidget;
+        return viewWidget;
+      }
+      return viewToWidget[viewId];
+    };
+
+    // List of all the views the widget has been registered to.
+    publicAPI.getViewIds = () => Object.keys(viewToWidget);
+    publicAPI.getViewWidgets = () => Object.values(viewToWidget);
+
+    // --------------------------------------------------------------------------
+    // Widget visibility / enable
+    // --------------------------------------------------------------------------
+    // Call methods on all its view widgets
+
+    publicAPI.setVisibility = value => {
+      const viewIds = Object.keys(viewToWidget);
+      for (let i = 0; i < viewIds.length; i++) {
+        viewToWidget[viewIds[i]].setVisibility(value);
+      }
+    };
+    publicAPI.setPickable = value => {
+      const viewIds = Object.keys(viewToWidget);
+      for (let i = 0; i < viewIds.length; i++) {
+        viewToWidget[viewIds[i]].setPickable(value);
+      }
+    };
+    publicAPI.setDragable = value => {
+      const viewIds = Object.keys(viewToWidget);
+      for (let i = 0; i < viewIds.length; i++) {
+        viewToWidget[viewIds[i]].setDragable(value);
+      }
+    };
+    publicAPI.setContextVisibility = value => {
+      const viewIds = Object.keys(viewToWidget);
+      for (let i = 0; i < viewIds.length; i++) {
+        viewToWidget[viewIds[i]].setContextVisibility(value);
+      }
+    };
+    publicAPI.setHandleVisibility = value => {
+      const viewIds = Object.keys(viewToWidget);
+      for (let i = 0; i < viewIds.length; i++) {
+        viewToWidget[viewIds[i]].setHandleVisibility(value);
+      }
+    };
+
+    // --------------------------------------------------------------------------
+    // Place Widget API
+    // --------------------------------------------------------------------------
+
+    publicAPI.placeWidget = bounds => model.widgetState.placeWidget(bounds);
+    publicAPI.getPlaceFactor = () => model.widgetState.getPlaceFactor();
+    publicAPI.setPlaceFactor = factor => model.widgetState.setPlaceFactor(factor);
+
+    // --------------------------------------------------------------------------
+    // Event Widget API
+    // --------------------------------------------------------------------------
+    let unsubscribe = NoOp;
+    publicAPI.delete = macro.chain(publicAPI.delete, () => unsubscribe());
+    if (model.widgetState) {
+      unsubscribe = model.widgetState.onModified(() => publicAPI.invokeWidgetChange(model.widgetState)).unsubscribe;
+    }
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$i(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, initialValues);
+    macro.obj(publicAPI, model);
+    macro.get(publicAPI, model, ['widgetState']);
+    macro.event(publicAPI, model, 'WidgetChange');
+    vtkAbstractWidgetFactory(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$f = macro.newInstance(extend$i, 'vtkAbstractWidget');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkAbstractWidgetFactory$1 = {
+    newInstance: newInstance$f,
+    extend: extend$i
+  };
+
+  const ShapeType$4 = {
+    TRIANGLE: 'triangle',
+    STAR: 'star',
+    ARROW_4: 'arrow4points',
+    ARROW_6: 'arrow6points'
+  };
+  var Constants$3 = {
+    ShapeType: ShapeType$4
+  };
+
+  const {
+    ShapeType: ShapeType$3
+  } = Constants$3;
+
+  // ----------------------------------------------------------------------------
+  // vtkArrow2DSource methods
+  // ----------------------------------------------------------------------------
+
+  function vtkStarSource(publicAPI, model) {
+    const dataset = vtkPolyData$1.newInstance();
+    const points = macro.newTypedArray(model.pointType, 10 * 3);
+    const edges = new Uint32Array(11);
+    edges[0] = 10;
+    for (let i = 0; i < 10; i++) {
+      const radius = i % 2 === 1 ? model.height : model.height * 0.4;
+      points[3 * i + 0] = radius * Math.cos((2 * i - 1) * Math.PI / 10);
+      points[3 * i + 1] = radius * Math.sin((2 * i - 1) * Math.PI / 10);
+      points[3 * i + 2] = 0;
+      edges[1 + i] = i;
+    }
+    dataset.getPoints().setData(points, 3);
+    dataset.getPolys().setData(edges, 1);
+    return dataset;
+  }
+  function vtk6PointsArrow(publicAPI, model) {
+    const dataset = vtkPolyData$1.newInstance();
+    const points = macro.newTypedArray(model.pointType, 6 * 3);
+    const thickOp = model.height * 0.5 * model.thickness;
+    const offsetOp = model.height * 0.5 - thickOp;
+    const baseOffsetOp = (model.height * 0.9 + thickOp - offsetOp - (model.height * 0.5 - thickOp - offsetOp)) * (1 - model.base);
+    points[0] = model.width / 2 * -1 - thickOp;
+    points[1] = model.height / 4 - offsetOp - baseOffsetOp;
+    points[2] = 0.0;
+    points[3] = 0.0;
+    points[4] = model.height * 0.9 + thickOp - offsetOp - baseOffsetOp;
+    points[5] = 0.0;
+    points[6] = model.width / 2 + thickOp;
+    points[7] = model.height / 4 - offsetOp - baseOffsetOp;
+    points[8] = 0.0;
+    points[9] = model.width / 3;
+    points[10] = model.height * 0.1 - thickOp - offsetOp - baseOffsetOp;
+    points[11] = 0.0;
+    points[12] = 0.0;
+    points[13] = model.height * 0.5 - thickOp - offsetOp - baseOffsetOp;
+    points[14] = 0.0;
+    points[15] = model.width / 3 * -1;
+    points[16] = model.height * 0.1 - thickOp - offsetOp - baseOffsetOp;
+    points[17] = 0.0;
+
+    // prettier-ignore
+    const cells = Uint8Array.from([3, 0, 1, 5, 3, 1, 4, 5, 3, 1, 4, 3, 3, 1, 2, 3]);
+    dataset.getPoints().setData(points, 3);
+    dataset.getPolys().setData(cells, 1);
+    return dataset;
+  }
+  function vtk4PointsArrow(publicAPI, model) {
+    const dataset = vtkPolyData$1.newInstance();
+    const points = macro.newTypedArray(model.pointType, 4 * 3);
+    const thickOp = model.height / 3 * model.thickness;
+    const offsetOp = model.height / 3 - thickOp;
+    const baseOffsetOp = (model.height - offsetOp - (model.height / 3 - thickOp - offsetOp)) * (1 - model.base);
+    points[0] = model.width / 2 * -1;
+    points[1] = 0.0 - offsetOp - baseOffsetOp;
+    points[2] = 0.0;
+    points[3] = 0.0;
+    points[4] = model.height - offsetOp - baseOffsetOp;
+    points[5] = 0.0;
+    points[6] = model.width / 2;
+    points[7] = 0.0 - offsetOp - baseOffsetOp;
+    points[8] = 0.0;
+    points[9] = 0.0;
+    points[10] = model.height / 3 - thickOp - offsetOp - baseOffsetOp;
+    points[11] = 0.0;
+    const cells = Uint8Array.from([3, 0, 1, 3, 3, 1, 2, 3]);
+    dataset.getPoints().setData(points, 3);
+    dataset.getPolys().setData(cells, 1);
+    return dataset;
+  }
+  function vtkTriangleSource(publicAPI, model) {
+    const dataset = vtkPolyData$1.newInstance();
+    const points = macro.newTypedArray(model.pointType, 3 * 3);
+    const baseOffsetOp = model.height * (1 - model.base);
+    points[0] = model.width / 2 * -1;
+    points[1] = 0.0 - baseOffsetOp;
+    points[2] = 0.0;
+    points[3] = 0.0;
+    points[4] = model.height - baseOffsetOp;
+    points[5] = 0.0;
+    points[6] = model.width / 2;
+    points[7] = 0.0 - baseOffsetOp;
+    points[8] = 0.0;
+    const cells = Uint8Array.from([3, 0, 1, 2]);
+    dataset.getPoints().setData(points, 3);
+    dataset.getPolys().setData(cells, 1);
+    return dataset;
+  }
+  function vtkArrow2DSource(publicAPI, model) {
+    const shapeToSource = {
+      [ShapeType$3.TRIANGLE]: vtkTriangleSource,
+      [ShapeType$3.STAR]: vtkStarSource,
+      [ShapeType$3.ARROW_4]: vtk4PointsArrow,
+      [ShapeType$3.ARROW_6]: vtk6PointsArrow
+    };
+    publicAPI.requestData = (inData, outData) => {
+      outData[0] = shapeToSource[model.shape](publicAPI, model);
+      vtkMatrixBuilder.buildFromRadian().translate(...model.center).rotateFromDirections([1, 0, 0], model.direction).apply(outData[0].getPoints().getData());
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  /**
+   * height modifies the size of the source along x axis
+   * width modifies the size of the source along y axis
+
+   * thickness modifies the shape of the source, which becomes wider on
+   * y axis
+
+   * base modifies the position which lowers the source on x axis for 0 and moves
+   * the source up on x axis for 1
+   */
+  function defaultValues$6(initialValues) {
+    return {
+      base: 0,
+      center: [0, 0, 0],
+      height: 1.0,
+      direction: [1, 0, 0],
+      pointType: 'Float64Array',
+      thickness: 0,
+      width: 1.0,
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$h(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, defaultValues$6(initialValues));
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['height', 'width', 'thickness', 'base']);
+    macro.setGetArray(publicAPI, model, ['center', 'direction'], 3);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkArrow2DSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$e = macro.newInstance(extend$h, 'vtkArrow2DSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkArrow2DSource$1 = {
+    newInstance: newInstance$e,
+    extend: extend$h
+  };
+
+  const OrientationModes$1 = {
+    DIRECTION: 0,
+    ROTATION: 1,
+    MATRIX: 2
+  };
+  const ScaleModes$1 = {
+    SCALE_BY_CONSTANT: 0,
+    SCALE_BY_MAGNITUDE: 1,
+    SCALE_BY_COMPONENTS: 2
+  };
+  var Constants$2 = {
+    OrientationModes: OrientationModes$1,
+    ScaleModes: ScaleModes$1
+  };
+
+  const {
+    OrientationModes,
+    ScaleModes
+  } = Constants$2;
+  const {
+    vtkErrorMacro: vtkErrorMacro$3
+  } = macro;
+
+  // ----------------------------------------------------------------------------
+  // class methods
+  // ----------------------------------------------------------------------------
+
+  function vtkGlyph3DMapper(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkGlyph3DMapper');
+
+    /**
+     * An orientation array is a vtkDataArray with 3 components. The first
+     * component is the angle of rotation along the X axis. The second
+     * component is the angle of rotation along the Y axis. The third
+     * component is the angle of rotation along the Z axis. Orientation is
+     * specified in X,Y,Z order but the rotations are performed in Z,X an Y.
+     * This definition is compliant with SetOrientation method on vtkProp3D.
+     * By using vector or normal there is a degree of freedom or rotation
+     * left (underconstrained). With the orientation array, there is no degree of
+     * freedom left.
+     */
+    publicAPI.getOrientationModeAsString = () => macro.enumToString(OrientationModes, model.orientationMode);
+    publicAPI.setOrientationModeToDirection = () => publicAPI.setOrientationMode(OrientationModes.DIRECTION);
+    publicAPI.setOrientationModeToRotation = () => publicAPI.setOrientationMode(OrientationModes.ROTATION);
+    publicAPI.setOrientationModeToMatrix = () => publicAPI.setOrientationMode(OrientationModes.MATRIX);
+    publicAPI.getOrientationArrayData = () => {
+      const idata = publicAPI.getInputData(0);
+      if (!idata || !idata.getPointData()) {
+        return null;
+      }
+      if (!model.orientationArray) {
+        return idata.getPointData().getVectors();
+      }
+      return idata.getPointData().getArray(model.orientationArray);
+    };
+    publicAPI.getScaleModeAsString = () => macro.enumToString(ScaleModes, model.scaleMode);
+    publicAPI.setScaleModeToScaleByMagnitude = () => publicAPI.setScaleMode(ScaleModes.SCALE_BY_MAGNITUDE);
+    publicAPI.setScaleModeToScaleByComponents = () => publicAPI.setScaleMode(ScaleModes.SCALE_BY_COMPONENTS);
+    publicAPI.setScaleModeToScaleByConstant = () => publicAPI.setScaleMode(ScaleModes.SCALE_BY_CONSTANT);
+    publicAPI.getScaleArrayData = () => {
+      const idata = publicAPI.getInputData(0);
+      if (!idata || !idata.getPointData()) {
+        return null;
+      }
+      if (!model.scaleArray) {
+        return idata.getPointData().getScalars();
+      }
+      return idata.getPointData().getArray(model.scaleArray);
+    };
+    publicAPI.getBounds = () => {
+      const idata = publicAPI.getInputData(0);
+      const gdata = publicAPI.getInputData(1);
+      if (!idata || !gdata) {
+        return createUninitializedBounds();
+      }
+
+      // first we build the arrays used for the glyphing
+      publicAPI.buildArrays();
+      return model.bounds;
+    };
+    publicAPI.buildArrays = () => {
+      // if the mtgime requires it, rebuild
+      const idata = publicAPI.getInputData(0);
+      const gdata = publicAPI.getInputData(1);
+      if (model.buildTime.getMTime() < gdata.getMTime() || model.buildTime.getMTime() < idata.getMTime() || model.buildTime.getMTime() < publicAPI.getMTime()) {
+        const pts = idata.getPoints().getData();
+        let sArray = publicAPI.getScaleArrayData();
+        let sData = null;
+        let numSComp = 0;
+        if (sArray) {
+          sData = sArray.getData();
+          numSComp = sArray.getNumberOfComponents();
+        }
+        if (model.scaling && sArray && model.scaleMode === ScaleModes.SCALE_BY_COMPONENTS && sArray.getNumberOfComponents() !== 3) {
+          vtkErrorMacro$3('Cannot scale by components since scale array does not have 3 components.');
+          sArray = null;
+        }
+
+        // get the glyph bounds
+        const gbounds = gdata.getBounds();
+        // convert them to 8 points so we can compute the
+        // overall bounds while building the arrays
+        const corners = [];
+        vtkBoundingBox.getCorners(gbounds, corners);
+        model.bounds[0] = vtkBoundingBox.INIT_BOUNDS[0];
+        model.bounds[1] = vtkBoundingBox.INIT_BOUNDS[1];
+        model.bounds[2] = vtkBoundingBox.INIT_BOUNDS[2];
+        model.bounds[3] = vtkBoundingBox.INIT_BOUNDS[3];
+        model.bounds[4] = vtkBoundingBox.INIT_BOUNDS[4];
+        model.bounds[5] = vtkBoundingBox.INIT_BOUNDS[5];
+        const tcorner = new Float64Array(3);
+        const oArray = publicAPI.getOrientationArrayData();
+        const identity = identity$4(new Float64Array(16));
+        const trans = [];
+        const scale = [];
+        const numPts = pts.length / 3;
+        model.matrixArray = new Float32Array(16 * numPts);
+        const mbuff = model.matrixArray.buffer;
+        model.normalArray = new Float32Array(9 * numPts);
+        const nbuff = model.normalArray.buffer;
+        const tuple = [];
+        const orientation = [];
+        for (let i = 0; i < numPts; ++i) {
+          const z = new Float32Array(mbuff, i * 64, 16);
+          trans[0] = pts[i * 3];
+          trans[1] = pts[i * 3 + 1];
+          trans[2] = pts[i * 3 + 2];
+          translate(z, identity, trans);
+          if (oArray) {
+            oArray.getTuple(i, orientation);
+            switch (model.orientationMode) {
+              case OrientationModes.MATRIX:
+                {
+                  // prettier-ignore
+                  const rotMat4 = [...orientation.slice(0, 3), 0, ...orientation.slice(3, 6), 0, ...orientation.slice(6, 9), 0, 0, 0, 0, 1];
+                  multiply$1(z, z, rotMat4);
+                  break;
+                }
+              case OrientationModes.ROTATION:
+                rotateZ(z, z, orientation[2]);
+                rotateX(z, z, orientation[0]);
+                rotateY(z, z, orientation[1]);
+                break;
+              case OrientationModes.DIRECTION:
+                if (orientation[1] === 0.0 && orientation[2] === 0.0) {
+                  if (orientation[0] < 0) {
+                    rotateY(z, z, 3.1415926);
+                  }
+                } else {
+                  const vMag = norm(orientation);
+                  const vNew = [];
+                  vNew[0] = (orientation[0] + vMag) / 2.0;
+                  vNew[1] = orientation[1] / 2.0;
+                  vNew[2] = orientation[2] / 2.0;
+                  rotate(z, z, 3.1415926, vNew);
+                }
+                break;
+            }
+          }
+
+          // scale data if appropriate
+          if (model.scaling) {
+            scale[0] = model.scaleFactor;
+            scale[1] = model.scaleFactor;
+            scale[2] = model.scaleFactor;
+            // Get the scalar and vector data
+            if (sArray) {
+              switch (model.scaleMode) {
+                case ScaleModes.SCALE_BY_MAGNITUDE:
+                  for (let t = 0; t < numSComp; ++t) {
+                    tuple[t] = sData[i * numSComp + t];
+                  }
+                  scale[0] *= norm(tuple, numSComp);
+                  scale[1] = scale[0];
+                  scale[2] = scale[0];
+                  break;
+                case ScaleModes.SCALE_BY_COMPONENTS:
+                  for (let t = 0; t < numSComp; ++t) {
+                    tuple[t] = sData[i * numSComp + t];
+                  }
+                  scale[0] *= tuple[0];
+                  scale[1] *= tuple[1];
+                  scale[2] *= tuple[2];
+                  break;
+                case ScaleModes.SCALE_BY_CONSTANT:
+              }
+            }
+            if (scale[0] === 0.0) {
+              scale[0] = 1.0e-10;
+            }
+            if (scale[1] === 0.0) {
+              scale[1] = 1.0e-10;
+            }
+            if (scale[2] === 0.0) {
+              scale[2] = 1.0e-10;
+            }
+            scale$2(z, z, scale);
+          }
+
+          // update bounds
+          for (let p = 0; p < 8; ++p) {
+            transformMat4$1(tcorner, corners[p], z);
+            if (tcorner[0] < model.bounds[0]) {
+              model.bounds[0] = tcorner[0];
+            }
+            if (tcorner[1] < model.bounds[2]) {
+              model.bounds[2] = tcorner[1];
+            }
+            if (tcorner[2] < model.bounds[4]) {
+              model.bounds[4] = tcorner[2];
+            }
+            if (tcorner[0] > model.bounds[1]) {
+              model.bounds[1] = tcorner[0];
+            }
+            if (tcorner[1] > model.bounds[3]) {
+              model.bounds[3] = tcorner[1];
+            }
+            if (tcorner[2] > model.bounds[5]) {
+              model.bounds[5] = tcorner[2];
+            }
+          }
+          const n = new Float32Array(nbuff, i * 36, 9);
+          fromMat4(n, z);
+          invert$1(n, n);
+          transpose$1(n, n);
+        }
+
+        // map scalars as well
+        const scalars = publicAPI.getAbstractScalars(idata, model.scalarMode, model.arrayAccessMode, model.arrayId, model.colorByArrayName).scalars;
+        if (!model.useLookupTableScalarRange) {
+          publicAPI.getLookupTable().setRange(model.scalarRange[0], model.scalarRange[1]);
+        }
+        model.colorArray = null;
+        const lut = publicAPI.getLookupTable();
+        if (lut && scalars) {
+          // Ensure that the lookup table is built
+          lut.build();
+          model.colorArray = lut.mapScalars(scalars, model.colorMode, 0);
+        }
+        model.buildTime.modified();
+      }
+    };
+    publicAPI.getPrimitiveCount = () => {
+      const glyph = publicAPI.getInputData(1);
+      const mult = publicAPI.getInputData().getPoints().getNumberOfValues() / 3;
+      const pcount = {
+        points: mult * glyph.getPoints().getNumberOfValues() / 3,
+        verts: mult * (glyph.getVerts().getNumberOfValues() - glyph.getVerts().getNumberOfCells()),
+        lines: mult * (glyph.getLines().getNumberOfValues() - 2 * glyph.getLines().getNumberOfCells()),
+        triangles: mult * (glyph.getPolys().getNumberOfValues() - 3 * glyph.getLines().getNumberOfCells())
+      };
+      return pcount;
+    };
+    publicAPI.setSourceConnection = outputPort => publicAPI.setInputConnection(outputPort, 1);
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$a = {
+    orient: true,
+    orientationMode: OrientationModes.DIRECTION,
+    orientationArray: null,
+    scaling: true,
+    scaleFactor: 1.0,
+    scaleMode: ScaleModes.SCALE_BY_MAGNITUDE,
+    scaleArray: null,
+    matrixArray: null,
+    normalArray: null,
+    colorArray: null
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$g(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$a, initialValues);
+
+    // Inheritance
+    vtkMapper$1.extend(publicAPI, model, initialValues);
+    macro.algo(publicAPI, model, 2, 0);
+    model.buildTime = {};
+    macro.obj(model.buildTime, {
+      mtime: 0
+    });
+    model.boundsTime = {};
+    macro.obj(model.boundsTime, {
+      mtime: 0
+    });
+    macro.setGet(publicAPI, model, ['orient', 'orientationMode', 'orientationArray', 'scaleArray', 'scaleFactor', 'scaleMode', 'scaling']);
+    macro.get(publicAPI, model, ['colorArray', 'matrixArray', 'normalArray', 'buildTime']);
+
+    // Object methods
+    vtkGlyph3DMapper(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$d = macro.newInstance(extend$g, 'vtkGlyph3DMapper');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkGlyph3DMapper$1 = {
+    newInstance: newInstance$d,
+    extend: extend$g,
+    ...Constants$2
+  };
+
+  const Behavior = {
+    HANDLE: 0,
+    CONTEXT: 1
+  };
+
+  const {
+    vtkErrorMacro: vtkErrorMacro$2,
+    vtkWarningMacro: vtkWarningMacro$1
+  } = macro;
+
+  // ----------------------------------------------------------------------------
+  const STYLE_CATEGORIES = ['active', 'inactive', 'static'];
+  function applyCoincidentTopologyParametersToMapper(mapper, parameters) {
+    if (mapper && mapper.setResolveCoincidentTopologyToPolygonOffset) {
+      mapper.setResolveCoincidentTopologyToPolygonOffset();
+      CATEGORIES.forEach(category => {
+        if (parameters[category]) {
+          const methodName = `setRelativeCoincidentTopology${category}OffsetParameters`;
+          if (mapper[methodName]) {
+            const {
+              factor,
+              offset
+            } = parameters[category];
+            mapper[methodName](factor, offset);
+          }
+        }
+      });
+    }
+  }
+  function mergeStyles(elementNames) {
+    for (var _len = arguments.length, stylesToMerge = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      stylesToMerge[_key - 1] = arguments[_key];
+    }
+    const newStyleObject = {
+      active: {},
+      inactive: {},
+      static: {}
+    };
+    STYLE_CATEGORIES.forEach(category => {
+      const cat = newStyleObject[category];
+      elementNames.forEach(name => {
+        if (!cat[name]) {
+          cat[name] = {};
+        }
+        stylesToMerge.filter(s => s && s[category] && s[category][name]).forEach(s => Object.assign(cat[name], s[category][name]));
+      });
+    });
+    return newStyleObject;
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function applyStyles(pipelines, styles, activeActor) {
+    if (!activeActor) {
+      // static
+      Object.keys(styles.static).forEach(name => {
+        if (pipelines[name]) {
+          pipelines[name].actor.getProperty().set(styles.static[name]);
+        }
+      });
+      // inactive
+      Object.keys(styles.inactive).forEach(name => {
+        if (pipelines[name]) {
+          pipelines[name].actor.getProperty().set(styles.inactive[name]);
+        }
+      });
+    } else {
+      Object.keys(pipelines).forEach(name => {
+        const style = pipelines[name].actor === activeActor ? styles.active[name] : styles.inactive[name];
+        if (style) {
+          pipelines[name].actor.getProperty().set(style);
+        }
+      });
+    }
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function connectPipeline(pipeline) {
+    let source = pipeline.source;
+    if (pipeline.filter) {
+      if (source.isA('vtkDataSet')) {
+        pipeline.filter.setInputData(source);
+      } else {
+        pipeline.filter.setInputConnection(source.getOutputPort());
+      }
+      source = pipeline.filter;
+    }
+    if (source) {
+      if (source.isA('vtkDataSet')) {
+        pipeline.mapper.setInputData(source);
+      } else {
+        pipeline.mapper.setInputConnection(source.getOutputPort());
+      }
+    }
+    if (pipeline.glyph) {
+      pipeline.mapper.setInputConnection(pipeline.glyph.getOutputPort(), 1);
+    }
+    pipeline.actor.setMapper(pipeline.mapper);
+  }
+
+  // Internal convenient function to create a data array:
+  function allocateArray(polyData, name, numberOfTuples, dataType, numberOfComponents) {
+    // Check first whether name is points, verts, lines, polys, otherwise it is a point data array.
+    let dataArray = polyData[`get${macro.capitalize(name)}`]?.() || polyData.getPointData().getArrayByName(name);
+    if (!dataArray || dataType !== undefined && dataArray.getDataType() !== dataType || numberOfComponents !== undefined && dataArray.getNumberOfComponents() !== numberOfComponents) {
+      let arrayType = vtkDataArray$1;
+      let arrayDataType = dataType;
+      let arrayNumberOfComponents = numberOfComponents;
+      if (name === 'points') {
+        arrayType = vtkPoints$1;
+        arrayDataType = arrayDataType ?? 'Float32Array';
+        arrayNumberOfComponents = numberOfComponents ?? 3;
+      } else if (POLYDATA_FIELDS.includes(name)) {
+        arrayType = vtkCellArray$1;
+        arrayDataType = arrayDataType ?? 'Uint16Array';
+        arrayNumberOfComponents = numberOfComponents ?? 1;
+      } else {
+        // data array
+        arrayDataType = arrayDataType ?? 'Float32Array';
+        arrayNumberOfComponents = numberOfComponents ?? 1;
+      }
+      dataArray = arrayType.newInstance({
+        name,
+        dataType: arrayDataType,
+        numberOfComponents: arrayNumberOfComponents,
+        size: arrayNumberOfComponents * numberOfTuples,
+        empty: numberOfTuples === 0
+      });
+      if (name === 'points' || POLYDATA_FIELDS.includes(name)) {
+        polyData[`set${macro.capitalize(name)}`](dataArray);
+      } else {
+        polyData.getPointData().addArray(dataArray);
+      }
+    } else if (dataArray.getNumberOfTuples() !== numberOfTuples) {
+      dataArray.resize(numberOfTuples);
+    }
+    return dataArray;
+  }
+
+  // ----------------------------------------------------------------------------
+  // vtkWidgetRepresentation
+  // ----------------------------------------------------------------------------
+
+  function vtkWidgetRepresentation(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkWidgetRepresentation');
+
+    // Internal cache
+    const cache = {
+      mtimes: {},
+      states: []
+    };
+    model._onCoincidentTopologyParametersChanged = () => {
+      publicAPI.getActors().forEach(actor => {
+        applyCoincidentTopologyParametersToMapper(actor.getMapper(), model.coincidentTopologyParameters);
+      });
+    };
+
+    // --------------------------------------------------------------------------
+    publicAPI.getActors = () => model.actors;
+    publicAPI.getNestedProps = publicAPI.getActors;
+    // --------------------------------------------------------------------------
+
+    publicAPI.setLabels = function () {
+      for (var _len2 = arguments.length, labels = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        labels[_key2] = arguments[_key2];
+      }
+      if (labels.length === 1) {
+        model.labels = [].concat(labels[0]);
+      } else {
+        model.labels = labels;
+      }
+      publicAPI.modified();
+    };
+    publicAPI.getRepresentationStates = function () {
+      let input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : model.inputData[0];
+      if (cache.mtimes.representation === publicAPI.getMTime() && cache.mtimes.input === input.getMTime()) {
+        return cache.states;
+      }
+
+      // Reinitialize cache
+      cache.mtimes.representation = publicAPI.getMTime();
+      cache.mtimes.input = input.getMTime();
+      cache.states = [];
+
+      // Fill states that are going to be used in the representation
+      model.labels.forEach(name => {
+        cache.states = cache.states.concat(input.getStatesWithLabel(name) || []);
+      });
+      return cache.states;
+    };
+    publicAPI.getSelectedState = (prop, compositeID) => {
+      const representationStates = publicAPI.getRepresentationStates();
+      if (compositeID < representationStates.length) {
+        return representationStates[compositeID];
+      }
+      vtkErrorMacro$2(`Representation ${publicAPI.getClassName()} should implement getSelectedState(prop, compositeID) method.`);
+      return null;
+    };
+    publicAPI.updateActorVisibility = function () {
+      let renderingType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : RenderingTypes$1.FRONT_BUFFER;
+      let ctxVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      let handleVisible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      let otherFlag = true;
+      switch (model.behavior) {
+        case Behavior.HANDLE:
+          otherFlag = renderingType === RenderingTypes$1.PICKING_BUFFER || handleVisible;
+          break;
+        case Behavior.CONTEXT:
+          otherFlag = ctxVisible;
+          break;
+        default:
+          otherFlag = true;
+          break;
+      }
+      const visibilityFlag = otherFlag;
+      for (let i = 0; i < model.actors.length; i++) {
+        if (model.visibilityFlagArray) {
+          model.actors[i].setVisibility(visibilityFlag && model.visibilityFlagArray[i]);
+        } else {
+          model.actors[i].setVisibility(visibilityFlag);
+        }
+      }
+      if (model.alwaysVisibleActors) {
+        for (let i = 0; i < model.alwaysVisibleActors.length; i++) {
+          model.alwaysVisibleActors[i].setVisibility(true);
+        }
+      }
+    };
+
+    // Add warning to model.actors.push
+    model.actors.push = function () {
+      vtkWarningMacro$1('You should use publicAPI.addActor() to initialize the actor properly');
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      args.forEach(actor => publicAPI.addActor(actor));
+    };
+    publicAPI.addActor = actor => {
+      applyCoincidentTopologyParametersToMapper(actor.getMapper(), model.coincidentTopologyParameters);
+      Array.prototype.push.apply(model.actors, [actor]);
+    };
+
+    // Make sure setting the labels at build time works with string/array...
+    publicAPI.setLabels(model.labels);
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  function defaultValues$5(initialValues) {
+    return {
+      activeScaleFactor: 1.2,
+      activeColor: 1,
+      useActiveColor: true,
+      actors: [],
+      labels: [],
+      behavior: Behavior.CONTEXT,
+      coincidentTopologyParameters: {
+        Point: {
+          factor: -1.0,
+          offset: -1.0
+        },
+        Line: {
+          factor: -1.0,
+          offset: -1.0
+        },
+        Polygon: {
+          factor: -1.0,
+          offset: -1.0
+        }
+      },
+      scaleInPixels: false,
+      displayScaleParams: {
+        dispHeightFactor: 1,
+        cameraPosition: [0, 0, 0],
+        cameraDir: [1, 0, 0],
+        isParallel: false,
+        rendererPixelDims: [1, 1]
+      },
+      _internalArrays: {},
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$f(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    // Object methods
+    vtkProp$1.extend(publicAPI, model, defaultValues$5(initialValues));
+    macro.algo(publicAPI, model, 1, 1);
+    macro.get(publicAPI, model, ['labels', 'displayScaleParams', 'coincidentTopologyParameters']);
+    macro.set(publicAPI, model, [{
+      type: 'object',
+      name: 'displayScaleParams'
+    }, {
+      type: 'object',
+      name: 'coincidentTopologyParameters'
+    }]);
+    macro.setGet(publicAPI, model, ['scaleInPixels', 'activeScaleFactor', 'activeColor', 'useActiveColor']);
+
+    // Object specific methods
+    vtkWidgetRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var vtkWidgetRepresentation$1 = {
+    extend: extend$f,
+    mergeStyles,
+    applyStyles,
+    connectPipeline
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkHandleRepresentation methods
+  // ----------------------------------------------------------------------------
+
+  function vtkHandleRepresentation(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkHandleRepresentation');
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$9 = {
+    behavior: Behavior.HANDLE,
+    pickable: true,
+    dragable: true,
+    scaleInPixels: true
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$e(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    const newDefault = {
+      ...DEFAULT_VALUES$9,
+      ...initialValues
+    };
+    vtkWidgetRepresentation$1.extend(publicAPI, model, newDefault);
+    vtkHandleRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var vtkHandleRepresentation$1 = {
+    extend: extend$e
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkWidgetRepresentation
+  // ----------------------------------------------------------------------------
+
+  function vtkContextRepresentation(publicAPI, model) {
+    model.classHierarchy.push('vtkContextRepresentation');
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$8 = {
+    behavior: Behavior.CONTEXT,
+    pickable: false,
+    dragable: true
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$d(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    const newDefault = {
+      ...DEFAULT_VALUES$8,
+      ...initialValues
+    };
+    vtkWidgetRepresentation$1.extend(publicAPI, model, newDefault);
+    vtkContextRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  var vtkContextRepresentation$1 = {
+    extend: extend$d
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkSphereSource methods
+  // ----------------------------------------------------------------------------
+
+  function vtkSphereSource(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkSphereSource');
+    publicAPI.requestData = (inData, outData) => {
+      if (model.deleted) {
+        return;
+      }
+      let dataset = outData[0];
+      const pointDataType = dataset ? dataset.getPoints().getDataType() : model.pointType;
+      dataset = vtkPolyData$1.newInstance();
+
+      // ----------------------------------------------------------------------
+      let numPoles = 0;
+
+      // Check data, determine increments, and convert to radians
+      let {
+        thetaResolution
+      } = model;
+      let startTheta = model.startTheta < model.endTheta ? model.startTheta : model.endTheta;
+      startTheta *= Math.PI / 180.0;
+      let endTheta = model.endTheta > model.startTheta ? model.endTheta : model.startTheta;
+      endTheta *= Math.PI / 180.0;
+      let startPhi = model.startPhi < model.endPhi ? model.startPhi : model.endPhi;
+      startPhi *= Math.PI / 180.0;
+      let endPhi = model.endPhi > model.startPhi ? model.endPhi : model.startPhi;
+      endPhi *= Math.PI / 180.0;
+      if (Math.abs(startTheta - endTheta) < 2.0 * Math.PI) {
+        ++thetaResolution;
+      }
+      const deltaTheta = (endTheta - startTheta) / model.thetaResolution;
+      const jStart = model.startPhi <= 0.0 ? 1 : 0;
+      const jEnd = model.phiResolution + (model.endPhi >= 180.0 ? -1 : 0);
+      const numPts = model.phiResolution * thetaResolution + 2;
+      const numPolys = model.phiResolution * 2 * model.thetaResolution;
+
+      // Points
+      let pointIdx = 0;
+      let points = macro.newTypedArray(pointDataType, numPts * 3);
+
+      // Normals
+      let normals = new Float32Array(numPts * 3);
+
+      // Cells
+      let cellLocation = 0;
+      let polys = new Uint32Array(numPolys * 5);
+
+      // Create north pole if needed
+      if (model.startPhi <= 0.0) {
+        points[pointIdx * 3 + 0] = model.center[0];
+        points[pointIdx * 3 + 1] = model.center[1];
+        points[pointIdx * 3 + 2] = model.center[2] + model.radius;
+        normals[pointIdx * 3 + 0] = 0;
+        normals[pointIdx * 3 + 1] = 0;
+        normals[pointIdx * 3 + 2] = 1;
+        pointIdx++;
+        numPoles++;
+      }
+
+      // Create south pole if needed
+      if (model.endPhi >= 180.0) {
+        points[pointIdx * 3 + 0] = model.center[0];
+        points[pointIdx * 3 + 1] = model.center[1];
+        points[pointIdx * 3 + 2] = model.center[2] - model.radius;
+        normals[pointIdx * 3 + 0] = 0;
+        normals[pointIdx * 3 + 1] = 0;
+        normals[pointIdx * 3 + 2] = -1;
+        pointIdx++;
+        numPoles++;
+      }
+      const phiResolution = model.phiResolution - numPoles;
+      const deltaPhi = (endPhi - startPhi) / (model.phiResolution - 1);
+
+      // Create intermediate points
+      for (let i = 0; i < thetaResolution; i++) {
+        const theta = startTheta + i * deltaTheta;
+        for (let j = jStart; j < jEnd; j++) {
+          const phi = startPhi + j * deltaPhi;
+          const radius = model.radius * Math.sin(phi);
+          normals[pointIdx * 3 + 0] = radius * Math.cos(theta);
+          normals[pointIdx * 3 + 1] = radius * Math.sin(theta);
+          normals[pointIdx * 3 + 2] = model.radius * Math.cos(phi);
+          points[pointIdx * 3 + 0] = normals[pointIdx * 3 + 0] + model.center[0];
+          points[pointIdx * 3 + 1] = normals[pointIdx * 3 + 1] + model.center[1];
+          points[pointIdx * 3 + 2] = normals[pointIdx * 3 + 2] + model.center[2];
+          let norm = Math.sqrt(normals[pointIdx * 3 + 0] * normals[pointIdx * 3 + 0] + normals[pointIdx * 3 + 1] * normals[pointIdx * 3 + 1] + normals[pointIdx * 3 + 2] * normals[pointIdx * 3 + 2]);
+          norm = norm === 0 ? 1 : norm;
+          normals[pointIdx * 3 + 0] /= norm;
+          normals[pointIdx * 3 + 1] /= norm;
+          normals[pointIdx * 3 + 2] /= norm;
+          pointIdx++;
+        }
+      }
+
+      // Generate mesh connectivity
+      const base = phiResolution * thetaResolution;
+      if (Math.abs(startTheta - endTheta) < 2.0 * Math.PI) {
+        --thetaResolution;
+      }
+
+      // around north pole
+      if (model.startPhi <= 0.0) {
+        for (let i = 0; i < thetaResolution; i++) {
+          polys[cellLocation++] = 3;
+          polys[cellLocation++] = phiResolution * i + numPoles;
+          polys[cellLocation++] = phiResolution * (i + 1) % base + numPoles;
+          polys[cellLocation++] = 0;
+        }
+      }
+
+      // around south pole
+      if (model.endPhi >= 180.0) {
+        const numOffset = phiResolution - 1 + numPoles;
+        for (let i = 0; i < thetaResolution; i++) {
+          polys[cellLocation++] = 3;
+          polys[cellLocation++] = phiResolution * i + numOffset;
+          polys[cellLocation++] = numPoles - 1;
+          polys[cellLocation++] = phiResolution * (i + 1) % base + numOffset;
+        }
+      }
+
+      // bands in-between poles
+      for (let i = 0; i < thetaResolution; i++) {
+        for (let j = 0; j < phiResolution - 1; j++) {
+          const a = phiResolution * i + j + numPoles;
+          const b = a + 1;
+          const c = (phiResolution * (i + 1) + j) % base + numPoles + 1;
+          if (!model.latLongTessellation) {
+            polys[cellLocation++] = 3;
+            polys[cellLocation++] = a;
+            polys[cellLocation++] = b;
+            polys[cellLocation++] = c;
+            polys[cellLocation++] = 3;
+            polys[cellLocation++] = a;
+            polys[cellLocation++] = c;
+            polys[cellLocation++] = c - 1;
+          } else {
+            polys[cellLocation++] = 4;
+            polys[cellLocation++] = a;
+            polys[cellLocation++] = b;
+            polys[cellLocation++] = c;
+            polys[cellLocation++] = c - 1;
+          }
+        }
+      }
+
+      // Squeeze
+      points = points.subarray(0, pointIdx * 3);
+      dataset.getPoints().setData(points, 3);
+      normals = normals.subarray(0, pointIdx * 3);
+      const normalArray = vtkDataArray$1.newInstance({
+        name: 'Normals',
+        values: normals,
+        numberOfComponents: 3
+      });
+      dataset.getPointData().setNormals(normalArray);
+      polys = polys.subarray(0, cellLocation);
+      dataset.getPolys().setData(polys, 1);
+
+      // Update output
+      outData[0] = dataset;
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$7 = {
+    radius: 0.5,
+    latLongTessellation: false,
+    thetaResolution: 8,
+    startTheta: 0.0,
+    endTheta: 360.0,
+    phiResolution: 8,
+    startPhi: 0.0,
+    endPhi: 180.0,
+    center: [0, 0, 0],
+    pointType: 'Float64Array'
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$c(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$7, initialValues);
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['radius', 'latLongTessellation', 'thetaResolution', 'startTheta', 'endTheta', 'phiResolution', 'startPhi', 'endPhi']);
+    macro.setGetArray(publicAPI, model, ['center'], 3);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkSphereSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$c = macro.newInstance(extend$c, 'vtkSphereSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkSphereSource$1 = {
+    newInstance: newInstance$c,
+    extend: extend$c
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkGlyphRepresentation methods
+  // ----------------------------------------------------------------------------
+  function origin(publicAPI, model) {
+    return (polyData, states) => {
+      const points = allocateArray(polyData, 'points', states.length).getData();
+      let j = 0;
+      for (let i = 0; i < states.length; ++i) {
+        const coord = states[i].getOrigin(model.scaleInPixels && model.displayScaleParams);
+        points[j++] = coord[0];
+        points[j++] = coord[1];
+        points[j++] = coord[2];
+      }
+    };
+  }
+  function noPosition(publicAPI, model) {
+    return (polyData, states) => {
+      allocateArray(polyData, 'points', 0);
+    };
+  }
+  function color3(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setColorByArrayName('color');
+      const colorArray = allocateArray(polyData, 'color', states.length, 'Uint8Array',
+      // RGBA
+      4);
+      const colors = colorArray.getData();
+      let j = 0;
+      for (let i = 0; i < states.length; ++i) {
+        let c3 = states[i].getColor3();
+        if (states[i].getActive() && model.useActiveColor) {
+          c3 = model.activeColor;
+        }
+        colors[j++] = c3[0];
+        colors[j++] = c3[1];
+        colors[j++] = c3[2];
+        colors[j++] = states[i].getOpacity();
+      }
+      colorArray.dataChange();
+    };
+  }
+  function color(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setColorByArrayName('color');
+      const colors = allocateArray(polyData, 'color', states.length).getData();
+      for (let i = 0; i < states.length; ++i) {
+        let c = states[i].getColor();
+        if (states[i].getActive() && model.useActiveColor) {
+          c = model.activeColor;
+        }
+        colors[i] = c;
+      }
+    };
+  }
+  function noColor(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setColorByArrayName(null);
+    };
+  }
+  function scale3(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setScaleArray('scale');
+      model._pipeline.mapper.setScaleFactor(1);
+      model._pipeline.mapper.setScaling(true);
+      model._pipeline.mapper.setScaleMode(vtkGlyph3DMapper$1.ScaleModes.SCALE_BY_COMPONENTS);
+      const scales = allocateArray(polyData, 'scale', states.length, 'Float32Array', 3).getData();
+      let j = 0;
+      for (let i = 0; i < states.length; ++i) {
+        const state = states[i];
+        let scaleFactor = state.getActive() ? model.activeScaleFactor : 1;
+        if (publicAPI.getScaleInPixels()) {
+          scaleFactor *= getPixelWorldHeightAtCoord(state.getOrigin(), model.displayScaleParams);
+        }
+        const scale = state.getScale3?.() ?? model.defaultScale;
+        scales[j++] = scaleFactor * scale[0];
+        scales[j++] = scaleFactor * scale[1];
+        scales[j++] = scaleFactor * scale[2];
+      }
+    };
+  }
+  function scale1(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setScaleArray('scale');
+      model._pipeline.mapper.setScaleFactor(1);
+      model._pipeline.mapper.setScaling(true);
+      const scales = allocateArray(polyData, 'scale', states.length).getData();
+      for (let i = 0; i < states.length; ++i) {
+        const state = states[i];
+        let scaleFactor = state.getActive() ? model.activeScaleFactor : 1;
+        if (publicAPI.getScaleInPixels()) {
+          scaleFactor *= getPixelWorldHeightAtCoord(state.getOrigin(), model.displayScaleParams);
+        }
+        const scale = state.getScale1?.() ?? model.defaultScale;
+        scales[i] = scaleFactor * scale;
+      }
+    };
+  }
+  function noScale(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setScaleArray(null);
+      model._pipeline.mapper.setScaleFactor(model.defaultScale);
+      model._pipeline.mapper.setScaling(model.defaultScale !== 1);
+    };
+  }
+  function direction(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setOrientationArray('orientation');
+      model._pipeline.mapper.setOrientationMode(OrientationModes$1.MATRIX);
+      const orientation = allocateArray(polyData, 'orientation', states.length, 'Float32Array', 9).getData();
+      for (let i = 0; i < states.length; ++i) {
+        const state = states[i];
+        const right = state.getRight ? state.getRight() : [1, 0, 0];
+        const up = state.getUp ? state.getUp() : [0, 1, 0];
+        const dir = state.getDirection ? state.getDirection() : [0, 0, 1];
+        orientation.set(right, 9 * i);
+        orientation.set(up, 9 * i + 3);
+        orientation.set(dir, 9 * i + 6);
+      }
+    };
+  }
+  function noOrientation(publicAPI, model) {
+    return (polyData, states) => {
+      model._pipeline.mapper.setOrientationArray(null);
+    };
+  }
+  function vtkGlyphRepresentation(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkGlyphRepresentation');
+    const superClass = {
+      ...publicAPI
+    };
+    const internalPolyData = vtkPolyData$1.newInstance({
+      mtime: 0
+    });
+    function hasMixin(states) {
+      for (var _len = arguments.length, requiredMixins = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        requiredMixins[_key - 1] = arguments[_key];
+      }
+      return requiredMixins.every(requiredMixin => states[0]?.[`get${macro.capitalize(requiredMixin)}`]?.() != null);
+    }
+    // --------------------------------------------------------------------------
+    // Generic rendering pipeline
+    // --------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.getRepresentationStates = function () {
+      let input = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : model.inputData[0];
+      return superClass.getRepresentationStates(input).filter(state => state.getOrigin?.() && (state.isVisible?.() ?? true));
+    };
+
+    // --------------------------------------------------------------------------
+    publicAPI.getMixins = states => {
+      const glyphProperties = {};
+      if (hasMixin(states, 'origin')) {
+        glyphProperties.position = model.applyMixin.origin;
+      } else {
+        glyphProperties.position = model.applyMixin.noPosition;
+      }
+      if (hasMixin(states, 'color3')) {
+        glyphProperties.color = model.applyMixin.color3;
+      } else if (hasMixin(states, 'color')) {
+        glyphProperties.color = model.applyMixin.color;
+      } else {
+        glyphProperties.color = model.applyMixin.noColor;
+      }
+      if (hasMixin(states, 'scale3')) {
+        glyphProperties.scale = model.applyMixin.scale3;
+      } else if (hasMixin(states, 'scale1')) {
+        glyphProperties.scale = model.applyMixin.scale1;
+      } else {
+        glyphProperties.scale = model.applyMixin.noScale;
+      }
+      if (hasMixin(states, 'direction')) {
+        glyphProperties.orientation = model.applyMixin.direction;
+      } else {
+        glyphProperties.orientation = model.applyMixin.noOrientation;
+      }
+      return glyphProperties;
+    };
+    publicAPI.requestData = (inData, outData) => {
+      const states = publicAPI.getRepresentationStates(inData[0]);
+      outData[0] = internalPolyData;
+      const glyphProperties = publicAPI.getMixins(states);
+      Object.values(glyphProperties).forEach(property => property(internalPolyData, states));
+      internalPolyData.getPoints().modified();
+      internalPolyData.modified();
+    };
+    vtkWidgetRepresentation$1.connectPipeline(model._pipeline);
+    publicAPI.addActor(model._pipeline.actor);
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  function defaultValues$4(publicAPI, model, initialValues) {
+    return {
+      defaultScale: 1,
+      ...initialValues,
+      _pipeline: {
+        source: initialValues._pipeline?.source ?? publicAPI,
+        glyph: initialValues._pipeline?.glyph ??
+        // in case glyph was provided
+        vtkSphereSource$1.newInstance({
+          phiResolution: 8,
+          thetaResolution: 8
+        }),
+        mapper: initialValues._pipeline?.mapper ??
+        // in case mapper was provided
+        vtkGlyph3DMapper$1.newInstance({
+          scalarMode: ScalarMode$5.USE_POINT_FIELD_DATA
+        }),
+        actor: initialValues._pipeline?.actor ??
+        // in case actor was provided
+        vtkActor$1.newInstance({
+          parentProp: publicAPI
+        }),
+        ...initialValues._pipeline // in case there is something else to add to pipeline
+      },
+
+      applyMixin: {
+        origin: initialValues.applyMixin?.origin ?? origin(publicAPI, model),
+        noPosition: initialValues.applyMixin?.noPosition ?? noPosition(),
+        color3: initialValues.applyMixin?.color3 ?? color3(publicAPI, model),
+        color: initialValues.applyMixin?.color ?? color(publicAPI, model),
+        noColor: initialValues.applyMixin?.noColor ?? noColor(publicAPI, model),
+        scale3: initialValues.applyMixin?.scale3 ?? scale3(publicAPI, model),
+        scale1: initialValues.applyMixin?.scale1 ?? scale1(publicAPI, model),
+        noScale: initialValues.applyMixin?.noScale ?? noScale(publicAPI, model),
+        direction: initialValues.applyMixin?.direction ?? direction(publicAPI, model),
+        noOrientation: initialValues.applyMixin?.noOrientation ?? noOrientation(publicAPI, model),
+        ...initialValues.applyMixin
+      }
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$b(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    if (initialValues.behavior === Behavior.CONTEXT) {
+      vtkContextRepresentation$1.extend(publicAPI, model, defaultValues$4(publicAPI, model, initialValues));
+    } else {
+      vtkHandleRepresentation$1.extend(publicAPI, model, defaultValues$4(publicAPI, model, initialValues));
+    }
+    if ('lighting' in initialValues) {
+      model._pipeline.actor.getProperty().setLighting(initialValues.lighting);
+    }
+    macro.setGet(publicAPI, model._pipeline, ['defaultScale']);
+    macro.get(publicAPI, model._pipeline, ['glyph', 'mapper', 'actor']);
+    // Expose the mixin functions to allow overwriting
+    macro.setGet(publicAPI, model.applyMixin, Object.keys(model.applyMixin));
+
+    // Object specific methods
+    vtkGlyphRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$b = macro.newInstance(extend$b, 'vtkGlyphRepresentation');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkGlyphRepresentation$1 = {
+    newInstance: newInstance$b,
+    extend: extend$b
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkPixelSpaceCallbackMapper methods
+  // ----------------------------------------------------------------------------
+
+  function vtkPixelSpaceCallbackMapper(publicAPI, model) {
+    model.classHierarchy.push('vtkPixelSpaceCallbackMapper');
+    if (!model.callback) {
+      model.callback = () => {};
+    }
+    publicAPI.invokeCallback = (dataset, camera, aspect, windowSize, depthValues) => {
+      if (!model.callback) {
+        return;
+      }
+      const matrix = camera.getCompositeProjectionMatrix(aspect, -1, 1);
+      transpose(matrix, matrix);
+      const dataPoints = dataset.getPoints();
+      const result = new Float64Array(3);
+      const width = windowSize.usize;
+      const height = windowSize.vsize;
+      const hw = width / 2;
+      const hh = height / 2;
+      const coords = [];
+      for (let pidx = 0; pidx < dataPoints.getNumberOfPoints(); pidx += 1) {
+        const point = dataPoints.getPoint(pidx);
+        transformMat4$1(result, point, matrix);
+        const coord = [result[0] * hw + hw, result[1] * hh + hh, result[2], 0];
+        if (depthValues) {
+          const linIdx = Math.floor(coord[1]) * width + Math.floor(coord[0]);
+          const idx = linIdx * 4;
+          const r = depthValues[idx] / 255;
+          const g = depthValues[idx + 1] / 255;
+          const z = (r * 256 + g) / 257;
+          coord[3] = z * 2 - 1;
+        }
+        coords.push(coord);
+      }
+      model.callback(coords, camera, aspect, depthValues, [width, height]);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$6 = {
+    callback: null,
+    useZValues: false
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$a(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$6, initialValues);
+
+    // Inheritance
+    vtkMapper$1.extend(publicAPI, model, initialValues);
+    macro.setGet(publicAPI, model, ['callback', 'useZValues']);
+
+    // Object methods
+    vtkPixelSpaceCallbackMapper(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$a = macro.newInstance(extend$a, 'vtkPixelSpaceCallbackMapper');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkPixelSpaceCallbackMapper$1 = {
+    newInstance: newInstance$a,
+    extend: extend$a
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkConeSource methods
+  // ----------------------------------------------------------------------------
+
+  function vtkConeSource(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkConeSource');
+    function requestData(inData, outData) {
+      if (model.deleted) {
+        return;
+      }
+      let dataset = outData[0];
+      const angle = 2 * Math.PI / model.resolution;
+      const xbot = -model.height / 2.0;
+      const numberOfPoints = model.resolution + 1;
+      const cellArraySize = 4 * model.resolution + 1 + model.resolution;
+
+      // Points
+      let pointIdx = 0;
+      const points = macro.newTypedArray(model.pointType, numberOfPoints * 3);
+
+      // Cells
+      let cellLocation = 0;
+      const polys = new Uint32Array(cellArraySize);
+
+      // Add summit point
+      points[0] = model.height / 2.0;
+      points[1] = 0.0;
+      points[2] = 0.0;
+
+      // Create bottom cell
+      if (model.capping) {
+        polys[cellLocation++] = model.resolution;
+      }
+
+      // Add all points
+      for (let i = 0; i < model.resolution; i++) {
+        pointIdx++;
+        points[pointIdx * 3 + 0] = xbot;
+        points[pointIdx * 3 + 1] = model.radius * Math.cos(i * angle);
+        points[pointIdx * 3 + 2] = model.radius * Math.sin(i * angle);
+
+        // Add points to bottom cell in reverse order
+        if (model.capping) {
+          polys[model.resolution - cellLocation++ + 1] = pointIdx;
+        }
+      }
+
+      // Add all triangle cells
+      for (let i = 0; i < model.resolution; i++) {
+        polys[cellLocation++] = 3;
+        polys[cellLocation++] = 0;
+        polys[cellLocation++] = i + 1;
+        polys[cellLocation++] = i + 2 > model.resolution ? 1 : i + 2;
+      }
+
+      // Apply transformation to the points coordinates
+      vtkMatrixBuilder.buildFromRadian().translate(...model.center).rotateFromDirections([1, 0, 0], model.direction).apply(points);
+      dataset = vtkPolyData$1.newInstance();
+      dataset.getPoints().setData(points, 3);
+      dataset.getPolys().setData(polys, 1);
+
+      // Update output
+      outData[0] = dataset;
+    }
+
+    // Expose methods
+    publicAPI.requestData = requestData;
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$5 = {
+    height: 1.0,
+    radius: 0.5,
+    resolution: 6,
+    center: [0, 0, 0],
+    direction: [1.0, 0.0, 0.0],
+    capping: true,
+    pointType: 'Float64Array'
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$9(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$5, initialValues);
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['height', 'radius', 'resolution', 'capping']);
+    macro.setGetArray(publicAPI, model, ['center', 'direction'], 3);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkConeSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$9 = macro.newInstance(extend$9, 'vtkConeSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkConeSource$1 = {
+    newInstance: newInstance$9,
+    extend: extend$9
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkCircleSource methods
+  // ----------------------------------------------------------------------------
+
+  function vtkCircleSource(publicAPI, model) {
+    // Set our classname
+    model.classHierarchy.push('vtkCircleSource');
+    function requestData(inData, outData) {
+      if (model.deleted) {
+        return;
+      }
+      let dataset = outData[0];
+
+      // Points
+      const points = macro.newTypedArray(model.pointType, model.resolution * 3);
+
+      // Lines/cells
+      // [# of points in line, vert_index_0, vert_index_1, ..., vert_index_0]
+      const edges = new Uint32Array(model.resolution + 2);
+      edges[0] = model.resolution + 1;
+
+      // generate polydata
+      const angle = 2.0 * Math.PI / model.resolution;
+      for (let i = 0; i < model.resolution; i++) {
+        const x = model.center[0];
+        const y = model.radius * Math.cos(i * angle) + model.center[1];
+        const z = model.radius * Math.sin(i * angle) + model.center[2];
+        points.set([x, y, z], i * 3);
+        edges[i + 1] = i;
+      }
+
+      // connect endpoints
+      edges[edges.length - 1] = edges[1];
+      dataset = vtkPolyData$1.newInstance();
+      dataset.getPoints().setData(points, 3);
+      if (model.lines) {
+        dataset.getLines().setData(edges, 1);
+      }
+      if (model.face) {
+        dataset.getPolys().setData(edges, 1);
+      }
+
+      // translate an eventual center different to [0, 0, 0] to ensure rotation is correct
+      vtkMatrixBuilder.buildFromRadian().translate(...model.center).rotateFromDirections([1, 0, 0], model.direction).translate(...multiplyScalar([...model.center], -1)).apply(points);
+
+      // Update output
+      outData[0] = dataset;
+    }
+
+    // Expose methods
+    publicAPI.requestData = requestData;
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  function defaultValues$3(initialValues) {
+    return {
+      face: true,
+      center: [0, 0, 0],
+      lines: false,
+      direction: [1, 0, 0],
+      pointType: 'Float64Array',
+      radius: 1.0,
+      resolution: 6,
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$8(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, defaultValues$3(initialValues));
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['radius', 'resolution', 'lines', 'face']);
+    macro.setGetArray(publicAPI, model, ['center', 'direction'], 3);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkCircleSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$8 = macro.newInstance(extend$8, 'vtkCircleSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkCircleSource$1 = {
+    newInstance: newInstance$8,
+    extend: extend$8
+  };
+
+  // prettier-ignore
+  const LINE_ARRAY = [2, 0, 1, 2, 2, 3, 2, 4, 5, 2, 6, 7, 2, 0, 2, 2, 1, 3, 2, 4, 6, 2, 5, 7, 2, 0, 4, 2, 1, 5, 2, 2, 6, 2, 3, 7];
+
+  // prettier-ignore
+  const POLY_ARRAY = [4, 0, 1, 3, 2, 4, 4, 6, 7, 5, 4, 8, 10, 11, 9, 4, 12, 13, 15, 14, 4, 16, 18, 19, 17, 4, 20, 21, 23, 22];
+
+  // ----------------------------------------------------------------------------
+  // vtkCubeSource methods
+  // ----------------------------------------------------------------------------
+
+  function vtkCubeSource(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkCubeSource');
+    function requestData(inData, outData) {
+      if (model.deleted) {
+        return;
+      }
+      const polyData = vtkPolyData$1.newInstance();
+      outData[0] = polyData;
+      const numberOfPoints = 24;
+
+      // Define points
+      const points = macro.newTypedArray(model.pointType, numberOfPoints * 3);
+      polyData.getPoints().setData(points, 3);
+      const normals = macro.newTypedArray(model.pointType, numberOfPoints * 3);
+      const normalArray = vtkDataArray$1.newInstance({
+        name: 'Normals',
+        values: normals,
+        numberOfComponents: 3
+      });
+      polyData.getPointData().setNormals(normalArray);
+      let tcdim = 2;
+      if (model.generate3DTextureCoordinates === true) {
+        tcdim = 3;
+      }
+      const textureCoords = macro.newTypedArray(model.pointType, numberOfPoints * tcdim);
+      const tcoords = vtkDataArray$1.newInstance({
+        name: 'TextureCoordinates',
+        values: textureCoords,
+        numberOfComponents: tcdim
+      });
+      polyData.getPointData().setTCoords(tcoords);
+      const x = [0.0, 0.0, 0.0];
+      const n = [0.0, 0.0, 0.0];
+      const tc = [0.0, 0.0];
+      let pointIndex = 0;
+      x[0] = -model.xLength / 2.0;
+      n[0] = -1.0;
+      n[1] = 0.0;
+      n[2] = 0.0;
+      for (let i = 0; i < 2; i++) {
+        x[1] = -model.yLength / 2.0;
+        for (let j = 0; j < 2; j++) {
+          tc[1] = x[1] + 0.5;
+          x[2] = -model.zLength / 2.0;
+          for (let k = 0; k < 2; k++) {
+            tc[0] = (x[2] + 0.5) * (1 - 2 * i);
+            points[pointIndex * 3] = x[0];
+            points[pointIndex * 3 + 1] = x[1];
+            points[pointIndex * 3 + 2] = x[2];
+            normals[pointIndex * 3] = n[0];
+            normals[pointIndex * 3 + 1] = n[1];
+            normals[pointIndex * 3 + 2] = n[2];
+            if (tcdim === 2) {
+              textureCoords[pointIndex * tcdim] = tc[0];
+              textureCoords[pointIndex * tcdim + 1] = tc[1];
+            } else {
+              textureCoords[pointIndex * tcdim] = 2 * i - 1;
+              textureCoords[pointIndex * tcdim + 1] = 2 * j - 1;
+              textureCoords[pointIndex * tcdim + 2] = 2 * k - 1;
+            }
+            pointIndex++;
+            x[2] += model.zLength;
+          }
+          x[1] += model.yLength;
+        }
+        x[0] += model.xLength;
+        n[0] += 2.0;
+      }
+      x[1] = -model.yLength / 2.0;
+      n[1] = -1.0;
+      n[0] = 0.0;
+      n[2] = 0.0;
+      for (let i = 0; i < 2; i++) {
+        x[0] = -model.xLength / 2.0;
+        for (let j = 0; j < 2; j++) {
+          tc[0] = (x[0] + 0.5) * (2 * i - 1);
+          x[2] = -model.zLength / 2.0;
+          for (let k = 0; k < 2; k++) {
+            tc[1] = (x[2] + 0.5) * -1;
+            points[pointIndex * 3] = x[0];
+            points[pointIndex * 3 + 1] = x[1];
+            points[pointIndex * 3 + 2] = x[2];
+            normals[pointIndex * 3] = n[0];
+            normals[pointIndex * 3 + 1] = n[1];
+            normals[pointIndex * 3 + 2] = n[2];
+            if (tcdim === 2) {
+              textureCoords[pointIndex * tcdim] = tc[0];
+              textureCoords[pointIndex * tcdim + 1] = tc[1];
+            } else {
+              textureCoords[pointIndex * tcdim] = 2 * j - 1;
+              textureCoords[pointIndex * tcdim + 1] = 2 * i - 1;
+              textureCoords[pointIndex * tcdim + 2] = 2 * k - 1;
+            }
+            pointIndex++;
+            x[2] += model.zLength;
+          }
+          x[0] += model.xLength;
+        }
+        x[1] += model.yLength;
+        n[1] += 2.0;
+      }
+      x[2] = -model.zLength / 2.0;
+      n[2] = -1.0;
+      n[0] = 0.0;
+      n[1] = 0.0;
+      for (let i = 0; i < 2; i++) {
+        x[1] = -model.yLength / 2.0;
+        for (let j = 0; j < 2; j++) {
+          tc[1] = x[1] + 0.5;
+          x[0] = -model.xLength / 2.0;
+          for (let k = 0; k < 2; k++) {
+            tc[0] = (x[0] + 0.5) * (2 * i - 1);
+            points[pointIndex * 3] = x[0];
+            points[pointIndex * 3 + 1] = x[1];
+            points[pointIndex * 3 + 2] = x[2];
+            normals[pointIndex * 3] = n[0];
+            normals[pointIndex * 3 + 1] = n[1];
+            normals[pointIndex * 3 + 2] = n[2];
+            if (tcdim === 2) {
+              textureCoords[pointIndex * tcdim] = tc[0];
+              textureCoords[pointIndex * tcdim + 1] = tc[1];
+            } else {
+              textureCoords[pointIndex * tcdim] = 2 * k - 1;
+              textureCoords[pointIndex * tcdim + 1] = 2 * j - 1;
+              textureCoords[pointIndex * tcdim + 2] = 2 * i - 1;
+            }
+            pointIndex++;
+            x[0] += model.xLength;
+          }
+          x[1] += model.yLength;
+        }
+        x[2] += model.zLength;
+        n[2] += 2.0;
+      }
+
+      // Apply rotation to the points coordinates and normals
+      if (model.rotations) {
+        vtkMatrixBuilder.buildFromDegree().rotateX(model.rotations[0]).rotateY(model.rotations[1]).rotateZ(model.rotations[2]).apply(points).apply(normals);
+      }
+
+      // Apply transformation to the points coordinates
+      if (model.center) {
+        vtkMatrixBuilder.buildFromRadian().translate(...model.center).apply(points);
+      }
+
+      // Apply optional additionally specified matrix transformation
+      if (model.matrix) {
+        vtkMatrixBuilder.buildFromRadian().setMatrix(model.matrix).apply(points);
+
+        // prettier-ignore
+        const rotMatrix = [model.matrix[0], model.matrix[1], model.matrix[2], 0, model.matrix[4], model.matrix[5], model.matrix[6], 0, model.matrix[8], model.matrix[9], model.matrix[10], 0, 0, 0, 0, 1];
+        vtkMatrixBuilder.buildFromRadian().setMatrix(rotMatrix).apply(normals);
+      }
+
+      // Lastly, generate the necessary cell arrays.
+      if (model.generateFaces) {
+        polyData.getPolys().deepCopy(model._polys);
+      } else {
+        polyData.getPolys().initialize();
+      }
+      if (model.generateLines) {
+        polyData.getLines().deepCopy(model._lineCells);
+        // only set normals for faces, not for lines.
+        polyData.getPointData().setNormals(null);
+      } else {
+        polyData.getLines().initialize();
+      }
+      polyData.modified();
+    }
+    publicAPI.setBounds = function () {
+      let boundsArray = [];
+      if (Array.isArray(arguments.length <= 0 ? undefined : arguments[0])) {
+        boundsArray = arguments.length <= 0 ? undefined : arguments[0];
+      } else {
+        for (let i = 0; i < arguments.length; i++) {
+          boundsArray.push(i < 0 || arguments.length <= i ? undefined : arguments[i]);
+        }
+      }
+      if (boundsArray.length !== 6) {
+        return;
+      }
+      publicAPI.setXLength(boundsArray[1] - boundsArray[0]);
+      publicAPI.setYLength(boundsArray[3] - boundsArray[2]);
+      publicAPI.setZLength(boundsArray[5] - boundsArray[4]);
+      publicAPI.setCenter([(boundsArray[0] + boundsArray[1]) / 2.0, (boundsArray[2] + boundsArray[3]) / 2.0, (boundsArray[4] + boundsArray[5]) / 2.0]);
+    };
+
+    // Expose methods
+    publicAPI.requestData = requestData;
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$4 = {
+    xLength: 1.0,
+    yLength: 1.0,
+    zLength: 1.0,
+    pointType: 'Float64Array',
+    generate3DTextureCoordinates: false,
+    generateFaces: true,
+    generateLines: false
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$7(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$4, initialValues);
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['xLength', 'yLength', 'zLength', 'generate3DTextureCoordinates', 'generateFaces', 'generateLines']);
+    macro.setGetArray(publicAPI, model, ['center', 'rotations'], 3);
+    macro.setGetArray(publicAPI, model, ['matrix'], 16);
+
+    // Internal persistent/static objects
+    model._polys = vtkCellArray$1.newInstance({
+      values: Uint16Array.from(POLY_ARRAY)
+    });
+    model._lineCells = vtkCellArray$1.newInstance({
+      values: Uint16Array.from(LINE_ARRAY)
+    });
+    macro.moveToProtected(publicAPI, model, ['polys', 'lineCells']);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkCubeSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$7 = macro.newInstance(extend$7, 'vtkCubeSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkCubeSource$1 = {
+    newInstance: newInstance$7,
+    extend: extend$7
+  };
+
+  function vtkViewFinderSource(publicAPI, model) {
+    publicAPI.requestData = (inData, outData) => {
+      const dataset = vtkPolyData$1.newInstance();
+      const points = macro.newTypedArray(model.pointType, 3 * 16);
+      points[0] = model.radius;
+      points[1] = model.radius / model.width;
+      points[2] = 0;
+      points[3] = model.radius + model.spacing;
+      points[4] = model.radius / model.width;
+      points[5] = 0;
+      points[6] = model.radius;
+      points[7] = model.radius / model.width * -1;
+      points[8] = 0;
+      points[9] = model.radius + model.spacing;
+      points[10] = model.radius / model.width * -1;
+      points[11] = 0;
+      points[12] = model.radius * -1;
+      points[13] = model.radius / model.width;
+      points[14] = 0;
+      points[15] = (model.radius + model.spacing) * -1;
+      points[16] = model.radius / model.width;
+      points[17] = 0;
+      points[18] = model.radius * -1;
+      points[19] = model.radius / model.width * -1;
+      points[20] = 0;
+      points[21] = (model.radius + model.spacing) * -1;
+      points[22] = model.radius / model.width * -1;
+      points[23] = 0;
+      points[24] = model.radius / model.width;
+      points[25] = model.radius;
+      points[26] = 0;
+      points[27] = model.radius / model.width;
+      points[28] = model.radius + model.spacing;
+      points[29] = 0;
+      points[30] = model.radius / model.width * -1;
+      points[31] = model.radius;
+      points[32] = 0;
+      points[33] = model.radius / model.width * -1;
+      points[34] = model.radius + model.spacing;
+      points[35] = 0;
+      points[36] = model.radius / model.width;
+      points[37] = model.radius * -1;
+      points[38] = 0;
+      points[39] = model.radius / model.width;
+      points[40] = (model.radius + model.spacing) * -1;
+      points[41] = 0;
+      points[42] = model.radius / model.width * -1;
+      points[43] = model.radius * -1;
+      points[44] = 0;
+      points[45] = model.radius / model.width * -1;
+      points[46] = (model.radius + model.spacing) * -1;
+      points[47] = 0;
+
+      // prettier-ignore
+      const cells = Uint8Array.from([3, 0, 1, 2, 3, 2, 1, 3, 3, 4, 6, 5, 3, 6, 5, 7, 3, 8, 11, 9, 3, 8, 10, 11, 3, 12, 13, 15, 3, 12, 15, 14]);
+      vtkMatrixBuilder.buildFromRadian().translate(...model.center).rotateFromDirections([1, 0, 0], model.orientation).apply(points);
+      dataset.getPoints().setData(points, 3);
+      dataset.getPolys().setData(cells, 1);
+      outData[0] = dataset;
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+  const DEFAULT_VALUES$3 = {
+    radius: 1,
+    spacing: 2,
+    width: 4,
+    pointType: 'Float64Array'
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$6(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    model.center = [0, 0, 0];
+    model.orientation = [1, 0, 0];
+    Object.assign(model, DEFAULT_VALUES$3, initialValues);
+
+    // Build VTK API
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['radius', 'spacing', 'width']);
+    macro.setGetArray(publicAPI, model, ['center', 'orientation'], 3);
+    macro.algo(publicAPI, model, 0, 1);
+    vtkViewFinderSource(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$6 = macro.newInstance(extend$6, 'vtkArrow2DSource');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkViewFinderSource$1 = {
+    newInstance: newInstance$6,
+    extend: extend$6
+  };
+
+  const ShapeType$2 = {
+    // NONE is a sphere handle always invisible even on mouseover, which
+    // prevents user from moving handle once it is placed
+    NONE: 'voidSphere',
+    // 3D handles
+    SPHERE: 'sphere',
+    CUBE: 'cube',
+    CONE: 'cone',
+    // 2D handles
+    ARROWHEAD3: 'triangle',
+    ARROWHEAD4: '4pointsArrowHead',
+    ARROWHEAD6: '6pointsArrowHead',
+    STAR: 'star',
+    DISK: 'disk',
+    CIRCLE: 'circle',
+    VIEWFINDER: 'viewFinder'
+  };
+  const Shapes2D$1 = [ShapeType$2.ARROWHEAD3, ShapeType$2.ARROWHEAD4, ShapeType$2.ARROWHEAD6, ShapeType$2.STAR, ShapeType$2.DISK, ShapeType$2.CIRCLE, ShapeType$2.VIEWFINDER];
+  const Shapes3D = [ShapeType$2.SPHERE, ShapeType$2.CUBE, ShapeType$2.CONE];
+  const ShapesOrientable$1 = [ShapeType$2.CONE, ShapeType$2.ARROWHEAD3, ShapeType$2.ARROWHEAD4, ShapeType$2.ARROWHEAD6];
+  var Constants$1 = {
+    ShapeType: ShapeType$2,
+    Shapes2D: Shapes2D$1,
+    Shapes3D,
+    ShapesOrientable: ShapesOrientable$1
+  };
+
+  const {
+    ShapeType: ShapeType$1,
+    Shapes2D,
+    ShapesOrientable
+  } = Constants$1;
+
+  // ----------------------------------------------------------------------------
+  // vtkArrowHandleRepresentation methods
+  // ----------------------------------------------------------------------------
+
+  function vtkArrowHandleRepresentation(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkArrowHandleRepresentation');
+    const superClass = {
+      ...publicAPI
+    };
+    // --------------------------------------------------------------------------
+    // Internal polydata dataset
+    // --------------------------------------------------------------------------
+
+    /**
+     * Set the shape for the glyph according to lineWidget state inputs
+     */
+    function createGlyph(shape) {
+      const representationToSource = {
+        [ShapeType$1.STAR]: {
+          builder: vtkArrow2DSource$1,
+          initialValues: {
+            shape: 'star',
+            height: 0.6
+          }
+        },
+        [ShapeType$1.ARROWHEAD3]: {
+          builder: vtkArrow2DSource$1,
+          initialValues: {
+            shape: 'triangle'
+          }
+        },
+        [ShapeType$1.ARROWHEAD4]: {
+          builder: vtkArrow2DSource$1,
+          initialValues: {
+            shape: 'arrow4points'
+          }
+        },
+        [ShapeType$1.ARROWHEAD6]: {
+          builder: vtkArrow2DSource$1,
+          initialValues: {
+            shape: 'arrow6points'
+          }
+        },
+        [ShapeType$1.CONE]: {
+          builder: vtkConeSource$1,
+          initialValues: {
+            direction: [0, 1, 0]
+          }
+        },
+        [ShapeType$1.SPHERE]: {
+          builder: vtkSphereSource$1
+        },
+        [ShapeType$1.CUBE]: {
+          builder: vtkCubeSource$1,
+          initialValues: {
+            xLength: 0.8,
+            yLength: 0.8,
+            zLength: 0.8
+          }
+        },
+        [ShapeType$1.DISK]: {
+          builder: vtkCircleSource$1,
+          initialValues: {
+            resolution: 30,
+            radius: 0.5,
+            direction: [0, 0, 1],
+            lines: false,
+            face: true
+          }
+        },
+        [ShapeType$1.CIRCLE]: {
+          builder: vtkCircleSource$1,
+          initialValues: {
+            resolution: 30,
+            radius: 0.5,
+            direction: [0, 0, 1],
+            lines: true,
+            face: false
+          }
+        },
+        [ShapeType$1.VIEWFINDER]: {
+          builder: vtkViewFinderSource$1,
+          initialValues: {
+            radius: 0.1,
+            spacing: 0.3,
+            width: 1.4
+          }
+        },
+        [ShapeType$1.NONE]: {
+          builder: vtkSphereSource$1
+        }
+      };
+      const rep = representationToSource[shape];
+      return rep.builder.newInstance(rep.initialValues);
+    }
+
+    // --------------------------------------------------------------------------
+    // Generic rendering pipeline
+    // --------------------------------------------------------------------------
+
+    // displayActors and displayMappers are used to render objects in HTML,
+    // allowing objects to be 'rendered' internally in a VTK scene without
+    // being visible on the final output.
+    model.displayMapper = vtkPixelSpaceCallbackMapper$1.newInstance();
+    model.displayActor = vtkActor$1.newInstance({
+      parentProp: publicAPI
+    });
+    // model.displayActor.getProperty().setOpacity(0); // don't show in 3D
+    model.displayActor.setMapper(model.displayMapper);
+    model.displayMapper.setInputConnection(publicAPI.getOutputPort());
+    publicAPI.addActor(model.displayActor);
+    model.alwaysVisibleActors = [model.displayActor];
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.setGlyphResolution = macro.chain(publicAPI.setGlyphResolution, r => model._pipeline.glyph.setPhiResolution(r), r => model._pipeline.glyph.setThetaResolution(r));
+
+    // --------------------------------------------------------------------------
+
+    function callbackProxy(coords) {
+      if (model.displayCallback) {
+        const filteredList = [];
+        const states = publicAPI.getRepresentationStates();
+        for (let i = 0; i < states.length; i++) {
+          if (states[i].getActive()) {
+            filteredList.push(coords[i]);
+          }
+        }
+        if (filteredList.length) {
+          model.displayCallback(filteredList);
+          return;
+        }
+      }
+      model.displayCallback();
+    }
+    publicAPI.setDisplayCallback = callback => {
+      model.displayCallback = callback;
+      model.displayMapper.setCallback(callback ? callbackProxy : null);
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.is2DShape = () => Shapes2D.includes(model.shape);
+    publicAPI.isOrientableShape = () => ShapesOrientable.includes(model.shape);
+
+    /**
+     * Returns the orientation matrix to align glyph on model.orientation.
+     * */
+    function getOrientationRotation(viewMatrixInv) {
+      const displayOrientation = new Float64Array(3);
+      const baseDir = [0, 1, 0];
+      transformMat3(displayOrientation, model.orientation, viewMatrixInv);
+      displayOrientation[2] = 0;
+      const displayMatrix = vtkMatrixBuilder.buildFromDegree().rotateFromDirections(baseDir, displayOrientation).getMatrix();
+      const displayRotation = new Float64Array(9);
+      fromMat4(displayRotation, displayMatrix);
+      return displayRotation;
+    }
+    function getCameraFacingRotation(scale3, displayRotation, viewMatrix) {
+      const rotation = new Float64Array(9);
+      multiply$2(rotation, viewMatrix, displayRotation);
+      transformMat3(scale3, scale3, rotation);
+      return rotation;
+    }
+
+    /**
+     * Computes the rotation matrix of the glyph. There are 2 rotations:
+     *  - a first rotation to be oriented along model.rotation
+     *  - an optional second rotation to face the camera
+     * @param {vec3} scale3 Scale of the glyph, rotated when glyph is rotated.
+     */
+    function getGlyphRotation(scale3) {
+      const shouldFaceCamera = model.faceCamera === true || model.faceCamera == null && publicAPI.is2DShape();
+      const viewMatrix = new Float64Array(9);
+      fromMat4(viewMatrix, model.viewMatrix);
+      const viewMatrixInv = identity$5(new Float64Array(9));
+      if (shouldFaceCamera) {
+        invert$1(viewMatrixInv, viewMatrix);
+      }
+      let orientationRotation = null;
+      if (publicAPI.isOrientableShape()) {
+        orientationRotation = getOrientationRotation(viewMatrixInv);
+      } else {
+        orientationRotation = identity$5(new Float64Array(9));
+      }
+      if (shouldFaceCamera) {
+        orientationRotation = getCameraFacingRotation(scale3, orientationRotation, viewMatrix);
+      }
+      return orientationRotation;
+    }
+    function applyOrientation(polyData, states) {
+      model._pipeline.mapper.setOrientationArray('orientation');
+      model._pipeline.mapper.setOrientationMode(OrientationModes$1.MATRIX);
+      const orientation = allocateArray(polyData, 'orientation', states.length, 'Float32Array', 9).getData();
+      const defaultScale3 = [1, 1, 1];
+      for (let i = 0; i < states.length; ++i) {
+        const scale3 = states[i].getScale3?.() ?? defaultScale3;
+        const rotation = getGlyphRotation(scale3);
+        orientation.set(rotation, 9 * i);
+      }
+    }
+    publicAPI.setDirection(applyOrientation);
+    publicAPI.setNoOrientation(applyOrientation);
+    publicAPI.requestData = (inData, outData) => {
+      // FIXME: shape should NOT be mixin, but a representation property.
+      const shape = publicAPI.getRepresentationStates(inData[0])[0]?.getShape();
+      let shouldCreateGlyph = model._pipeline.glyph == null;
+      if (model.shape !== shape && Object.values(ShapeType$1).includes(shape)) {
+        model.shape = shape;
+        shouldCreateGlyph = true;
+      }
+      if (shouldCreateGlyph && model.shape) {
+        model._pipeline.glyph = createGlyph(model.shape);
+        model._pipeline.mapper.setInputConnection(model._pipeline.glyph.getOutputPort(), 1);
+      }
+      return superClass.requestData(inData, outData);
+    };
+    publicAPI.updateActorVisibility = function () {
+      let renderingType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : RenderingTypes$1.FRONT_BUFFER;
+      let ctxVisible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      let handleVisible = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+      const hasValidState = publicAPI.getRepresentationStates().length > 0;
+      superClass.updateActorVisibility(renderingType, ctxVisible, handleVisible && hasValidState);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  /**
+   *  'shape' default value is used first time 'shape' mixin is invalid.
+   *  'faceCamera' controls wether the glyph should face camera or not:
+   *    - null or undefined to leave it to shape type (i.e. 2D are facing camera,
+   *    3D are not)
+   *    - true to face camera
+   *    - false to not face camera
+   */
+  function defaultValues$2(initialValues) {
+    return {
+      faceCamera: null,
+      orientation: [1, 0, 0],
+      shape: ShapeType$1.SPHERE,
+      viewMatrix: identity$4(new Float64Array(16)),
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$5(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, defaultValues$2(initialValues));
+    vtkGlyphRepresentation$1.extend(publicAPI, model, initialValues);
+    macro.setGetArray(publicAPI, model, ['visibilityFlagArray'], 2);
+    macro.setGetArray(publicAPI, model, ['orientation'], 3);
+    macro.setGetArray(publicAPI, model, ['viewMatrix'], 16);
+    macro.setGet(publicAPI, model, ['faceCamera']);
+    // Object specific methods
+    vtkArrowHandleRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$5 = macro.newInstance(extend$5, 'vtkArrowHandleRepresentation');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkArrowHandleRepresentation$1 = {
+    newInstance: newInstance$5,
+    extend: extend$5
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkAbstractManipulator methods
+  // ----------------------------------------------------------------------------
+
+  function vtkAbstractManipulator(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkAbstractManipulator');
+    publicAPI.getOrigin = callData => {
+      if (model.userOrigin) return model.userOrigin;
+      if (model.useCameraFocalPoint) return callData.pokedRenderer.getActiveCamera().getFocalPoint();
+      if (model.handleOrigin) return model.handleOrigin;
+      if (model.widgetOrigin) return model.widgetOrigin;
+      return [0, 0, 0];
+    };
+    publicAPI.getNormal = callData => {
+      if (model.userNormal) return model.userNormal;
+      if (model.useCameraNormal) return callData.pokedRenderer.getActiveCamera().getDirectionOfProjection();
+      if (model.handleNormal) return model.handleNormal;
+      if (model.widgetNormal) return model.widgetNormal;
+      return [0, 0, 1];
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$2 = {
+    // userOrigin: null,
+    // handleOrigin: null,
+    // widgetOrigin: null,
+    // userNormal: null,
+    // handleNormal: null,
+    // widgetNormal: null
+    useCameraFocalPoint: false,
+    useCameraNormal: false
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$4(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$2, initialValues);
+    macro.obj(publicAPI, model);
+    macro.setGet(publicAPI, model, ['useCameraFocalPoint', 'useCameraNormal']);
+    macro.setGetArray(publicAPI, model, ['userOrigin', 'handleOrigin', 'widgetOrigin', 'userNormal', 'handleNormal', 'widgetNormal'], 3);
+    vtkAbstractManipulator(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$4 = macro.newInstance(extend$4, 'vtkAbstractManipulator');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkAbstractManipulator$1 = {
+    extend: extend$4,
+    newInstance: newInstance$4
+  };
+
+  function intersectDisplayWithPlane(x, y, planeOrigin, planeNormal, renderer, glRenderWindow) {
+    const near = glRenderWindow.displayToWorld(x, y, 0, renderer);
+    const far = glRenderWindow.displayToWorld(x, y, 1, renderer);
+    return vtkPlane$1.intersectWithLine(near, far, planeOrigin, planeNormal).x;
+  }
+
+  // ----------------------------------------------------------------------------
+  // vtkPlaneManipulator methods
+  // ----------------------------------------------------------------------------
+
+  function vtkPlaneManipulator(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkPlaneManipulator');
+    publicAPI.handleEvent = (callData, glRenderWindow) => ({
+      worldCoords: intersectDisplayWithPlane(callData.position.x, callData.position.y, publicAPI.getOrigin(callData), publicAPI.getNormal(callData), callData.pokedRenderer, glRenderWindow)
+    });
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  function defaultValues$1(initialValues) {
+    return {
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+
+  function extend$3(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    vtkAbstractManipulator$1.extend(publicAPI, model, defaultValues$1(initialValues));
+    vtkPlaneManipulator(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$3 = macro.newInstance(extend$3, 'vtkPlaneManipulator');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkPlanePointManipulator = {
+    intersectDisplayWithPlane,
+    extend: extend$3,
+    newInstance: newInstance$3
+  };
+
+  const VaryRadius$1 = {
+    VARY_RADIUS_OFF: 0,
+    // default
+    VARY_RADIUS_BY_SCALAR: 1,
+    VARY_RADIUS_BY_VECTOR: 2,
+    VARY_RADIUS_BY_ABSOLUTE_SCALAR: 3
+  };
+  const GenerateTCoords$1 = {
+    TCOORDS_OFF: 0,
+    // default
+    TCOORDS_FROM_NORMALIZED_LENGTH: 1,
+    TCOORDS_FROM_LENGTH: 2,
+    TCOORDS_FROM_SCALARS: 3
+  };
+  var Constants = {
+    VaryRadius: VaryRadius$1,
+    GenerateTCoords: GenerateTCoords$1
+  };
+
+  const {
+    VaryRadius,
+    GenerateTCoords
+  } = Constants;
+  const {
+    vtkDebugMacro,
+    vtkErrorMacro: vtkErrorMacro$1,
+    vtkWarningMacro
+  } = macro;
+
+  // ----------------------------------------------------------------------------
+  // vtkTubeFilter methods
+  // ----------------------------------------------------------------------------
+
+  function vtkTubeFilter(publicAPI, model) {
+    // Set our classname
+    model.classHierarchy.push('vtkTubeFilter');
+    function computeOffset(offset, npts) {
+      let newOffset = offset;
+      if (model.sidesShareVertices) {
+        newOffset += model.numberOfSides * npts;
+      } else {
+        // points are duplicated
+        newOffset += 2 * model.numberOfSides * npts;
+      }
+      if (model.capping) {
+        // cap points are duplicated
+        newOffset += 2 * model.numberOfSides;
+      }
+      return newOffset;
+    }
+    function findNextValidSegment(points, pointIds, start) {
+      const ptId = pointIds[start];
+      const ps = points.slice(3 * ptId, 3 * (ptId + 1));
+      let end = start + 1;
+      while (end < pointIds.length) {
+        const endPtId = pointIds[end];
+        const pe = points.slice(3 * endPtId, 3 * (endPtId + 1));
+        if (ps !== pe) {
+          return end - 1;
+        }
+        ++end;
+      }
+      return pointIds.length;
+    }
+    function generateSlidingNormals(pts, lines, normals) {
+      let firstNormal = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+      let normal = [0.0, 0.0, 1.0];
+      const lineData = lines;
+      // lid = 0;
+      let npts = lineData[0];
+      for (let i = 0; i < lineData.length; i += npts + 1) {
+        npts = lineData[i];
+        if (npts === 1) {
+          // return arbitrary
+          normals.setTuple(lineData[i + 1], normal);
+        } else if (npts > 1) {
+          let sNextId = 0;
+          let sPrev = [0, 0, 0];
+          const sNext = [0, 0, 0];
+          const linePts = lineData.slice(i + 1, i + 1 + npts);
+          sNextId = findNextValidSegment(pts, linePts, 0);
+          if (sNextId !== npts) {
+            // at least one valid segment
+            let pt1Id = linePts[sNextId];
+            let pt1 = pts.slice(3 * pt1Id, 3 * (pt1Id + 1));
+            let pt2Id = linePts[sNextId + 1];
+            let pt2 = pts.slice(3 * pt2Id, 3 * (pt2Id + 1));
+            sPrev = pt2.map((elem, idx) => elem - pt1[idx]);
+            normalize(sPrev);
+
+            // compute first normal
+            if (firstNormal) {
+              normal = firstNormal;
+            } else {
+              // find the next valid, non-parallel segment
+              while (++sNextId < npts) {
+                sNextId = findNextValidSegment(pts, linePts, sNextId);
+                if (sNextId !== npts) {
+                  pt1Id = linePts[sNextId];
+                  pt1 = pts.slice(3 * pt1Id, 3 * (pt1Id + 1));
+                  pt2Id = linePts[sNextId + 1];
+                  pt2 = pts.slice(3 * pt2Id, 3 * (pt2Id + 1));
+                  for (let j = 0; j < 3; ++j) {
+                    sNext[j] = pt2[j] - pt1[j];
+                  }
+                  normalize(sNext);
+
+                  // now the starting normal should simply be the cross product.
+                  // In the following if statement, we check for the case where
+                  // the two segments are parallel, in which case, continue
+                  // searching for the next valid segment
+                  const n = [0.0, 0.0, 0.0];
+                  cross(sPrev, sNext, n);
+                  if (norm(n) > 1.0e-3) {
+                    normal = n;
+                    sPrev = sNext;
+                    break;
+                  }
+                }
+              }
+              if (sNextId >= npts) {
+                // only one valid segment
+                // a little trick to find orthogonal normal
+                for (let j = 0; j < 3; ++j) {
+                  if (sPrev[j] !== 0.0) {
+                    normal[(j + 2) % 3] = 0.0;
+                    normal[(j + 1) % 3] = 1.0;
+                    normal[j] = -sPrev[(j + 1) % 3] / sPrev[j];
+                    break;
+                  }
+                }
+              }
+            }
+            normalize(normal);
+
+            // compute remaining normals
+            let lastNormalId = 0;
+            while (++sNextId < npts) {
+              sNextId = findNextValidSegment(pts, linePts, sNextId);
+              if (sNextId === npts) {
+                break;
+              }
+              pt1Id = linePts[sNextId];
+              pt1 = pts.slice(3 * pt1Id, 3 * (pt1Id + 1));
+              pt2Id = linePts[sNextId + 1];
+              pt2 = pts.slice(3 * pt2Id, 3 * (pt2Id + 1));
+              for (let j = 0; j < 3; ++j) {
+                sNext[j] = pt2[j] - pt1[j];
+              }
+              normalize(sNext);
+
+              // compute rotation vector
+              const w = [0.0, 0.0, 0.0];
+              cross(sPrev, normal, w);
+              if (normalize(w) !== 0.0) {
+                // can't use this segment otherwise
+                const q = [0.0, 0.0, 0.0];
+                cross(sNext, sPrev, q);
+                if (normalize(q) !== 0.0) {
+                  // can't use this segment otherwise
+                  const f1 = dot(q, normal);
+                  let f2 = 1.0 - f1 * f1;
+                  if (f2 > 0.0) {
+                    f2 = Math.sqrt(f2);
+                  } else {
+                    f2 = 0.0;
+                  }
+                  const c = [0, 0, 0];
+                  for (let j = 0; j < 3; ++j) {
+                    c[j] = sNext[j] + sPrev[j];
+                  }
+                  normalize(c);
+                  cross(c, q, w);
+                  cross(sPrev, q, c);
+                  if (dot(normal, c) * dot(w, c) < 0.0) {
+                    f2 *= -1.0;
+                  }
+
+                  // insert current normal before updating
+                  for (let j = lastNormalId; j < sNextId; ++j) {
+                    normals.setTuple(linePts[j], normal);
+                  }
+                  lastNormalId = sNextId;
+                  sPrev = sNext;
+
+                  // compute next normal
+                  normal = f1 * q + f2 * w;
+                }
+              }
+            }
+
+            // insert last normal for the remaining points
+            for (let j = lastNormalId; j < npts; ++j) {
+              normals.setTuple(linePts[j], normal);
+            }
+          } else {
+            // no valid segments
+            for (let j = 0; j < npts; ++j) {
+              normals.setTuple(linePts[j], normal);
+            }
+          }
+        }
+      }
+      return 1;
+    }
+    function generatePoints(offset, npts, pts, inPts, newPts, pd, outPD, newNormals, inScalars, range, inVectors, maxSpeed, inNormals, theta) {
+      // Use averaged segment to create beveled effect.
+      const sNext = [0.0, 0.0, 0.0];
+      const sPrev = [0.0, 0.0, 0.0];
+      const startCapNorm = [0.0, 0.0, 0.0];
+      const endCapNorm = [0.0, 0.0, 0.0];
+      let p = [0.0, 0.0, 0.0];
+      let pNext = [0.0, 0.0, 0.0];
+      let s = [0.0, 0.0, 0.0];
+      let n = [0.0, 0.0, 0.0];
+      const w = [0.0, 0.0, 0.0];
+      const nP = [0.0, 0.0, 0.0];
+      const normal = [0.0, 0.0, 0.0];
+      let sFactor = 1.0;
+      let ptId = offset;
+      const vector = [];
+      for (let j = 0; j < npts; ++j) {
+        // First point
+        if (j === 0) {
+          p = inPts.slice(3 * pts[0], 3 * (pts[0] + 1));
+          pNext = inPts.slice(3 * pts[1], 3 * (pts[1] + 1));
+          for (let i = 0; i < 3; ++i) {
+            sNext[i] = pNext[i] - p[i];
+            sPrev[i] = sNext[i];
+            startCapNorm[i] = -sPrev[i];
+          }
+          normalize(startCapNorm);
+        } else if (j === npts - 1) {
+          for (let i = 0; i < 3; ++i) {
+            sPrev[i] = sNext[i];
+            p[i] = pNext[i];
+            endCapNorm[i] = sNext[i];
+          }
+          normalize(endCapNorm);
+        } else {
+          for (let i = 0; i < 3; ++i) {
+            p[i] = pNext[i];
+          }
+          pNext = inPts.slice(3 * pts[j + 1], 3 * (pts[j + 1] + 1));
+          for (let i = 0; i < 3; ++i) {
+            sPrev[i] = sNext[i];
+            sNext[i] = pNext[i] - p[i];
+          }
+        }
+        if (normalize(sNext) === 0.0) {
+          vtkWarningMacro('Coincident points!');
+          return 0;
+        }
+        for (let i = 0; i < 3; ++i) {
+          s[i] = (sPrev[i] + sNext[i]) / 2.0; // average vector
+        }
+
+        n = inNormals.slice(3 * pts[j], 3 * (pts[j] + 1));
+        // if s is zero then just use sPrev cross n
+        if (normalize(s) === 0.0) {
+          cross(sPrev, n, s);
+          if (normalize(s) === 0.0) {
+            vtkDebugMacro('Using alternate bevel vector');
+          }
+        }
+        cross(s, n, w);
+        if (normalize(w) === 0.0) {
+          let msg = 'Bad normal: s = ';
+          msg += `${s[0]},  ${s[1]}, ${s[2]}`;
+          msg += ` n = ${n[0]},  ${n[1]}, ${n[2]}`;
+          vtkWarningMacro(msg);
+          return 0;
+        }
+        cross(w, s, nP); // create orthogonal coordinate system
+        normalize(nP);
+
+        // Compute a scalar factor based on scalars or vectors
+        if (inScalars && model.varyRadius === VaryRadius.VARY_RADIUS_BY_SCALAR) {
+          sFactor = 1.0 + (model.radiusFactor - 1.0) * (inScalars.getComponent(pts[j], 0) - range[0]) / (range[1] - range[0]);
+        } else if (inVectors && model.varyRadius === VaryRadius.VARY_RADIUS_BY_VECTOR) {
+          sFactor = Math.sqrt(maxSpeed / norm(inVectors.getTuple(pts[j], vector)));
+          if (sFactor > model.radiusFactor) {
+            sFactor = model.radiusFactor;
+          }
+        } else if (inScalars && model.varyRadius === VaryRadius.VARY_RADIUS_BY_ABSOLUTE_SCALAR) {
+          sFactor = inScalars.getComponent(pts[j], 0);
+          if (sFactor < 0.0) {
+            vtkWarningMacro('Scalar value less than zero, skipping line');
+            return 0;
+          }
+        }
+
+        // create points around line
+        if (model.sidesShareVertices) {
+          for (let k = 0; k < model.numberOfSides; ++k) {
+            for (let i = 0; i < 3; ++i) {
+              normal[i] = w[i] * Math.cos(k * theta) + nP[i] * Math.sin(k * theta);
+              s[i] = p[i] + model.radius * sFactor * normal[i];
+              newPts[3 * ptId + i] = s[i];
+              newNormals[3 * ptId + i] = normal[i];
+            }
+            outPD.passData(pd, pts[j], ptId);
+            ptId++;
+          } // for each side
+        } else {
+          const nRight = [0, 0, 0];
+          const nLeft = [0, 0, 0];
+          for (let k = 0; k < model.numberOfSides; ++k) {
+            for (let i = 0; i < 3; ++i) {
+              // Create duplicate vertices at each point
+              // and adjust the associated normals so that they are
+              // oriented with the facets. This preserves the tube's
+              // polygonal appearance, as if by flat-shading around the tube,
+              // while still allowing smooth (gouraud) shading along the
+              // tube as it bends.
+              normal[i] = w[i] * Math.cos(k * theta) + nP[i] * Math.sin(k * theta);
+              nRight[i] = w[i] * Math.cos((k - 0.5) * theta) + nP[i] * Math.sin((k - 0.5) * theta);
+              nLeft[i] = w[i] * Math.cos((k + 0.5) * theta) + nP[i] * Math.sin((k + 0.5) * theta);
+              s[i] = p[i] + model.radius * sFactor * normal[i];
+              newPts[3 * ptId + i] = s[i];
+              newNormals[3 * ptId + i] = nRight[i];
+              newPts[3 * (ptId + 1) + i] = s[i];
+              newNormals[3 * (ptId + 1) + i] = nLeft[i];
+            }
+            outPD.passData(pd, pts[j], ptId + 1);
+            ptId += 2;
+          } // for each side
+        } // else separate vertices
+      } // for all points in the polyline
+
+      // Produce end points for cap. They are placed at tail end of points.
+      if (model.capping) {
+        let numCapSides = model.numberOfSides;
+        let capIncr = 1;
+        if (!model.sidesShareVertices) {
+          numCapSides = 2 * model.numberOfSides;
+          capIncr = 2;
+        }
+
+        // the start cap
+        for (let k = 0; k < numCapSides; k += capIncr) {
+          s = newPts.slice(3 * (offset + k), 3 * (offset + k + 1));
+          for (let i = 0; i < 3; ++i) {
+            newPts[3 * ptId + i] = s[i];
+            newNormals[3 * ptId + i] = startCapNorm[i];
+          }
+          outPD.passData(pd, pts[0], ptId);
+          ptId++;
+        }
+
+        // the end cap
+        let endOffset = offset + (npts - 1) * model.numberOfSides;
+        if (!model.sidesShareVertices) {
+          endOffset = offset + 2 * (npts - 1) * model.numberOfSides;
+        }
+        for (let k = 0; k < numCapSides; k += capIncr) {
+          s = newPts.slice(3 * (endOffset + k), 3 * (endOffset + k + 1));
+          for (let i = 0; i < 3; ++i) {
+            newPts[3 * ptId + i] = s[i];
+            newNormals[3 * ptId + i] = endCapNorm[i];
+          }
+          outPD.passData(pd, pts[npts - 1], ptId);
+          ptId++;
+        }
+      } // if capping
+
+      return 1;
+    }
+    function generateStrips(offset, npts, inCellId, outCellId, inCD, outCD, newStrips) {
+      let i1 = 0;
+      let i2 = 0;
+      let i3 = 0;
+      let newOutCellId = outCellId;
+      let outCellIdx = 0;
+      const newStripsData = newStrips.getData();
+      let cellId = 0;
+      while (outCellIdx < newStripsData.length) {
+        if (cellId === outCellId) {
+          break;
+        }
+        outCellIdx += newStripsData[outCellIdx] + 1;
+        cellId++;
+      }
+      if (model.sidesShareVertices) {
+        for (let k = offset; k < model.numberOfSides + offset; k += model.onRatio) {
+          i1 = k % model.numberOfSides;
+          i2 = (k + 1) % model.numberOfSides;
+          newStripsData[outCellIdx++] = npts * 2;
+          for (let i = 0; i < npts; ++i) {
+            i3 = i * model.numberOfSides;
+            newStripsData[outCellIdx++] = offset + i2 + i3;
+            newStripsData[outCellIdx++] = offset + i1 + i3;
+          }
+          outCD.passData(inCD, inCellId, newOutCellId++);
+        } // for each side of the tube
+      } else {
+        for (let k = offset; k < model.numberOfSides + offset; k += model.onRatio) {
+          i1 = 2 * (k % model.numberOfSides) + 1;
+          i2 = 2 * ((k + 1) % model.numberOfSides);
+          // outCellId = newStrips.getNumberOfCells(true);
+          newStripsData[outCellIdx] = npts * 2;
+          outCellIdx++;
+          for (let i = 0; i < npts; ++i) {
+            i3 = i * 2 * model.numberOfSides;
+            newStripsData[outCellIdx++] = offset + i2 + i3;
+            newStripsData[outCellIdx++] = offset + i1 + i3;
+          }
+          outCD.passData(inCD, inCellId, newOutCellId++);
+        } // for each side of the tube
+      }
+
+      // Take care of capping. The caps are n-sided polygons that can be easily
+      // triangle stripped.
+      if (model.capping) {
+        let startIdx = offset + npts * model.numberOfSides;
+        let idx = 0;
+        if (!model.sidesShareVertices) {
+          startIdx = offset + 2 * npts * model.numberOfSides;
+        }
+
+        // The start cap
+        newStripsData[outCellIdx++] = model.numberOfSides;
+        newStripsData[outCellIdx++] = startIdx;
+        newStripsData[outCellIdx++] = startIdx + 1;
+        let k = 0;
+        for (i1 = model.numberOfSides - 1, i2 = 2, k = 0; k < model.numberOfSides - 2; ++k) {
+          if (k % 2) {
+            idx = startIdx + i2;
+            newStripsData[outCellIdx++] = idx;
+            i2++;
+          } else {
+            idx = startIdx + i1;
+            newStripsData[outCellIdx++] = idx;
+            i1--;
+          }
+        }
+        outCD.passData(inCD, inCellId, newOutCellId++);
+
+        // The end cap - reversed order to be consistent with normal
+        startIdx += model.numberOfSides;
+        newStripsData[outCellIdx++] = model.numberOfSides;
+        newStripsData[outCellIdx++] = startIdx;
+        newStripsData[outCellIdx++] = startIdx + model.numberOfSides - 1;
+        for (i1 = model.numberOfSides - 2, i2 = 1, k = 0; k < model.numberOfSides - 2; ++k) {
+          if (k % 2) {
+            idx = startIdx + i1;
+            newStripsData[outCellIdx++] = idx;
+            i1--;
+          } else {
+            idx = startIdx + i2;
+            newStripsData[outCellIdx++] = idx;
+            i2++;
+          }
+        }
+        outCD.passData(inCD, inCellId, newOutCellId++);
+      }
+      return newOutCellId;
+    }
+    function generateTCoords(offset, npts, pts, inPts, inScalars, newTCoords) {
+      let numSides = model.numberOfSides;
+      if (!model.sidesShareVertices) {
+        numSides = 2 * model.numberOfSides;
+      }
+      let tc = 0.0;
+      let s0 = 0.0;
+      let s = 0.0;
+      const inScalarsData = inScalars.getData();
+      if (model.generateTCoords === GenerateTCoords.TCOORDS_FROM_SCALARS) {
+        s0 = inScalarsData[pts[0]];
+        for (let i = 0; i < npts; ++i) {
+          s = inScalarsData[pts[i]];
+          tc = (s - s0) / model.textureLength;
+          for (let k = 0; k < numSides; ++k) {
+            const tcy = k / (numSides - 1);
+            const tcId = 2 * (offset + i * numSides + k);
+            newTCoords[tcId] = tc;
+            newTCoords[tcId + 1] = tcy;
+          }
+        }
+      } else if (model.generateTCoords === GenerateTCoords.TCOORDS_FROM_LENGTH) {
+        let len = 0.0;
+        const xPrev = inPts.slice(3 * pts[0], 3 * (pts[0] + 1));
+        for (let i = 0; i < npts; ++i) {
+          const x = inPts.slice(3 * pts[i], 3 * (pts[i] + 1));
+          len += Math.sqrt(distance2BetweenPoints(x, xPrev));
+          tc = len / model.textureLength;
+          for (let k = 0; k < numSides; ++k) {
+            const tcy = k / (numSides - 1);
+            const tcId = 2 * (offset + i * numSides + k);
+            newTCoords[tcId] = tc;
+            newTCoords[tcId + 1] = tcy;
+          }
+          for (let k = 0; k < 3; ++k) {
+            xPrev[k] = x[k];
+          }
+        }
+      } else if (model.generateTCoords === GenerateTCoords.TCOORDS_FROM_NORMALIZED_LENGTH) {
+        let len = 0.0;
+        let len1 = 0.0;
+        let xPrev = inPts.slice(3 * pts[0], 3 * (pts[0] + 1));
+        for (let i = 0; i < npts; ++i) {
+          const x = inPts.slice(3 * pts[i], 3 * (pts[i] + 1));
+          len1 += Math.sqrt(distance2BetweenPoints(x, xPrev));
+          for (let k = 0; k < 3; ++k) {
+            xPrev[k] = x[k];
+          }
+        }
+        xPrev = inPts.slice(3 * pts[0], 3 * (pts[0] + 1));
+        for (let i = 0; i < npts; ++i) {
+          const x = inPts.slice(3 * pts[i], 3 * (pts[i] + 1));
+          len += Math.sqrt(distance2BetweenPoints(x, xPrev));
+          tc = len / len1;
+          for (let k = 0; k < numSides; ++k) {
+            const tcy = k / (numSides - 1);
+            const tcId = 2 * (offset + i * numSides + k);
+            newTCoords[tcId] = tc;
+            newTCoords[tcId + 1] = tcy;
+          }
+          for (let k = 0; k < 3; ++k) {
+            xPrev[k] = x[k];
+          }
+        }
+      }
+
+      // Capping, set the endpoints as appropriate
+      if (model.capping) {
+        const startIdx = offset + npts * numSides;
+
+        // start cap
+        for (let ik = 0; ik < model.numberOfSides; ++ik) {
+          const tcId = 2 * (startIdx + ik);
+          newTCoords[tcId] = 0.0;
+          newTCoords[tcId + 1] = 0.0;
+        }
+
+        // end cap
+        for (let ik = 0; ik < model.numberOfSides; ++ik) {
+          const tcId = 2 * (startIdx + model.numberOfSides + ik);
+          newTCoords[tcId] = 0.0;
+          newTCoords[tcId + 1] = 0.0;
+        }
+      }
+    }
+    publicAPI.requestData = (inData, outData) => {
+      // implement requestData
+      // pass through for now
+      const output = vtkPolyData$1.newInstance();
+      outData[0] = output;
+      const input = inData[0];
+      if (!input) {
+        vtkErrorMacro$1('Invalid or missing input');
+        return;
+      }
+
+      // Allocate output
+      const inPts = input.getPoints();
+      if (!inPts) {
+        return;
+      }
+      const numPts = inPts.getNumberOfPoints();
+      if (numPts < 1) {
+        return;
+      }
+      const inLines = input.getLines();
+      if (!inLines) {
+        return;
+      }
+      const numLines = inLines.getNumberOfCells();
+      if (numLines < 1) {
+        return;
+      }
+      let numNewPts = 0;
+      let numStrips = 0;
+      const inLinesData = inLines.getData();
+      let npts = inLinesData[0];
+      for (let i = 0; i < inLinesData.length; i += npts + 1) {
+        npts = inLinesData[i];
+        numNewPts = computeOffset(numNewPts, npts);
+        numStrips += (2 * npts + 1) * Math.ceil(model.numberOfSides / model.onRatio);
+        if (model.capping) {
+          numStrips += 2 * (model.numberOfSides + 1);
+        }
+      }
+      let pointType = inPts.getDataType();
+      if (model.outputPointsPrecision === DesiredOutputPrecision.SINGLE) {
+        pointType = VtkDataTypes$5.FLOAT;
+      } else if (model.outputPointsPrecision === DesiredOutputPrecision.DOUBLE) {
+        pointType = VtkDataTypes$5.DOUBLE;
+      }
+      const newPts = vtkPoints$1.newInstance({
+        dataType: pointType,
+        size: numNewPts * 3,
+        numberOfComponents: 3
+      });
+      const numNormals = 3 * numNewPts;
+      const newNormalsData = new Float32Array(numNormals);
+      const newNormals = vtkDataArray$1.newInstance({
+        numberOfComponents: 3,
+        values: newNormalsData,
+        name: 'TubeNormals'
+      });
+      const newStripsData = new Uint32Array(numStrips);
+      const newStrips = vtkCellArray$1.newInstance({
+        values: newStripsData
+      });
+      let newStripId = 0;
+      let inNormals = input.getPointData().getNormals();
+      let inNormalsData = null;
+      let generateNormals = false;
+      if (!inNormals || model.useDefaultNormal) {
+        inNormalsData = new Float32Array(3 * numPts);
+        inNormals = vtkDataArray$1.newInstance({
+          numberOfComponents: 3,
+          values: inNormalsData,
+          name: 'Normals'
+        });
+        if (model.useDefaultNormal) {
+          inNormalsData = inNormalsData.map((elem, index) => {
+            const i = index % 3;
+            return model.defaultNormal[i];
+          });
+        } else {
+          generateNormals = true;
+        }
+      }
+
+      // loop over pointData arrays and resize based on numNewPts
+      const numArrays = input.getPointData().getNumberOfArrays();
+      let oldArray = null;
+      let newArray = null;
+      for (let i = 0; i < numArrays; i++) {
+        oldArray = input.getPointData().getArrayByIndex(i);
+        newArray = vtkDataArray$1.newInstance({
+          name: oldArray.getName(),
+          dataType: oldArray.getDataType(),
+          numberOfComponents: oldArray.getNumberOfComponents(),
+          size: numNewPts * oldArray.getNumberOfComponents()
+        });
+        output.getPointData().addArray(newArray); // concat newArray to end
+      }
+
+      // loop over cellData arrays and resize based on numNewCells
+      let numNewCells = inLines.getNumberOfCells() * model.numberOfSides;
+      if (model.capping) {
+        numNewCells += 2;
+      }
+      const numCellArrays = input.getCellData().getNumberOfArrays();
+      for (let i = 0; i < numCellArrays; i++) {
+        oldArray = input.getCellData().getArrayByIndex(i);
+        newArray = vtkDataArray$1.newInstance({
+          name: oldArray.getName(),
+          dataType: oldArray.getDataType(),
+          numberOfComponents: oldArray.getNumberOfComponents(),
+          size: numNewCells * oldArray.getNumberOfComponents()
+        });
+        output.getCellData().addArray(newArray); // concat newArray to end
+      }
+
+      const inScalars = publicAPI.getInputArrayToProcess(0);
+      let outScalars = null;
+      let range = [];
+      if (inScalars) {
+        // allocate output scalar array
+        // assuming point scalars for now
+        outScalars = vtkDataArray$1.newInstance({
+          name: inScalars.getName(),
+          dataType: inScalars.getDataType(),
+          numberOfComponents: inScalars.getNumberOfComponents(),
+          size: numNewPts * inScalars.getNumberOfComponents()
+        });
+        range = inScalars.getRange();
+        if (range[1] - range[0] === 0.0) {
+          if (model.varyRadius === VaryRadius.VARY_RADIUS_BY_SCALAR) {
+            vtkWarningMacro('Scalar range is zero!');
+          }
+          range[1] = range[0] + 1.0;
+        }
+      }
+      const inVectors = publicAPI.getInputArrayToProcess(1);
+      let maxSpeed = 0;
+      if (inVectors) {
+        maxSpeed = inVectors.getMaxNorm();
+      }
+      const outCD = output.getCellData();
+      outCD.copyNormalsOff();
+      outCD.passData(input.getCellData());
+      const outPD = output.getPointData();
+      if (outPD.getNormals() !== null) {
+        outPD.copyNormalsOff();
+      }
+      if (inScalars && outScalars) {
+        outPD.setScalars(outScalars);
+      }
+
+      // TCoords
+      let newTCoords = null;
+      if (model.generateTCoords === GenerateTCoords.TCOORDS_FROM_SCALARS && inScalars || model.generateTCoords === GenerateTCoords.TCOORDS_FROM_LENGTH || model.generateTCoords === GenerateTCoords.TCOORDS_FROM_NORMALIZED_LENGTH) {
+        const newTCoordsData = new Float32Array(2 * numNewPts);
+        newTCoords = vtkDataArray$1.newInstance({
+          numberOfComponents: 2,
+          values: newTCoordsData,
+          name: 'TCoords'
+        });
+        outPD.copyTCoordsOff();
+      }
+      outPD.passData(input.getPointData());
+
+      // Create points along each polyline that are connected into numberOfSides
+      // triangle strips.
+      const theta = 2.0 * Math.PI / model.numberOfSides;
+      npts = inLinesData[0];
+      let offset = 0;
+      let inCellId = input.getVerts().getNumberOfCells();
+      for (let i = 0; i < inLinesData.length; i += npts + 1) {
+        npts = inLinesData[i];
+        const pts = inLinesData.slice(i + 1, i + 1 + npts);
+        if (npts > 1) {
+          // if not, skip tubing this line
+          if (generateNormals) {
+            const polyLine = inLinesData.slice(i, i + npts + 1);
+            generateSlidingNormals(inPts.getData(), polyLine, inNormals);
+          }
+        }
+        // generate points
+        if (generatePoints(offset, npts, pts, inPts.getData(), newPts.getData(), input.getPointData(), outPD, newNormalsData, inScalars, range, inVectors, maxSpeed, inNormalsData, theta)) {
+          // generate strips for the polyline
+          newStripId = generateStrips(offset, npts, inCellId, newStripId, input.getCellData(), outCD, newStrips);
+          // generate texture coordinates for the polyline
+          if (newTCoords) {
+            generateTCoords(offset, npts, pts, inPts.getData(), inScalars, newTCoords.getData());
+          }
+        } else {
+          // skip tubing this line
+          vtkWarningMacro('Could not generate points');
+        }
+        // lineIdx += npts;
+        // Compute the new offset for the next polyline
+        offset = computeOffset(offset, npts);
+        inCellId++;
+      }
+      output.setPoints(newPts);
+      output.setStrips(newStrips);
+      output.setPointData(outPD);
+      outPD.setNormals(newNormals);
+      outData[0] = output;
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES$1 = {
+    outputPointsPrecision: DesiredOutputPrecision.DEFAULT,
+    radius: 0.5,
+    varyRadius: VaryRadius.VARY_RADIUS_OFF,
+    numberOfSides: 3,
+    radiusFactor: 10,
+    defaultNormal: [0, 0, 1],
+    useDefaultNormal: false,
+    sidesShareVertices: true,
+    capping: false,
+    onRatio: 1,
+    offset: 0,
+    generateTCoords: GenerateTCoords.TCOORDS_OFF,
+    textureLength: 1.0
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$2(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, DEFAULT_VALUES$1, initialValues);
+
+    // Build VTK API
+    macro.setGet(publicAPI, model, ['outputPointsPrecision', 'radius', 'varyRadius', 'numberOfSides', 'radiusFactor', 'defaultNormal', 'useDefaultNormal', 'sidesShareVertices', 'capping', 'onRatio', 'offset', 'generateTCoords', 'textureLength']);
+
+    // Make this a VTK object
+    macro.obj(publicAPI, model);
+
+    // Also make it an algorithm with one input and one output
+    macro.algo(publicAPI, model, 1, 1);
+
+    // Object specific methods
+    vtkTubeFilter(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$2 = macro.newInstance(extend$2, 'vtkTubeFilter');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkTubeFilter$1 = {
+    newInstance: newInstance$2,
+    extend: extend$2
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkPolyLineRepresentation methods
+  // ----------------------------------------------------------------------------
+
+  function vtkPolyLineRepresentation(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkPolyLineRepresentation');
+    const superClass = {
+      ...publicAPI
+    };
+
+    // --------------------------------------------------------------------------
+    // Internal polydata dataset
+    // --------------------------------------------------------------------------
+    const internalPolyData = vtkPolyData$1.newInstance({
+      mtime: 0
+    });
+    function allocateSize(polyData, size) {
+      let closePolyLine = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      let points = null;
+      if (size < 2) {
+        // FIXME: Why 1 point and not 0 ?
+        points = allocateArray(polyData, 'points', 1).getData();
+        points.set([0, 0, 0]);
+        allocateArray(polyData, 'lines', 0).getData();
+      } else if (!polyData.getPoints() || polyData.getPoints().length !== size * 3) {
+        points = allocateArray(polyData, 'points', size).getData();
+        const cellSize = size + (closePolyLine ? 1 : 0);
+        if (polyData.getLines().getNumberOfCells() !== 1 || polyData.getLines().getCellSizes()[0] !== cellSize) {
+          const lines = allocateArray(polyData, 'lines', cellSize + 1); // +1 for the number of points
+          const cellData = lines.getData();
+          cellData[0] = cellSize;
+          for (let i = 1; i <= cellSize; i++) {
+            cellData[i] = i - 1;
+          }
+          if (closePolyLine) {
+            cellData[cellSize] = 0;
+          }
+          lines.setData(cellData);
+        }
+      }
+      return points;
+    }
+
+    /**
+     * Change the line/tube thickness.
+     * @param {number} lineThickness
+     */
+    function applyLineThickness(lineThickness) {
+      let scaledLineThickness = lineThickness;
+      if (publicAPI.getScaleInPixels() && internalPolyData) {
+        const center = vtkBoundingBox.getCenter(internalPolyData.getBounds());
+        scaledLineThickness *= getPixelWorldHeightAtCoord(center, model.displayScaleParams);
+      }
+      model._pipelines.tubes.filter.setRadius(scaledLineThickness);
+    }
+
+    // --------------------------------------------------------------------------
+    // Generic rendering pipeline
+    // --------------------------------------------------------------------------
+
+    model._pipelines = {
+      tubes: {
+        source: publicAPI,
+        filter: vtkTubeFilter$1.newInstance({
+          radius: model.lineThickness,
+          numberOfSides: 12,
+          capping: false
+        }),
+        mapper: vtkMapper$1.newInstance(),
+        actor: vtkActor$1.newInstance({
+          parentProp: publicAPI
+        })
+      }
+    };
+    vtkWidgetRepresentation$1.connectPipeline(model._pipelines.tubes);
+    publicAPI.addActor(model._pipelines.tubes.actor);
+
+    // --------------------------------------------------------------------------
+    publicAPI.requestData = (inData, outData) => {
+      const state = inData[0];
+      outData[0] = internalPolyData;
+
+      // Remove invalid and coincident points for tube filter.
+      const list = publicAPI.getRepresentationStates(state).reduce((subStates, subState) => {
+        const subStateOrigin = subState.getOrigin && subState.getOrigin() ? subState.getOrigin() : null;
+        const previousSubStateOrigin = subStates.length && subStates[subStates.length - 1].getOrigin();
+        if (!subStateOrigin || previousSubStateOrigin && areEquals(subStateOrigin, previousSubStateOrigin)) {
+          return subStates;
+        }
+        subStates.push(subState);
+        return subStates;
+      }, []);
+      const size = list.length;
+      const points = allocateSize(outData[0], size, model.closePolyLine && size > 2);
+      if (points) {
+        for (let i = 0; i < size; i++) {
+          const coords = list[i].getOrigin();
+          points[i * 3] = coords[0];
+          points[i * 3 + 1] = coords[1];
+          points[i * 3 + 2] = coords[2];
+        }
+      }
+      outData[0].getPoints().modified();
+      outData[0].modified();
+      const lineThickness = state.getLineThickness?.() ?? model.lineThickness;
+      applyLineThickness(lineThickness);
+    };
+
+    /**
+     * When mousing over the line, if behavior != CONTEXT,
+     * returns the parent state.
+     * @param {object} prop
+     * @param {number} compositeID
+     * @returns {object}
+     */
+    publicAPI.getSelectedState = (prop, compositeID) => model.inputData[0];
+    publicAPI.updateActorVisibility = (renderingType, ctxVisible, hVisible) => {
+      const state = model.inputData[0];
+
+      // Make lines/tubes thicker for picking
+      let lineThickness = state.getLineThickness?.() ?? model.lineThickness;
+      if (renderingType === RenderingTypes$1.PICKING_BUFFER) {
+        lineThickness = Math.max(4, lineThickness);
+      }
+      applyLineThickness(lineThickness);
+      return superClass.updateActorVisibility(renderingType, ctxVisible, hVisible);
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+
+  const DEFAULT_VALUES = {
+    threshold: Number.EPSILON,
+    closePolyLine: false,
+    lineThickness: 2,
+    scaleInPixels: true
+  };
+
+  // ----------------------------------------------------------------------------
+
+  function extend$1(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    const newDefault = {
+      ...DEFAULT_VALUES,
+      ...initialValues
+    };
+    vtkWidgetRepresentation$1.extend(publicAPI, model, newDefault);
+    macro.setGet(publicAPI, model, ['threshold', 'closePolyLine', 'lineThickness']);
+    vtkPolyLineRepresentation(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$1 = macro.newInstance(extend$1, 'vtkPolyLineRepresentation');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkPolyLineRepresentation$1 = {
+    newInstance: newInstance$1,
+    extend: extend$1
+  };
+
+  function calculateTextPosition(model) {
+    const vector = [0, 0, 0];
+    const handle1WorldPos = model.widgetState.getHandle1().getOrigin();
+    const handle2WorldPos = model.widgetState.getHandle2().getOrigin();
+    if (!handle1WorldPos || !handle2WorldPos) {
+      return null;
+    }
+    let statePositionOnLine = model.widgetState.getPositionOnLine().getPosOnLine();
+    statePositionOnLine = 1 - statePositionOnLine;
+    subtract(handle1WorldPos, handle2WorldPos, vector);
+    multiplyScalar(vector, statePositionOnLine);
+    add(vector, handle2WorldPos, vector);
+    return vector;
+  }
+  function updateTextPosition(model) {
+    const SVGTextState = model.widgetState.getText();
+    SVGTextState.setOrigin(calculateTextPosition(model));
+  }
+  function isHandlePlaced(handleIndex, widgetState) {
+    if (handleIndex === 2) {
+      return widgetState.getMoveHandle().getOrigin() != null;
+    }
+    const handle1Origin = widgetState.getHandle1().getOrigin();
+    if (handleIndex === 0) {
+      return handle1Origin != null;
+    }
+    const handle2Origin = widgetState.getHandle2().getOrigin();
+    return handle1Origin && handle2Origin && !areEquals(handle1Origin, handle2Origin, 0);
+  }
+
+  /**
+   * Returns the world position of line extremities (placed or not).
+   * Returns null if no extremity exist.
+   * @param {number} handleIndex 0 or 1
+   * @param {object} widgetState state of line widget
+   * @param {bool} moveHandle Get move handle position if moveHandle is true and handle is not placed
+   */
+  function getPoint(handleIndex, widgetState) {
+    let moveHandle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+    const handle = moveHandle && !isHandlePlaced(handleIndex, widgetState) ? widgetState.getMoveHandle() : widgetState[`getHandle${handleIndex + 1}`]();
+    const origin = handle.getOrigin();
+    return origin || null;
+  }
+
+  /**
+   * Returns the number of handle placed on the scene by checking
+   * handle positions. Returns 2 when the user is still
+   * placing 2nd handle
+   * */
+  function getNumberOfPlacedHandles(widgetState) {
+    let numberOfPlacedHandles = 0;
+    if (isHandlePlaced(0, widgetState)) {
+      numberOfPlacedHandles = 1 + isHandlePlaced(1, widgetState);
+    }
+    return numberOfPlacedHandles;
+  }
+
+  const {
+    ShapeType
+  } = Constants$1;
+  // Total number of points to place
+  const MAX_POINTS = 2;
+  const handleGetters = ['getHandle1', 'getHandle2', 'getMoveHandle'];
+  function widgetBehavior(publicAPI, model) {
+    model.classHierarchy.push('vtkLineWidgetProp');
+    model._isDragging = false;
+
+    /**
+     * Returns the handle at the handleIndex'th index.
+     * @param {number} handleIndex 0, 1 or 2
+     */
+    publicAPI.getHandle = handleIndex => model.widgetState[handleGetters[handleIndex]]();
+
+    /**
+     * Return the index in the of tbe handle in `representations` array,
+     * or -1 if the handle is not present in the widget state.
+     */
+    publicAPI.getHandleIndex = handle => {
+      switch (handle) {
+        case model.widgetState.getHandle1():
+          return 0;
+        case model.widgetState.getHandle2():
+          return 1;
+        case model.widgetState.getMoveHandle():
+          return 2;
+        default:
+          return -1;
+      }
+    };
+    publicAPI.isPlaced = () => getNumberOfPlacedHandles(model.widgetState) === MAX_POINTS;
+
+    // --------------------------------------------------------------------------
+    // Interactor event
+    // --------------------------------------------------------------------------
+
+    function ignoreKey(e) {
+      return e.altKey || e.controlKey || e.shiftKey;
+    }
+    function updateCursor(callData) {
+      model._isDragging = true;
+      const manipulator = model.activeState?.getManipulator?.() ?? model.manipulator;
+      model.previousPosition = manipulator.handleEvent(callData, model._apiSpecificRenderWindow).worldCoords;
+      model._apiSpecificRenderWindow.setCursor('grabbing');
+      model._interactor.requestAnimation(publicAPI);
+    }
+
+    // --------------------------------------------------------------------------
+    // Text methods
+    // --------------------------------------------------------------------------
+
+    publicAPI.setText = text => {
+      model.widgetState.getText().setText(text);
+      model._interactor.render();
+    };
+
+    // --------------------------------------------------------------------------
+    // Handle positioning methods
+    // --------------------------------------------------------------------------
+
+    // Handle utilities ---------------------------------------------------------
+
+    function getLineDirection(p1, p2) {
+      const dir = subtract(p1, p2, []);
+      normalize(dir);
+      return dir;
+    }
+
+    // Handle orientation & rotation ---------------------------------------------------------
+
+    function computeMousePosition(p1, callData) {
+      const displayMousePos = publicAPI.computeWorldToDisplay(model._renderer, ...p1);
+      const worldMousePos = publicAPI.computeDisplayToWorld(model._renderer, callData.position.x, callData.position.y, displayMousePos[2]);
+      return worldMousePos;
+    }
+
+    /**
+     * Returns the  handle orientation to match the direction vector of the polyLine from one tip to another
+     * @param {number} handleIndex 0 for handle1, 1 for handle2
+     * @param {object} callData if specified, uses mouse position as 2nd point
+     */
+    function getHandleOrientation(handleIndex) {
+      let callData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      const point1 = getPoint(handleIndex, model.widgetState);
+      const point2 = callData ? computeMousePosition(point1, callData) : getPoint(1 - handleIndex, model.widgetState);
+      return point1 && point2 ? getLineDirection(point1, point2) : null;
+    }
+
+    /**
+     * Orient handle
+     * @param {number} handleIndex 0, 1 or 2
+     * @param {object} callData optional, see getHandleOrientation for details.
+     */
+    function updateHandleOrientation(handleIndex) {
+      const orientation = getHandleOrientation(Math.min(1, handleIndex));
+      model.representations[handleIndex].setOrientation(orientation);
+    }
+    publicAPI.updateHandleOrientations = () => {
+      updateHandleOrientation(0);
+      updateHandleOrientation(1);
+      updateHandleOrientation(2);
+    };
+    publicAPI.rotateHandlesToFaceCamera = () => {
+      model.representations[0].setViewMatrix(Array.from(model._camera.getViewMatrix()));
+      model.representations[1].setViewMatrix(Array.from(model._camera.getViewMatrix()));
+    };
+
+    // Handles visibility ---------------------------------------------------------
+
+    /**
+     * Set actor visibility to true unless it is a NONE handle
+     * and uses state visibility variable for the displayActor visibility to
+     * allow pickable handles even when they are not displayed on screen
+     * @param handle : the handle state object
+     * @param handleNb : the handle number according to its label in widget state
+     */
+    publicAPI.updateHandleVisibility = handleIndex => {
+      const handle = publicAPI.getHandle(handleIndex);
+      const visibility = handle.getVisible() && isHandlePlaced(handleIndex, model.widgetState);
+      model.representations[handleIndex].setVisibilityFlagArray([visibility, visibility && handle.getShape() !== ShapeType.NONE]);
+      model.representations[handleIndex].updateActorVisibility();
+      model._interactor.render();
+    };
+
+    /**
+     * Called when placing a point from the first time.
+     * @param {number} handleIndex
+     */
+    publicAPI.placeHandle = handleIndex => {
+      const handle = publicAPI.getHandle(handleIndex);
+      handle.setOrigin(...model.widgetState.getMoveHandle().getOrigin());
+      publicAPI.updateHandleOrientations();
+      publicAPI.rotateHandlesToFaceCamera();
+      model.widgetState.getText().setOrigin(calculateTextPosition(model));
+      publicAPI.updateHandleVisibility(handleIndex);
+      if (handleIndex === 0) {
+        // For the line (handle1, handle2, moveHandle) to be displayed
+        // correctly, handle2 origin must be valid.
+        publicAPI.getHandle(1).setOrigin(...model.widgetState.getMoveHandle().getOrigin());
+        // Now that handle2 has a valid origin, hide it
+        publicAPI.updateHandleVisibility(1);
+        model.widgetState.getMoveHandle().setShape(publicAPI.getHandle(1).getShape());
+      }
+      if (handleIndex === 1) {
+        publicAPI.loseFocus();
+      }
+    };
+
+    // --------------------------------------------------------------------------
+    // Left press: Select handle to drag
+    // --------------------------------------------------------------------------
+
+    publicAPI.handleLeftButtonPress = e => {
+      if (!model.activeState || !model.activeState.getActive() || !model.pickable || ignoreKey(e)) {
+        return macro.VOID;
+      }
+      if (model.activeState === model.widgetState.getMoveHandle() && getNumberOfPlacedHandles(model.widgetState) === 0) {
+        publicAPI.placeHandle(0);
+      } else if (model.widgetState.getMoveHandle().getActive() && getNumberOfPlacedHandles(model.widgetState) === 1) {
+        publicAPI.placeHandle(1);
+      } else if (model.dragable && !model.widgetState.getText().getActive()) {
+        // Grab handle1, handle2 or whole widget
+        updateCursor(e);
+      }
+      publicAPI.invokeStartInteractionEvent();
+      return macro.EVENT_ABORT;
+    };
+
+    // --------------------------------------------------------------------------
+    // Mouse move: Drag selected handle / Handle follow the mouse
+    // --------------------------------------------------------------------------
+
+    publicAPI.handleMouseMove = callData => {
+      const manipulator = model.activeState?.getManipulator?.() ?? model.manipulator;
+      if (manipulator && model.pickable && model.dragable && model.activeState && model.activeState.getActive() && !ignoreKey(callData)) {
+        const {
+          worldCoords
+        } = manipulator.handleEvent(callData, model._apiSpecificRenderWindow);
+        const translation = model.previousPosition ? subtract(worldCoords, model.previousPosition, []) : [0, 0, 0];
+        model.previousPosition = worldCoords;
+        if (
+        // is placing first or second handle
+        model.activeState === model.widgetState.getMoveHandle() ||
+        // is dragging already placed first or second handle
+        model._isDragging) {
+          if (model.activeState.setOrigin) {
+            model.activeState.setOrigin(worldCoords);
+            publicAPI.updateHandleVisibility(publicAPI.getHandleIndex(model.activeState));
+          } else {
+            // Dragging line
+            publicAPI.getHandle(0).setOrigin(add(publicAPI.getHandle(0).getOrigin(), translation, []));
+            publicAPI.getHandle(1).setOrigin(add(publicAPI.getHandle(1).getOrigin(), translation, []));
+          }
+          publicAPI.updateHandleOrientations();
+          updateTextPosition(model);
+          publicAPI.invokeInteractionEvent();
+          return macro.EVENT_ABORT;
+        }
+      }
+      return macro.VOID;
+    };
+
+    // --------------------------------------------------------------------------
+    // Left release: Finish drag
+    // --------------------------------------------------------------------------
+
+    publicAPI.handleLeftButtonRelease = () => {
+      if (!model.activeState || !model.activeState.getActive() || !model.pickable) {
+        publicAPI.rotateHandlesToFaceCamera();
+        return macro.VOID;
+      }
+      if (model.hasFocus && publicAPI.isPlaced()) {
+        publicAPI.loseFocus();
+        return macro.VOID;
+      }
+      if (model._isDragging && publicAPI.isPlaced()) {
+        const wasTextActive = model.widgetState.getText().getActive();
+        // Recompute offsets
+        model.widgetState.deactivate();
+        model.activeState = null;
+        if (!wasTextActive) {
+          model._interactor.cancelAnimation(publicAPI);
+        }
+        model._apiSpecificRenderWindow.setCursor('pointer');
+        model.hasFocus = false;
+        model._isDragging = false;
+      } else if (model.activeState !== model.widgetState.getMoveHandle()) {
+        model.widgetState.deactivate();
+      }
+      if (model.hasFocus && !model.activeState || model.activeState && !model.activeState.getActive()) {
+        model._widgetManager.enablePicking();
+        model._interactor.render();
+      }
+      publicAPI.invokeEndInteractionEvent();
+      return macro.EVENT_ABORT;
+    };
+
+    // --------------------------------------------------------------------------
+    // Focus API - moveHandle follow mouse when widget has focus
+    // --------------------------------------------------------------------------
+
+    publicAPI.grabFocus = () => {
+      if (!model.hasFocus && !publicAPI.isPlaced()) {
+        model.activeState = model.widgetState.getMoveHandle();
+        model.activeState.setShape(publicAPI.getHandle(0).getShape());
+        model.activeState.activate();
+        model._interactor.requestAnimation(publicAPI);
+        publicAPI.invokeStartInteractionEvent();
+      }
+      model.hasFocus = true;
+    };
+
+    // --------------------------------------------------------------------------
+
+    publicAPI.loseFocus = () => {
+      if (model.hasFocus) {
+        model._interactor.cancelAnimation(publicAPI);
+        publicAPI.invokeEndInteractionEvent();
+      }
+      model.widgetState.deactivate();
+      model.widgetState.getMoveHandle().deactivate();
+      model.widgetState.getMoveHandle().setOrigin(null);
+      model.activeState = null;
+      model.hasFocus = false;
+      model._widgetManager.enablePicking();
+      model._interactor.render();
+    };
+    publicAPI.reset = () => {
+      model.widgetState.deactivate();
+      model.widgetState.getMoveHandle().deactivate();
+      model.widgetState.getHandle1().setOrigin(null);
+      model.widgetState.getHandle2().setOrigin(null);
+      model.widgetState.getMoveHandle().setOrigin(null);
+      model.widgetState.getText().setOrigin(null);
+      model.widgetState.getText().setText('');
+      model.activeState = null;
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Factory
+  // ----------------------------------------------------------------------------
+
+  function vtkLineWidget(publicAPI, model) {
+    model.classHierarchy.push('vtkLineWidget');
+    const superClass = {
+      ...publicAPI
+    };
+
+    // --- Widget Requirement ---------------------------------------------------
+
+    model.methodsToLink = ['activeScaleFactor', 'activeColor', 'useActiveColor', 'glyphResolution', 'defaultScale', 'scaleInPixels'];
+    publicAPI.getRepresentationsForViewType = viewType => {
+      switch (viewType) {
+        case ViewTypes$1.DEFAULT:
+        case ViewTypes$1.GEOMETRY:
+        case ViewTypes$1.SLICE:
+        case ViewTypes$1.VOLUME:
+        default:
+          return [{
+            builder: vtkArrowHandleRepresentation$1,
+            labels: ['handle1'],
+            initialValues: {
+              /*
+               * This table sets the visibility of the handles' actors
+               * 1st actor is a displayActor, which hides a rendered object on the HTML layer.
+               * operating on its value allows to hide a handle to the user while still being
+               * able to detect its presence, so the user can move it. 2nd actor is a classic VTK
+               * actor which renders the object on the VTK scene
+               */
+              visibilityFlagArray: [false, false],
+              coincidentTopologyParameters: {
+                Point: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Line: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Polygon: {
+                  factor: -3.0,
+                  offset: -3.0
+                }
+              }
+            }
+          }, {
+            builder: vtkArrowHandleRepresentation$1,
+            labels: ['handle2'],
+            initialValues: {
+              /*
+               * This table sets the visibility of the handles' actors
+               * 1st actor is a displayActor, which hides a rendered object on the HTML layer.
+               * operating on its value allows to hide a handle to the user while still being
+               * able to detect its presence, so the user can move it. 2nd actor is a classic VTK
+               * actor which renders the object on the VTK scene
+               */
+              visibilityFlagArray: [false, false],
+              coincidentTopologyParameters: {
+                Point: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Line: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Polygon: {
+                  factor: -3.0,
+                  offset: -3.0
+                }
+              }
+            }
+          }, {
+            builder: vtkArrowHandleRepresentation$1,
+            labels: ['moveHandle'],
+            initialValues: {
+              visibilityFlagArray: [false, false],
+              coincidentTopologyParameters: {
+                Point: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Line: {
+                  factor: -1.0,
+                  offset: -1.0
+                },
+                Polygon: {
+                  factor: -3.0,
+                  offset: -3.0
+                }
+              }
+            }
+          }, {
+            builder: vtkPolyLineRepresentation$1,
+            labels: ['handle1', 'handle2', 'moveHandle'],
+            initialValues: {
+              behavior: Behavior.HANDLE,
+              pickable: true
+            }
+          }];
+      }
+    };
+
+    // --- Public methods -------------------------------------------------------
+
+    publicAPI.getDistance = () => {
+      const p1 = getPoint(0, model.widgetState);
+      const p2 = getPoint(1, model.widgetState);
+      return p1 && p2 ? Math.sqrt(distance2BetweenPoints(p1, p2)) : 0;
+    };
+    publicAPI.setManipulator = manipulator => {
+      superClass.setManipulator(manipulator);
+      model.widgetState.getMoveHandle().setManipulator(manipulator);
+      model.widgetState.getHandle1().setManipulator(manipulator);
+      model.widgetState.getHandle2().setManipulator(manipulator);
+    };
+
+    // --------------------------------------------------------------------------
+    // initialization
+    // --------------------------------------------------------------------------
+
+    /**
+     * TBD: Why setting the move handle ?
+     */
+    model.widgetState.onBoundsChange(bounds => {
+      const center = [(bounds[0] + bounds[1]) * 0.5, (bounds[2] + bounds[3]) * 0.5, (bounds[4] + bounds[5]) * 0.5];
+      model.widgetState.getMoveHandle().setOrigin(center);
+    });
+    model.widgetState.getPositionOnLine().onModified(() => {
+      updateTextPosition(model);
+    });
+
+    // Default manipulator
+    publicAPI.setManipulator(model.manipulator || vtkPlanePointManipulator.newInstance({
+      useCameraNormal: true
+    }));
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const defaultValues = initialValues => ({
+    // manipulator: null,
+    behavior: widgetBehavior,
+    widgetState: generateState(),
+    ...initialValues
+  });
+
+  // ----------------------------------------------------------------------------
+
+  function extend(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, defaultValues(initialValues));
+    vtkAbstractWidgetFactory$1.extend(publicAPI, model, initialValues);
+    macro.setGet(publicAPI, model, ['manipulator']);
+    vtkLineWidget(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance = macro.newInstance(extend, 'vtkLineWidget');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkLineWidget$1 = {
+    newInstance,
+    extend
+  };
+
+  let modelCenter = [0, 0, 0]; 
+  let modelSize = 0;
 
   document.addEventListener("DOMContentLoaded", () => {
 
+      // Renderers and render windows
       const fullScreenRenderer = vtkFullScreenRenderWindow$1.newInstance();
       const renderer = fullScreenRenderer.getRenderer();
       const renderWindow = fullScreenRenderer.getRenderWindow();
+      const openGLRenderWindow = fullScreenRenderer.getApiSpecificRenderWindow();
 
+      const container = document.querySelector('body');
+
+      // Selector 
+      const selector = vtkHardwareSelector.newInstance({
+          captureZValues: true,
+      });
+      selector.setFieldAssociation(FieldAssociations$5.FIELD_ASSOCIATION_POINTS);
+      selector.attach(openGLRenderWindow, renderer);
+
+      // Reader, mapper, actor
       const reader = vtkSTLReader$1.newInstance();
       const mapper = vtkMapper$1.newInstance({ scalarVisibility: false });
       let actor = vtkActor$1.newInstance();
@@ -41709,27 +48861,25 @@ fn main(
       actor.setMapper(mapper);
       mapper.setInputConnection(reader.getOutputPort());
 
-      let renderBtn = document.getElementById("render-button");
-      renderBtn.addEventListener("click", handleRender);
+      // Sphere actor
+      const sphereSource = vtkSphereSource$1.newInstance({
+          center: [0, 0, 0],
+          radius: 0,
+      });
+      const mapper1 = vtkMapper$1.newInstance();
+      mapper1.setInputConnection(sphereSource.getOutputPort());
+      const actor1 = vtkActor$1.newInstance();
+      actor1.setMapper(mapper1);
 
       function handleRender(){
 
-          let fileInput = document.getElementById('file-input');
+          let fileInput = document.getElementById('3d-file');
           let file = fileInput.files[0];
           if(!checkFile(file)) return;
           parseFile(file);
       }
 
-      function parseFile(file){
-
-          const fileReader = new FileReader();
-          fileReader.readAsArrayBuffer(file);
-          fileReader.onload = () => {
-              reader.parseAsArrayBuffer(fileReader.result);
-              update();
-          };
-      }
-
+      // Verification of inserted file
       function checkFile(file){
           if(!file){
               alert("Please pick a file to load!");
@@ -41753,13 +48903,255 @@ fn main(
           return parts[parts.length - 1];
       }
 
-      function update() {
-
+      // Parsing file data to mapper
+      function parseFile(file){
+          const fileReader = new FileReader();
+          fileReader.readAsArrayBuffer(file);
+          fileReader.onload = () => {
+              reader.parseAsArrayBuffer(fileReader.result);
+              renderNewModel();
+          };
+      }
+      
+      // Update function
+      function renderNewModel() {
           actor.getProperty().setColor(1.0, 1.0, 1.0);
           renderer.addActor(actor);
+          console.log(actor.getBounds());
+
+          updateModelParam();
+
+          actor1.getProperty().setColor([0.95, 0.45, 0.95]);
+          renderer.addActor(actor1);
+          console.log(actor1.getBounds());
+
           renderer.resetCamera();
           renderWindow.render();
       }
+
+      function updateModelParam(){
+          modelCenter = actor.getCenter();
+          let bounds = actor.getBounds();
+          let xSize = bounds[1] - bounds[0];
+          let ySize = bounds[3] - bounds[2];
+          let zSize = bounds[5] - bounds[4];
+          modelSize = (xSize + ySize + zSize)/3;
+          console.log('modelCenter:', modelCenter);
+          console.log('modeSize:', modelSize);
+          sphereSource.setCenterFrom(modelCenter);
+          sphereSource.setRadius(modelSize/100);
+          console.log(sphereSource.getCenter());
+          console.log(sphereSource.getRadius());
+      }
+
+      // Picking
+      function handlePicking(xp, yp, tolerance) {
+          const x1 = Math.floor(xp - tolerance);
+          const y1 = Math.floor(yp - tolerance);
+          const x2 = Math.ceil(xp + tolerance);
+          const y2 = Math.ceil(yp + tolerance);
+        
+          selector.setArea(x1, y1, x2, y2);
+        
+          if (selector.captureBuffers()) {
+              const pos = [xp, yp];
+              const outSelectedPosition = [0, 0];
+              const info = selector.getPixelInformation(
+                  pos,
+                  tolerance,
+                  outSelectedPosition
+              );
+              console.log("info:", info);
+        
+              if (info == null || info.prop == null) return [];
+        
+              const startPoint = openGLRenderWindow.displayToWorld(
+                  Math.round((x1 + x2) / 2),
+                  Math.round((y1 + y2) / 2),
+                  0,
+                  renderer
+              );
+        
+              const endPoint = openGLRenderWindow.displayToWorld(
+                  Math.round((x1 + x2) / 2),
+                  Math.round((y1 + y2) / 2),
+                  1,
+                  renderer
+              );
+        
+              const ray = [Array.from(startPoint), Array.from(endPoint)];
+        
+              const worldPosition = Array.from(
+                  openGLRenderWindow.displayToWorld(
+                      info.displayPosition[0],
+                      info.displayPosition[1],
+                      info.zValue,
+                      renderer
+                  )
+              );
+              console.log("World position:", worldPosition);
+        
+              const displayPosition = [
+                  info.displayPosition[0],
+                  info.displayPosition[1],
+                  info.zValue,
+              ];
+        
+              const selection = [];
+              selection[0] = {
+                  worldPosition,
+                  displayPosition,
+                  compositeID: info.compositeID,
+                  ...info.prop.get('representationId'),
+                  ray,
+              };
+              return selection;
+          }
+          return [];
+      }
+
+      function getScreenEventPositionFor(source) {
+          const bounds = container.getBoundingClientRect();
+          const [canvasWidth, canvasHeight] = openGLRenderWindow.getSize();
+          const scaleX = canvasWidth / bounds.width;
+          const scaleY = canvasHeight / bounds.height;
+          const position = {
+              x: scaleX * (source.clientX - bounds.left),
+              y: scaleY * (bounds.height - source.clientY + bounds.top),
+              z: 0,
+          };
+          return position;
+      }
+
+      function onMouseDown(e) {
+          if (e !== undefined) {
+              const sc = getScreenEventPositionFor(e);
+              console.log(sc);
+              const e1 = handlePicking(sc.x, sc.y, 10);
+              if (e1.length === 0) {
+                  console.warn('e1 null', e1);
+                  return;
+              }
+              let pickInfoText = `Screen Position: ${sc.x}, ${sc.y} \nPick Info:\n`;
+              pickInfoText += `${JSON.stringify(e1[0], null, 10)}`;
+              console.log(pickInfoText);
+          
+              sphereSource.setCenter(e1[0].worldPosition);
+              renderWindow.render();
+          }
+      }
+      // Widget manager
+      const widgetManager = vtkWidgetManager$1.newInstance();
+      widgetManager.setRenderer(renderer);
+      
+      let widget = null;
+      
+      let lineWidget = null;
+
+      // Line widget
+      const svgCleanupCallbacks = [];
+
+      function setupSVG(w) {
+          svgCleanupCallbacks.push(
+              bindSVGRepresentation(renderer, w.getWidgetState(), {
+                  mapState(widgetState, { size }) {
+                      const textState = widgetState.getText();
+                      const text = textState.getText();
+                      const origin = textState.getOrigin();
+                      if (origin) {
+                          const coords = computeWorldToDisplay(renderer, ...origin);
+                          const position = [coords[0], size[1] - coords[1]];
+                          return {
+                              text,
+                              position,
+                          };
+                      }
+                      return null;
+                  },
+                  render(data, h) {
+                      if (data) {
+                          return h(
+                              'text',
+                              {
+                                  key: 'lineText',
+                                  attrs: {
+                                      x: data.position[0],
+                                      y: data.position[1],
+                                      dx: 12,
+                                      dy: -12,
+                                      fill: 'white',
+                                      'font-size': 32,
+                                  },
+                              },
+                              data.text
+                          );
+                      }
+                      return [];
+                  },
+              })
+          );
+      }
+
+      document.querySelector('#annot-button').addEventListener('click', () => {
+          let currentHandle = null;
+          widgetManager.releaseFocus(widget);
+          widget = vtkLineWidget$1.newInstance();
+          // widget.placeWidget(cube.getOutputData().getBounds());
+          currentHandle = widgetManager.addWidget(widget);
+          lineWidget = currentHandle;
+          lineWidget.setText("test");
+
+          selectWidget(widgetManager.getWidgets().length - 1);
+          setupSVG(widget);
+        
+          ({
+              1: lineWidget.getWidgetState().getHandle1(),
+              2: lineWidget.getWidgetState().getHandle2(),
+          });
+        
+          //updateHandleShape(1);
+          //updateHandleShape(2);
+        
+          widgetManager.grabFocus(widget);
+        
+          currentHandle.onStartInteractionEvent(() => {
+              const index = widgetManager.getWidgets().findIndex((cwidget) => {
+                  if (DeepEqual$1(currentHandle.getWidgetState(), cwidget.getWidgetState()))
+                      return 1;
+                  return 0;
+              });
+              ({
+                  1: currentHandle.getWidgetState().getHandle1(),
+                  2: currentHandle.getWidgetState().getHandle2(),
+              });
+              selectWidget(index);
+              lineWidget = currentHandle;
+          });
+        });
+      // Body listener
+      container.addEventListener('mousedown', onMouseDown);
+
+      // Render button
+      let renderBtn = document.getElementById("render-button");
+      renderBtn.addEventListener("click", handleRender);
+
+      // Add annot
+      let annotBtn = document.getElementById('annot-button');
+      annotBtn.addEventListener('click', toggleAnotMenu);
+
+      let cancelBtn = document.getElementById('annot-cancel-button');
+      cancelBtn.addEventListener('click', toggleAnotMenu);
   });
+
+  function toggleAnotMenu(){
+      let nav = document.getElementById('render-nav');
+      let canvas = document.querySelector('canvas');
+      let estDiv = document.getElementById('estimate-div');
+      nav.classList.toggle('blur');
+      canvas.classList.toggle('blur');
+      estDiv.classList.toggle('blur');
+      let popup = document.getElementById('anot-popup');
+      popup.classList.toggle('active');
+  }
 
 })();

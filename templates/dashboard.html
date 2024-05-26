@@ -4,19 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/style.css">
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
     <title>Dashboard</title>
 </head>
-<body>
-    <header>
-        <h1 class="title">{{ username }}</h1>
-        <form action="{{ url_for('login') }}">
-            <input class="primary-button" type="submit" value="Logout" />
-        </form>
+<body id="dashboard-body">
+    <header id="dashboard-header">
+        <div class="logo-container">
+            <svg width="52px" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.3562 15.2061L10.9313 16.6311C10.5378 17.0246 10.562 17.674 10.7105 18.2103C10.9908 19.2235 10.6058 20.519 9.86257 21.2622C8.87884 22.2459 7.28391 22.2459 6.30018 21.2622C5.31645 20.2785 5.31646 18.6835 6.30018 17.6998C5.31646 18.6835 3.72152 18.6835 2.73779 17.6998C1.75407 16.7161 1.75407 15.1212 2.73779 14.1374C3.48101 13.3942 4.77646 13.0092 5.7897 13.2895C6.32603 13.438 6.97541 13.4622 7.3689 13.0687L13.0687 7.3689C13.4622 6.97541 13.438 6.32603 13.2895 5.7897C13.0092 4.77646 13.3942 3.48102 14.1374 2.73779C15.1212 1.75407 16.7161 1.75407 17.6998 2.73779C18.6835 3.72152 18.6835 5.31646 17.6998 6.30018C18.6835 5.31646 20.2785 5.31646 21.2622 6.30018C22.2459 7.28391 22.2459 8.87884 21.2622 9.86257C20.519 10.6058 19.2235 10.9908 18.2103 10.7105C17.674 10.562 17.0246 10.5378 16.6311 10.9313L15.2061 12.3562" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <button id="add-button" class="primary-button">Create new project</button>
+        </div>
+        <div id="dashboard-header-right">
+            <div class="search-container">
+                <form action="">
+                    <input class="search-field" type="text" placeholder="Search..." name="search">
+                </form>
+                <button class="search-button" type="submit">
+                    <svg class="search-logo" width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <button id="logout-button" class="primary-button">Logout</button>
+        </div>
     </header>
-    <div class="centered">
-        <form action="{{ url_for('editor') }}">
-            <input class="primary-button" type="submit" value="Editor" />
-        </form>        
+    <main id="dashboard-main">
+        <div class="dashboard-layout">
+            {% for project in projects %}
+                <div class="project-container">
+                    <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
+                    <div class="title-card">
+                        <h1>{{ project["name"] }}</h1>
+                        <p>0 MB</p>
+                    </div>
+                    <form action="{{ url_for('editor') }}">
+                        <div class="button-row">
+                            <input class="secondary-button" type="submit" value="Editor" />
+                            <button class="delete-button danger-button" type="button">Delete</button>
+                        </div>
+                    </form> 
+                </div>
+            {% endfor %}
+            <div class="project-container">
+                <img src="../static/images/sacrum.jpg" alt="editor1" width="200" height="200">
+                <div class="title-card">
+                    <h1>Sacrum 1</h1>
+                    <p>14 MB</p>
+                </div>
+                <form action="{{ url_for('editor') }}">
+                    <div class="button-row">
+                        <input class="secondary-button" type="submit" value="Editor" />
+                        <button class="delete-button danger-button" type="button">Delete</button>
+                    </div>
+                </form> 
+            </div>
+            <div class="project-container">
+                <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
+                <div class="title-card">
+                    <h1>Empty Project</h1>
+                    <p>0 MB</p>
+                </div>
+                <form action="{{ url_for('editor') }}">
+                    <div class="button-row">
+                        <input class="secondary-button" type="submit" value="Editor" />
+                        <button class="delete-button danger-button" type="button">Delete</button>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </main>
+    <div id="add-popup" class="popup">
+        <h1>Create new project</h1>
+        <form method="post">
+            {{ add_form.hidden_tag() }}
+            
+            {{ add_form.name(autocomplete="off", class="form-control") }}
+            <label for="add-3d-file" class="file-upload">3D file</label>
+            <input id="add-3d-file" class="form-control" type="file">
+            <label for="add-bmd-file" class="file-upload">BMD file</label>
+            <input id="add-bmd-file" class="form-control" type="file">
+            <div class="button-row">
+                {{ add_form.submit(class="primary-button") }}
+                <button id="add-cancel-button" class="terciary-button" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div id="edit-popup" class="popup">
+        <form action="">
+            <input class="form-control" type="text" placeholder="Project name">
+            <div class="button-row">
+                <button id="edit-button" class="primary-button">Edit</button>
+                <button id="edit-cancel-button" class="terciary-button" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div id="danger-popup" class="popup">
+        <h1>Do you really want to delete this project?</h1>
+        <div class="button-row">
+            <button id="delete-confirm-button" class="danger-button">Delete</button>
+            <button id="delete-cancel-button" class="terciary-button" type="button">Cancel</button>
+        </div>
     </div>
 </body>
 </html>
