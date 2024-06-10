@@ -34,10 +34,10 @@
     <main id="dashboard-main">
         <div class="dashboard-layout">
             {% for project in projects %}
-                <div class="project-container">
+                <div id="{{ project['id'] }}" class="project-container">
                     <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
                     <div class="title-card">
-                        <h1>{{ project["name"] }}</h1>
+                        <h1 class="project-name">{{ project["name"] }}</h1>
                         <p>{{ project["updated_at"] }}</p>
                     </div>
                     <form action="{{ url_for('editor') }}">
@@ -68,7 +68,7 @@
         <form method="post">
             {{ add_form.hidden_tag() }}
             
-            {{ add_form.name(autocomplete="off", class="form-control") }}
+            {{ add_form.name(class="form-control", autocomplete="off") }}
             <label for="add-3d-file" class="file-upload">3D file</label>
             <input id="add-3d-file" class="form-control" type="file">
             <label for="add-bmd-file" class="file-upload">BMD file</label>
@@ -80,20 +80,30 @@
         </form>
     </div>
     <div id="edit-popup" class="popup">
-        <form action="">
-            <input class="form-control" type="text" placeholder="Project name">
+        <form method="post">
+            {{ edit_form.hidden_tag() }}
+
+            {{ edit_form.id(id="edit-id", type="hidden") }}
+            <input id="edit-old-name" class="form-control disabled-input" type="text" disabled>
+            {{ edit_form.new_name(id="edit-name", class="form-control", autocomplete="off") }}
             <div class="button-row">
-                <button id="edit-button" class="primary-button">Edit</button>
+                {{ edit_form.submit(class="primary-button") }}
                 <button id="edit-cancel-button" class="terciary-button" type="button">Cancel</button>
             </div>
         </form>
     </div>
     <div id="danger-popup" class="popup">
-        <h1>Do you really want to delete this project?</h1>
-        <div class="button-row">
-            <button id="delete-confirm-button" class="danger-button">Delete</button>
-            <button id="delete-cancel-button" class="terciary-button" type="button">Cancel</button>
-        </div>
+        <form method="post">
+            {{ delete_form.hidden_tag() }}
+
+            {{ delete_form.id(id="delete-id", type="hidden") }}
+            <h1>Do you really want to delete this project?</h1>
+            <input id="delete-old-name" class="form-control disabled-input" type="text" disabled>
+            <div class="button-row">
+                {{ delete_form.submit(class="danger-button") }}
+                <button id="delete-cancel-button" class="terciary-button" type="button">Cancel</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

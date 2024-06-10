@@ -5,7 +5,7 @@ from flask import Flask, render_template, url_for, redirect, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
 
@@ -65,6 +65,16 @@ class AddForm(FlaskForm):
                        render_kw=({"placeholder": "Project Name"}))
     submit = SubmitField('Create')
 
+class EditForm(FlaskForm):
+    id = StringField(validators=[InputRequired()])
+    new_name = StringField('New Project Name', validators=[InputRequired(), Length(min=3, max=30)],
+                            render_kw=({"placeholder": "New Project Name"}))
+    submit = SubmitField('Edit')
+
+class DeleteForm(FlaskForm):
+    id = StringField(validators=[InputRequired()])
+    submit = SubmitField('Delete')
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -103,16 +113,31 @@ def register():
 @login_required
 def dashboard(username):
     id = session.get('user_id', None)
-    
+
     add_form = AddForm()
     if add_form.validate_on_submit():
         new_project = Project(user_id=id, name=add_form.name.data)
         db.session.add(new_project)
         db.session.commit()
 
+    edit_form = EditForm()
+    if edit_form.validate_on_submit():
+        project_id = int(edit_form.id.data)
+        project = Project.query.filter_by(id=project_id).first()
+        project.name = edit_form.new_name.data
+        db.session.commit()
+
+    delete_form = DeleteForm()
+    if delete_form.validate_on_submit():
+        project_id = int(delete_form.id.data)
+        project = Project.query.filter_by(id=project_id).delete()
+        db.session.commit()
+
+
     projects = Project.query.filter_by(user_id=id)
     project_list = [p.__dict__ for p in projects]
-    return render_template('dashboard.html', username=username, projects=project_list, add_form=add_form)
+    return render_template('dashboard.html', username=username, projects=project_list, add_form=add_form,
+                           edit_form=edit_form, delete_form=delete_form)
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
