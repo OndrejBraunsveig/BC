@@ -66,13 +66,13 @@ class AddForm(FlaskForm):
     submit = SubmitField('Create')
 
 class EditForm(FlaskForm):
-    id = StringField(validators=[InputRequired()])
+    edit_id = StringField(validators=[InputRequired()])
     new_name = StringField('New Project Name', validators=[InputRequired(), Length(min=3, max=30)],
                             render_kw=({"placeholder": "New Project Name"}))
     submit = SubmitField('Edit')
 
 class DeleteForm(FlaskForm):
-    id = StringField(validators=[InputRequired()])
+    delete_id = StringField(validators=[InputRequired()])
     submit = SubmitField('Delete')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -122,17 +122,16 @@ def dashboard(username):
 
     edit_form = EditForm()
     if edit_form.validate_on_submit():
-        project_id = int(edit_form.id.data)
+        project_id = int(edit_form.edit_id.data)
         project = Project.query.filter_by(id=project_id).first()
         project.name = edit_form.new_name.data
         db.session.commit()
 
     delete_form = DeleteForm()
     if delete_form.validate_on_submit():
-        project_id = int(delete_form.id.data)
-        project = Project.query.filter_by(id=project_id).delete()
+        project_id = int(delete_form.delete_id.data)
+        Project.query.filter_by(id=project_id).delete()
         db.session.commit()
-
 
     projects = Project.query.filter_by(user_id=id)
     project_list = [p.__dict__ for p in projects]

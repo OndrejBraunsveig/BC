@@ -83,7 +83,7 @@
         <form method="post">
             {{ edit_form.hidden_tag() }}
 
-            {{ edit_form.id(id="edit-id", type="hidden") }}
+            {{ edit_form.edit_id(id="edit-id", type="hidden") }}
             <input id="edit-old-name" class="form-control disabled-input" type="text" disabled>
             {{ edit_form.new_name(id="edit-name", class="form-control", autocomplete="off") }}
             <div class="button-row">
@@ -96,7 +96,7 @@
         <form method="post">
             {{ delete_form.hidden_tag() }}
 
-            {{ delete_form.id(id="delete-id", type="hidden") }}
+            {{ delete_form.delete_id(id="delete-id", type="hidden") }}
             <h1>Do you really want to delete this project?</h1>
             <input id="delete-old-name" class="form-control disabled-input" type="text" disabled>
             <div class="button-row">
