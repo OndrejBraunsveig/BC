@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <h1 class="title">💀</h1>
+    <div class="centered">
+        <div class="form-container">
+            <h2 class="form-title">Add template</h2>
+            <form method="post" enctype=multipart/form-data>
+                <input type="text" class="form-control" name="template-name">
+                <input type="file" class="form-control" name="file">
+                <input type="submit" class="primary-button" value="Add template">
+            </form>
+            {% for message in get_flashed_messages() %}
+                <p class="flash">{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,17 +1,18 @@
 import os
+import base64
 from datetime import datetime
 
-from flask import Flask, render_template, url_for, redirect, flash, session
+from flask import Flask, render_template, url_for, redirect, flash, session, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://database_29he_user:Z41t7ityWH3l20r2zH0OgKXOdFMAs3n2@dpg-cp7jkomd3nmc73bsujsg-a.frankfurt-postgres.render.com/database_29he'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://bonee_database_dwzv_user:3A5RKafkCvbGJuVYbcUx9F0kB7aYOoOR@dpg-cri20a0gph6c73et7g20-a.frankfurt-postgres.render.com/bonee_database_dwzv'
 app.config['SECRET_KEY'] = 'abcd'
 
 db = SQLAlchemy(app)
@@ -29,10 +30,14 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(30), nullable=False)
-    model_data = db.Column(db.String(100))
-    bmd_data = db.Column(db.String(100))
+    model_data = db.Column(db.String)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+
+class Template(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    model_data = db.Column(db.String)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -74,6 +79,10 @@ class EditForm(FlaskForm):
 class DeleteForm(FlaskForm):
     delete_id = StringField(validators=[InputRequired()])
     submit = SubmitField('Delete')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() == 'stl'
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -149,6 +158,30 @@ def logout():
 def editor():
     
     return render_template('editor.html')
+
+@app.route('/template/<id>', methods=['GET'])
+def template(id):
+    data = Template.query.filter_by(id=id).first()
+    return jsonify(data.model_data)
+
+@app.route('/addTemplate', methods=['GET', 'POST'])
+def add_template():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            byte_array = file.read()
+            bytes_base64 = (base64.b64encode(byte_array)).decode()
+            new_template = Template(name=request.form['template-name'], model_data=bytes_base64)
+            db.session.add(new_template)
+            db.session.commit()
+            flash('Template added succesfully!')
+    return render_template('template-load.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
