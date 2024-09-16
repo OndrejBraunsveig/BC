@@ -11,8 +11,8 @@ from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://bonee_database_dwzv_user:3A5RKafkCvbGJuVYbcUx9F0kB7aYOoOR@dpg-cri20a0gph6c73et7g20-a.frankfurt-postgres.render.com/bonee_database_dwzv'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://bonee_database_dwzv_user:3A5RKafkCvbGJuVYbcUx9F0kB7aYOoOR@dpg-cri20a0gph6c73et7g20-a.frankfurt-postgres.render.com/bonee_database_dwzv'
 app.config['SECRET_KEY'] = 'abcd'
 
 db = SQLAlchemy(app)
@@ -80,7 +80,7 @@ class DeleteForm(FlaskForm):
     delete_id = StringField(validators=[InputRequired()])
     submit = SubmitField('Delete')
 
-def allowed_file(filename):
+def is_allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() == 'stl'
 
@@ -94,7 +94,8 @@ def login():
             if bcrypt.checkpw(form.password.data.encode('utf8'), user.password.encode('utf8')):
                 login_user(user)
                 session['user_id'] = user.id
-                return redirect(url_for('dashboard', username=user.username))
+                session['username'] = user.username
+                return redirect(url_for('dashboard'))
         flash('Wrong username or password!')
         return redirect(url_for('login'))
     
@@ -118,9 +119,9 @@ def register():
 
     return render_template('register.html', form=form)
 
-@app.route('/dashboard/<username>', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
-def dashboard(username):
+def dashboard():
     id = session.get('user_id', None)
 
     add_form = AddForm()
@@ -144,7 +145,7 @@ def dashboard(username):
 
     projects = Project.query.filter_by(user_id=id)
     project_list = [p.__dict__ for p in projects]
-    return render_template('dashboard.html', username=username, projects=project_list, add_form=add_form,
+    return render_template('dashboard.html', projects=project_list, add_form=add_form,
                            edit_form=edit_form, delete_form=delete_form)
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -174,7 +175,7 @@ def add_template():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        if file and is_allowed_file(file.filename):
             byte_array = file.read()
             bytes_base64 = (base64.b64encode(byte_array)).decode()
             new_template = Template(name=request.form['template-name'], model_data=bytes_base64)

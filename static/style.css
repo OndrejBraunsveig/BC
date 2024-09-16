@@ -56,7 +56,6 @@ body{
     padding: 10px;
     border: solid 2px #000000;
     border-radius: 5px;
-    margin-bottom: 10px;
     cursor: pointer;
 }
 .form-info{
@@ -73,7 +72,6 @@ body{
     padding: 10px;
     border: solid 2px #000000;
     border-radius: 5px;
-    margin-bottom: 10px;
     cursor: pointer;
 }
 .terciary-button{
@@ -85,7 +83,6 @@ body{
     padding: 10px;
     border: solid 2px #000000;
     border-radius: 5px;
-    margin-bottom: 10px;
     cursor: pointer;
 }
 .danger-button{
@@ -97,7 +94,6 @@ body{
     padding: 10px;
     border: solid 2px #000000;
     border-radius: 5px;
-    margin-bottom: 10px;
     cursor: pointer;
 }
 .centered{
@@ -130,36 +126,34 @@ body{
     opacity: 1;
     filter: none;
 }
-#dashboard-header{
+header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    padding-inline: 0;
     margin: 0;
     margin-bottom: 32px;
-    padding: 10px;
     background-color: hsl(0, 0%, 72%);
     border-bottom: 4px solid hsl(0, 0%, 0%);
 }
-.logo-container{
+.header-left{
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    margin-left: 10px;
 }
-.logo-container .primary-button{
-    margin: 0;
-}
-#dashboard-header-right{
+.header-right{
     display: flex;
+    gap: 12px;
     align-items: center;
-}
-#dashboard-header-right .primary-button{
-    margin: 0;
+    margin-right: 10px;
 }
 .logout-form{
     margin: 0;
     margin-left: 12px;
 }
-#dashboard-header-right .search-container{
+.header-right .search-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -167,13 +161,13 @@ body{
     border: 2px solid hsl(0, 0%, 0%);
     border-radius: 10px;
 }
-#dashboard-header-right input[type=text]{
+.header-right input[type=text]{
     font-size: 24px;
     padding: 4px;
     border: none;
     border-radius: 10px;
 }
-#dashboard-header-right .search-button{
+.header-right .search-button{
     padding: 4px;
     margin-left: 2px;
     background-color: hsl(0, 0%, 100%);
@@ -297,51 +291,35 @@ body{
 }
 .popup .primary-button{
     width: 40%;
-    margin-bottom: 0;
 }
 .popup .terciary-button{
     width: 40%;
-    margin-bottom: 0;
 }
 .popup .danger-button{
     width: 40%;
-    margin-bottom: 0;
 }
-#render-nav{
+#render-header{
     position: absolute;
-    display: flex;
-    justify-content: space-between;
     width: 100%;
     z-index: 100;
     align-items: center;
     margin: 0;
-    padding: 10px;
-    padding-left: 0;
-    padding-right: 0;
-    background-color: hsl(0, 0%, 72%);
-    border-bottom: 4px solid hsl(0, 0%, 0%);
 }
-#render-nav .logo-container{
-    margin-left: 10px;
-}
-#render-nav .file-upload{
+#render-header .file-upload{
     margin-bottom: 0;
 }
-#render-nav .primary-button{
+#render-header .primary-button{
     width: 106px;
 }
-#render-nav .secondary-button{
+#render-header .secondary-button{
     width: 180px;
     margin: 0;
 }
-#render-nav .file-upload{
+#render-header .file-upload{
     width: 132px;
 }
-.render-nav-right{
-    display: flex;
-    align-items: center;
-    margin-right: 62px;
-    gap: 12px;
+#exit-button {
+    margin-right: 10px;
 }
 #anot-popup{
     width: 400px;
