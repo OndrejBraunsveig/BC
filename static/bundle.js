@@ -49282,12 +49282,12 @@ fn main(
           rotationDiv.classList.add('active');
       });
 
-      let movementNavBtn = document.getElementById('movement-nav-btn');
+      let movementNavBtn = document.getElementById('shift-nav-btn');
       movementNavBtn.addEventListener('click', () => {
           transformDivs.forEach((transformDiv) => {
               transformDiv.classList.remove('active');
           });
-          let movementDiv = document.getElementById('movement-div');
+          let movementDiv = document.getElementById('shift-div');
           movementDiv.classList.add('active');
       });
       
@@ -49337,21 +49337,21 @@ fn main(
 
       // Movement inputs
       // X
-      let xMovement = document.getElementById('x-movement');
+      let xMovement = document.getElementById('x-shift');
       xMovement.addEventListener('input', (e) => {
           currentXShift = initialShift[0] + parseInt(e.target.value);
           updateModelPosition();
       });
 
       // Y
-      let yMovement = document.getElementById('y-movement');
+      let yMovement = document.getElementById('y-shift');
       yMovement.addEventListener('input', (e) => {
           currentYShift = initialShift[1] + parseInt(e.target.value);
           updateModelPosition();
       });
 
       // Z
-      let zMovement = document.getElementById('z-movement');
+      let zMovement = document.getElementById('z-shift');
       zMovement.addEventListener('input', (e) => {
           currentZShift = initialShift[2] + parseInt(e.target.value);
           updateModelPosition();
