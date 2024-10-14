@@ -190,5 +190,25 @@ def add_template():
             flash('Template added succesfully!')
     return render_template('template-load.html')
 
+@app.route('/saveModel/<int:project_id>', methods=['GET', 'POST'])
+def saveModel(project_id):
+
+    if request.method == 'POST':
+        jsonData = request.get_json()
+        model_data = jsonData['model_data']
+        project = Project.query.filter_by(id=project_id).first()
+        project.model_data = model_data
+        db.session.commit()
+
+    return ('', 204)
+
+@app.route('/loadModel/<int:project_id>', methods=['GET', 'POST'])
+def loadModel(project_id):
+
+    data = Project.query.filter_by(id=project_id).first()
+    if data:
+        return jsonify(data.model_data)
+    return {}
+
 if __name__ == '__main__':
     app.run(debug=True)

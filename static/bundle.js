@@ -49016,7 +49016,6 @@ fn main(
 
       templateActor.setMapper(templateMapper);
       templateMapper.setInputConnection(templateReader.getOutputPort());
-      fetchTemplate();
 
       // File actor
       let reader = vtkSTLReader$1.newInstance();
@@ -49025,6 +49024,7 @@ fn main(
 
       actor.setMapper(mapper);
       mapper.setInputConnection(reader.getOutputPort());
+      fetchTemplate();
 
       // Sphere actor
       const sphereSource = vtkSphereSource$1.newInstance({
@@ -49039,7 +49039,7 @@ fn main(
 
       //renderer.addActor(actor1);
 
-      function fetchTemplate(){
+      function fetchTemplate() {
 
           fetch('/template/2')
           .then(response => response.json())
@@ -49056,7 +49056,7 @@ fn main(
           });
       }
 
-      function renderTemplate(){
+      function renderTemplate() {
 
           // Set properties
           templateActor.getProperty().setColor([1.0, 0, 0]);
@@ -49084,9 +49084,10 @@ fn main(
           renderWindow.render();
 
           console.log('sphere centre: ' + actor1.getCenter());
+          loadModel();
       }
 
-      function handleRender(){
+      function handleRender() {
 
           let fileInput = document.getElementById('3d-file');
           let file = fileInput.files[0];
@@ -49095,7 +49096,7 @@ fn main(
       }
 
       // Verification of inserted file
-      function checkFile(file){
+      function checkFile(file) {
 
           if(!file){
               alert("Please pick a file to load!");
@@ -49119,8 +49120,9 @@ fn main(
           return parts[parts.length - 1];
       }
 
+
       // Parsing file data to mapper
-      function parseFile(file){
+      function parseFile(file) {
 
           renderer.removeActor(actor);
           reader = vtkSTLReader$1.newInstance();
@@ -49130,25 +49132,64 @@ fn main(
           actor.setMapper(mapper);
           mapper.setInputConnection(reader.getOutputPort());
 
-          loadFileToDb(file);
-
           const fileReader = new FileReader();
           fileReader.readAsArrayBuffer(file);
           fileReader.onload = () => {
-              reader.parseAsArrayBuffer(fileReader.result);
+              let result = fileReader.result;
+              saveModel(result);
+              reader.parseAsArrayBuffer(result);
               renderNewModel();
           };
       }
-
-      function loadFileToDb(file) {
-          const textFileReader = new FileReader();
-          textFileReader.readAsText(file);
-          textFileReader.onload = () => {
-              const fileText = textFileReader.result;
-              console.log(fileText);
-          };
-      }
       
+      function saveModel(arrayBuffer) {
+
+          let project_id = document.body.id;
+
+          const byteArray = new Uint8Array(arrayBuffer); // Get byte array from the file
+          let binaryString = '';
+      
+          // Process byte array in chunks to avoid exceeding call stack size
+          const chunkSize = 8192; // Arbitrary chunk size
+          for (let i = 0; i < byteArray.length; i += chunkSize) {
+              const chunk = byteArray.slice(i, i + chunkSize);
+              binaryString += String.fromCharCode(...chunk);
+          }
+
+          // Convert binary string to Base64 to avoid NUL characters issue
+          const base64String = btoa(binaryString);
+          
+          fetch(`/saveModel/${project_id}`, {
+              headers : {
+                  'Content-Type' : 'application/json'
+              },
+              method : 'POST',
+              body : JSON.stringify( {
+                  'model_data' : base64String,
+              })
+          });
+      }
+
+      function loadModel() {
+
+          let project_id = document.body.id;
+
+          fetch(`/loadModel/${project_id}`)
+          .then(response => response.json())
+          .then(data => {
+              if (!data) return;
+              if (Object.keys(data).length == 0) return;
+              var binaryString = atob(data);
+              var bytes = new Uint8Array(binaryString.length);
+              for (var i = 0; i < binaryString.length; i++) {
+                  bytes[i] = binaryString.charCodeAt(i);
+              }
+              var arrayBuffer = bytes.buffer;
+              reader.parseAsArrayBuffer(arrayBuffer);
+              renderNewModel();
+          });
+      }
+
       // Update function
       function renderNewModel() {
 
