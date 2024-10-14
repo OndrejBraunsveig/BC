@@ -49247,6 +49247,12 @@ fn main(
       // Body listener
       //container.addEventListener('mousedown', onMouseDown);
 
+      let fileLabel = document.getElementById('3d-file-label');
+      let fileInput = document.getElementById('3d-file');
+      fileInput.addEventListener('input', (e) => {
+          fileLabel.innerHTML = e.target.files[0].name;
+      });
+
       // Render button
       let renderBtn = document.getElementById("render-button");
       renderBtn.addEventListener("click", handleRender);
