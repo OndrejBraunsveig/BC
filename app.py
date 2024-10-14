@@ -145,6 +145,7 @@ def dashboard():
 
     projects = Project.query.filter_by(user_id=id)
     project_list = [p.__dict__ for p in projects]
+
     return render_template('dashboard.html', projects=project_list, add_form=add_form,
                            edit_form=edit_form, delete_form=delete_form)
 
@@ -154,16 +155,21 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/editor', methods=['GET', 'POST'])
+@app.route('/editor/<int:project_id>', methods=['GET', 'POST'])
 @login_required
-def editor():
+def editor(project_id):
     
-    return render_template('editor.html')
+    if request.method == 'POST':
+        pass
+
+    return render_template('editor.html', project_id=project_id)
 
 @app.route('/template/<id>', methods=['GET'])
 def template(id):
     data = Template.query.filter_by(id=id).first()
-    return jsonify(data.model_data)
+    if data:
+        return jsonify(data.model_data)
+    return {}
 
 @app.route('/addTemplate', methods=['GET', 'POST'])
 def add_template():

@@ -5530,7 +5530,7 @@
   // newInstance
   // ----------------------------------------------------------------------------
 
-  function newInstance$1$(extend, className) {
+  function newInstance$1Z(extend, className) {
     const constructor = function () {
       let initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       const model = {};
@@ -6233,7 +6233,7 @@
     keystore,
     measurePromiseExecution,
     moveToProtected,
-    newInstance: newInstance$1$,
+    newInstance: newInstance$1Z,
     newTypedArray,
     newTypedArrayFrom,
     normalizeWheel: normalizeWheel$1,
@@ -6293,7 +6293,7 @@
     algo: algo,
     EVENT_ABORT: EVENT_ABORT,
     event: event,
-    newInstance: newInstance$1$,
+    newInstance: newInstance$1Z,
     chain: chain,
     isVtkObject: isVtkObject,
     traverseInstanceTree: traverseInstanceTree,
@@ -6515,12 +6515,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1_ = macro.newInstance(extend$2i, 'vtkViewNode');
+  const newInstance$1Y = macro.newInstance(extend$2i, 'vtkViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNode$1 = {
-    newInstance: newInstance$1_,
+    newInstance: newInstance$1Y,
     extend: extend$2i,
     PASS_TYPES
   };
@@ -6587,12 +6587,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Z = macro.newInstance(extend$2h, 'vtkViewNodeFactory');
+  const newInstance$1X = macro.newInstance(extend$2h, 'vtkViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory$1$1 = {
-    newInstance: newInstance$1Z,
+    newInstance: newInstance$1X,
     extend: extend$2h
   };
 
@@ -6634,12 +6634,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Y = macro.newInstance(extend$2g, 'vtkOpenGLViewNodeFactory');
+  const newInstance$1W = macro.newInstance(extend$2g, 'vtkOpenGLViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory = {
-    newInstance: newInstance$1Y,
+    newInstance: newInstance$1W,
     extend: extend$2g
   };
 
@@ -6727,10 +6727,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1X = newInstance$1$(extend$2f);
+  const newInstance$1V = newInstance$1Z(extend$2f);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCamera', newInstance$1X);
+  registerOverride$1('vtkCamera', newInstance$1V);
 
   const {
     vtkDebugMacro: vtkDebugMacro$9
@@ -6928,10 +6928,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1W = newInstance$1$(extend$2e, 'vtkOpenGLRenderer');
+  const newInstance$1U = newInstance$1Z(extend$2e, 'vtkOpenGLRenderer');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkRenderer', newInstance$1W);
+  registerOverride$1('vtkRenderer', newInstance$1U);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7108,10 +7108,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1V = newInstance$1$(extend$2d);
+  const newInstance$1T = newInstance$1Z(extend$2d);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor', newInstance$1V);
+  registerOverride$1('vtkActor', newInstance$1T);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7269,10 +7269,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1U = newInstance$1$(extend$2c);
+  const newInstance$1S = newInstance$1Z(extend$2c);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor2D', newInstance$1U);
+  registerOverride$1('vtkActor2D', newInstance$1S);
 
   function ascending(a, b) {
     return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -11883,12 +11883,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1T = macro.newInstance(extend$2a, 'vtkPlane');
+  const newInstance$1R = macro.newInstance(extend$2a, 'vtkPlane');
 
   // ----------------------------------------------------------------------------
 
   var vtkPlane$1 = {
-    newInstance: newInstance$1T,
+    newInstance: newInstance$1R,
     extend: extend$2a,
     ...STATIC$a
   };
@@ -12522,7 +12522,7 @@
       return intersects(this.bounds, otherBounds);
     }
   }
-  function newInstance$1S(initialValues) {
+  function newInstance$1Q(initialValues) {
     const bounds = initialValues && initialValues.bounds;
     return new BoundingBox(bounds);
   }
@@ -12569,7 +12569,7 @@
     INIT_BOUNDS
   };
   var vtkBoundingBox = {
-    newInstance: newInstance$1S,
+    newInstance: newInstance$1Q,
     ...STATIC$9
   };
 
@@ -12694,12 +12694,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1R = macro.newInstance(extend$29, 'vtkProp');
+  const newInstance$1P = macro.newInstance(extend$29, 'vtkProp');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp$1 = {
-    newInstance: newInstance$1R,
+    newInstance: newInstance$1P,
     extend: extend$29,
     ...Constants$h
   };
@@ -12865,12 +12865,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Q = macro.newInstance(extend$28, 'vtkProp3D');
+  const newInstance$1O = macro.newInstance(extend$28, 'vtkProp3D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp3D$1 = {
-    newInstance: newInstance$1Q,
+    newInstance: newInstance$1O,
     extend: extend$28
   };
 
@@ -13004,12 +13004,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1P = macro.newInstance(extend$27, 'vtkProperty');
+  const newInstance$1N = macro.newInstance(extend$27, 'vtkProperty');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty$1 = {
-    newInstance: newInstance$1P,
+    newInstance: newInstance$1N,
     extend: extend$27,
     ...PropertyConst
   };
@@ -13186,12 +13186,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1O = macro.newInstance(extend$26, 'vtkActor');
+  const newInstance$1M = macro.newInstance(extend$26, 'vtkActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkActor$1 = {
-    newInstance: newInstance$1O,
+    newInstance: newInstance$1M,
     extend: extend$26
   };
 
@@ -13589,7 +13589,7 @@
     publicAPI.getNumberOfTuples = () => model.size / model.numberOfComponents;
     publicAPI.getDataType = () => model.dataType;
     /* eslint-disable no-use-before-define */
-    publicAPI.newClone = () => newInstance$1N({
+    publicAPI.newClone = () => newInstance$1L({
       empty: true,
       name: model.name,
       dataType: model.dataType,
@@ -13748,12 +13748,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1N = newInstance$1$(extend$25, 'vtkDataArray');
+  const newInstance$1L = newInstance$1Z(extend$25, 'vtkDataArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataArray$1 = {
-    newInstance: newInstance$1N,
+    newInstance: newInstance$1L,
     extend: extend$25,
     ...STATIC$8,
     ...Constants$g
@@ -14175,12 +14175,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1M = macro.newInstance(extend$22, 'vtkFieldData');
+  const newInstance$1K = macro.newInstance(extend$22, 'vtkFieldData');
 
   // ----------------------------------------------------------------------------
 
   var vtkFieldData$1 = {
-    newInstance: newInstance$1M,
+    newInstance: newInstance$1K,
     extend: extend$22
   };
 
@@ -14444,12 +14444,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1L = macro.newInstance(extend$21, 'vtkDataSetAttributes');
+  const newInstance$1J = macro.newInstance(extend$21, 'vtkDataSetAttributes');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSetAttributes$1 = {
-    newInstance: newInstance$1L,
+    newInstance: newInstance$1J,
     extend: extend$21,
     ...Constants$f
   };
@@ -14596,12 +14596,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1K = macro.newInstance(extend$20, 'vtkDataSet');
+  const newInstance$1I = macro.newInstance(extend$20, 'vtkDataSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSet$1 = {
-    newInstance: newInstance$1K,
+    newInstance: newInstance$1I,
     extend: extend$20,
     ...Constants$e
   };
@@ -15018,12 +15018,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1J = macro.newInstance(extend$1$, 'vtkImageData');
+  const newInstance$1H = macro.newInstance(extend$1$, 'vtkImageData');
 
   // ----------------------------------------------------------------------------
 
   var vtkImageData$1 = {
-    newInstance: newInstance$1J,
+    newInstance: newInstance$1H,
     extend: extend$1$
   };
 
@@ -15564,12 +15564,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1I = macro.newInstance(extend$1_, 'vtkScalarsToColors');
+  const newInstance$1G = macro.newInstance(extend$1_, 'vtkScalarsToColors');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarsToColors$1 = {
-    newInstance: newInstance$1I,
+    newInstance: newInstance$1G,
     extend: extend$1_,
     ...vtkScalarsToColors$2
   };
@@ -15926,12 +15926,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1H = macro.newInstance(extend$1Z, 'vtkLookupTable');
+  const newInstance$1F = macro.newInstance(extend$1Z, 'vtkLookupTable');
 
   // ----------------------------------------------------------------------------
 
   var vtkLookupTable$1 = {
-    newInstance: newInstance$1H,
+    newInstance: newInstance$1F,
     extend: extend$1Z
   };
 
@@ -16589,12 +16589,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1G = macro.newInstance(extend$1Y, 'vtkMapper');
+  const newInstance$1E = macro.newInstance(extend$1Y, 'vtkMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper$1 = {
-    newInstance: newInstance$1G,
+    newInstance: newInstance$1E,
     extend: extend$1Y,
     ...staticOffsetAPI,
     ...otherStaticMethods,
@@ -16726,12 +16726,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1F = macro.newInstance(extend$1X, 'vtkCellArray');
+  const newInstance$1D = macro.newInstance(extend$1X, 'vtkCellArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArray$1 = {
-    newInstance: newInstance$1F,
+    newInstance: newInstance$1D,
     extend: extend$1X,
     ...STATIC$7
   };
@@ -16827,12 +16827,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1E = macro.newInstance(extend$1W, 'vtkPoints');
+  const newInstance$1C = macro.newInstance(extend$1W, 'vtkPoints');
 
   // ----------------------------------------------------------------------------
 
   var vtkPoints$1 = {
-    newInstance: newInstance$1E,
+    newInstance: newInstance$1C,
     extend: extend$1W
   };
 
@@ -16958,12 +16958,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1D = macro.newInstance(extend$1V, 'vtkCell');
+  const newInstance$1B = macro.newInstance(extend$1V, 'vtkCell');
 
   // ----------------------------------------------------------------------------
 
   var vtkCell$1 = {
-    newInstance: newInstance$1D,
+    newInstance: newInstance$1B,
     extend: extend$1V
   };
 
@@ -17205,12 +17205,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1C = macro.newInstance(extend$1U, 'vtkCellLinks');
+  const newInstance$1A = macro.newInstance(extend$1U, 'vtkCellLinks');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellLinks$1 = {
-    newInstance: newInstance$1C,
+    newInstance: newInstance$1A,
     extend: extend$1U
   };
 
@@ -17472,12 +17472,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1B = macro.newInstance(extend$1T, 'vtkCellTypes');
+  const newInstance$1z = macro.newInstance(extend$1T, 'vtkCellTypes');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellTypes$1 = {
-    newInstance: newInstance$1B,
+    newInstance: newInstance$1z,
     extend: extend$1T,
     ...STATIC$6
   };
@@ -17732,12 +17732,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1A = macro.newInstance(extend$1S, 'vtkLine');
+  const newInstance$1y = macro.newInstance(extend$1S, 'vtkLine');
 
   // ----------------------------------------------------------------------------
 
   var vtkLine$1 = {
-    newInstance: newInstance$1A,
+    newInstance: newInstance$1y,
     extend: extend$1S,
     ...STATIC$5,
     ...Constants$a
@@ -17799,12 +17799,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1z = macro.newInstance(extend$1R, 'vtkPointSet');
+  const newInstance$1x = macro.newInstance(extend$1R, 'vtkPointSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkPointSet$1 = {
-    newInstance: newInstance$1z,
+    newInstance: newInstance$1x,
     extend: extend$1R
   };
 
@@ -18365,12 +18365,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1y = macro.newInstance(extend$1Q, 'vtkTriangle');
+  const newInstance$1w = macro.newInstance(extend$1Q, 'vtkTriangle');
 
   // ----------------------------------------------------------------------------
 
   var vtkTriangle$1 = {
-    newInstance: newInstance$1y,
+    newInstance: newInstance$1w,
     extend: extend$1Q,
     ...STATIC$4
   };
@@ -18599,12 +18599,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1x = macro.newInstance(extend$1P, 'vtkPolyData');
+  const newInstance$1v = macro.newInstance(extend$1P, 'vtkPolyData');
 
   // ----------------------------------------------------------------------------
 
   var vtkPolyData$1 = {
-    newInstance: newInstance$1x,
+    newInstance: newInstance$1v,
     extend: extend$1P
   };
 
@@ -18840,7 +18840,7 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1w = macro.newInstance(extend$1O, 'vtkTexture');
+  const newInstance$1u = macro.newInstance(extend$1O, 'vtkTexture');
   const STATIC$3 = {
     generateMipmaps
   };
@@ -18848,7 +18848,7 @@
   // ----------------------------------------------------------------------------
 
   var vtkTexture$1 = {
-    newInstance: newInstance$1w,
+    newInstance: newInstance$1u,
     extend: extend$1O,
     ...STATIC$3
   };
@@ -19588,12 +19588,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1v = macro.newInstance(extend$1N, 'vtkCubeAxesActor');
+  const newInstance$1t = macro.newInstance(extend$1N, 'vtkCubeAxesActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkCubeAxesActor$1 = {
-    newInstance: newInstance$1v,
+    newInstance: newInstance$1t,
     extend: extend$1N,
     newCubeAxesActorHelper
   };
@@ -19650,10 +19650,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1u = newInstance$1$(extend$1M, 'vtkOpenGLCubeAxesActor');
+  const newInstance$1s = newInstance$1Z(extend$1M, 'vtkOpenGLCubeAxesActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCubeAxesActor', newInstance$1u);
+  registerOverride$1('vtkCubeAxesActor', newInstance$1s);
 
   const ObjectType$1 = {
     ARRAY_BUFFER: 0,
@@ -19799,12 +19799,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1t = macro.newInstance(extend$1L);
+  const newInstance$1r = macro.newInstance(extend$1L);
 
   // ----------------------------------------------------------------------------
 
   var vtkBufferObject = {
-    newInstance: newInstance$1t,
+    newInstance: newInstance$1r,
     extend: extend$1L,
     ...STATIC$2,
     ...Constants$9
@@ -20200,12 +20200,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1s = macro.newInstance(extend$1K);
+  const newInstance$1q = macro.newInstance(extend$1K);
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArrayBufferObject = {
-    newInstance: newInstance$1s,
+    newInstance: newInstance$1q,
     extend: extend$1K
   };
 
@@ -20299,12 +20299,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1r = macro.newInstance(extend$1J, 'vtkShader');
+  const newInstance$1p = macro.newInstance(extend$1J, 'vtkShader');
 
   // ----------------------------------------------------------------------------
 
   var vtkShader$1 = {
-    newInstance: newInstance$1r,
+    newInstance: newInstance$1p,
     extend: extend$1J
   };
 
@@ -20854,12 +20854,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1q = macro.newInstance(extend$1I, 'vtkShaderProgram');
+  const newInstance$1o = macro.newInstance(extend$1I, 'vtkShaderProgram');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderProgram$1 = {
-    newInstance: newInstance$1q,
+    newInstance: newInstance$1o,
     extend: extend$1I,
     substitute: substitute$1
   };
@@ -21168,12 +21168,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1p = macro.newInstance(extend$1H, 'vtkOpenGLVertexArrayObject');
+  const newInstance$1n = macro.newInstance(extend$1H, 'vtkOpenGLVertexArrayObject');
 
   // ----------------------------------------------------------------------------
 
   var vtkVertexArrayObject = {
-    newInstance: newInstance$1p,
+    newInstance: newInstance$1n,
     extend: extend$1H
   };
 
@@ -21382,12 +21382,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1o = macro.newInstance(extend$1G);
+  const newInstance$1m = macro.newInstance(extend$1G);
 
   // ----------------------------------------------------------------------------
 
   var vtkHelper = {
-    newInstance: newInstance$1o,
+    newInstance: newInstance$1m,
     extend: extend$1G,
     primTypes: primTypes$2
   };
@@ -22803,18 +22803,18 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1n = newInstance$1$(extend$1F, 'vtkOpenGLTexture');
+  const newInstance$1l = newInstance$1Z(extend$1F, 'vtkOpenGLTexture');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLTexture$1 = {
-    newInstance: newInstance$1n,
+    newInstance: newInstance$1l,
     extend: extend$1F,
     ...Constants$8
   };
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkTexture', newInstance$1n);
+  registerOverride$1('vtkTexture', newInstance$1l);
 
   var vtkPolyDataVS = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexMC;\n\n// frag position in VC\n//VTK::PositionVC::Dec\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\n// picking support\n//VTK::Picking::Dec\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::PrimID::Impl\n\n  //VTK::PositionVC::Impl\n\n  //VTK::Light::Impl\n\n  //VTK::Picking::Impl\n}\n";
 
@@ -24076,10 +24076,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1m = newInstance$1$(extend$1E, 'vtkOpenGLPolyDataMapper');
+  const newInstance$1k = newInstance$1Z(extend$1E, 'vtkOpenGLPolyDataMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper', newInstance$1m);
+  registerOverride$1('vtkMapper', newInstance$1k);
 
   const {
     ColorMode,
@@ -24250,12 +24250,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1l = macro.newInstance(extend$1D, 'vtkMapper2D');
+  const newInstance$1j = macro.newInstance(extend$1D, 'vtkMapper2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper2D$1 = {
-    newInstance: newInstance$1l,
+    newInstance: newInstance$1j,
     extend: extend$1D
   };
 
@@ -24724,10 +24724,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1k = newInstance$1$(extend$1C, 'vtkOpenGLPolyDataMapper2D');
+  const newInstance$1i = newInstance$1Z(extend$1C, 'vtkOpenGLPolyDataMapper2D');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper2D', newInstance$1k);
+  registerOverride$1('vtkMapper2D', newInstance$1i);
 
   const {
     VectorMode
@@ -25506,12 +25506,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1j = macro.newInstance(extend$1B, 'vtkScalarBarActor');
+  const newInstance$1h = macro.newInstance(extend$1B, 'vtkScalarBarActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarBarActor$1 = {
-    newInstance: newInstance$1j,
+    newInstance: newInstance$1h,
     extend: extend$1B,
     newScalarBarActorHelper
   };
@@ -25568,10 +25568,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1i = newInstance$1$(extend$1A, 'vtkOpenGLScalarBarActor');
+  const newInstance$1g = newInstance$1Z(extend$1A, 'vtkOpenGLScalarBarActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkScalarBarActor', newInstance$1i);
+  registerOverride$1('vtkScalarBarActor', newInstance$1g);
 
   const {
     vtkErrorMacro: vtkErrorMacro$l
@@ -25782,10 +25782,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1h = newInstance$1$(extend$1z);
+  const newInstance$1f = newInstance$1Z(extend$1z);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkSkybox', newInstance$1h);
+  registerOverride$1('vtkSkybox', newInstance$1f);
 
   // import { mat4, vec3 }     from 'gl-matrix';
   const {
@@ -25867,10 +25867,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1g = newInstance$1$(extend$1y, 'vtkOpenGLPixelSpaceCallbackMapper');
+  const newInstance$1e = newInstance$1Z(extend$1y, 'vtkOpenGLPixelSpaceCallbackMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$1g);
+  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$1e);
 
   const CLASS_MAPPING = Object.create(null);
   function registerOverride(className, fn) {
@@ -25910,12 +25910,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1f = macro.newInstance(extend$1x, 'vtkWebGPUViewNodeFactory');
+  const newInstance$1d = macro.newInstance(extend$1x, 'vtkWebGPUViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUViewNodeFactory$1 = {
-    newInstance: newInstance$1f,
+    newInstance: newInstance$1d,
     extend: extend$1x
   };
 
@@ -26044,10 +26044,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1e = macro.newInstance(extend$1w);
+  const newInstance$1c = macro.newInstance(extend$1w);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCamera', newInstance$1e);
+  registerOverride('vtkCamera', newInstance$1c);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUBindGroup methods
@@ -26149,12 +26149,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1d = macro.newInstance(extend$1v);
+  const newInstance$1b = macro.newInstance(extend$1v);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBindGroup$1 = {
-    newInstance: newInstance$1d,
+    newInstance: newInstance$1b,
     extend: extend$1v
   };
 
@@ -26204,12 +26204,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1c = macro.newInstance(extend$1u, 'vtkWebGPUShaderModule');
+  const newInstance$1a = macro.newInstance(extend$1u, 'vtkWebGPUShaderModule');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderModule$1 = {
-    newInstance: newInstance$1c,
+    newInstance: newInstance$1a,
     extend: extend$1u
   };
 
@@ -26292,12 +26292,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1b = macro.newInstance(extend$1t, 'vtkWebGPUShaderCache');
+  const newInstance$19 = macro.newInstance(extend$1t, 'vtkWebGPUShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderCache$1 = {
-    newInstance: newInstance$1b,
+    newInstance: newInstance$19,
     extend: extend$1t,
     substitute
   };
@@ -26399,11 +26399,11 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$1a = newInstance$1$(extend$1s, 'vtkWebGPUPipeline');
+  const newInstance$18 = newInstance$1Z(extend$1s, 'vtkWebGPUPipeline');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUPipeline$1 = {
-    newInstance: newInstance$1a,
+    newInstance: newInstance$18,
     extend: extend$1s
   };
 
@@ -26525,12 +26525,12 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$19 = macro.newInstance(extend$1r, 'vtkWebGPUShaderDescription');
+  const newInstance$17 = macro.newInstance(extend$1r, 'vtkWebGPUShaderDescription');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderDescription$1 = {
-    newInstance: newInstance$19,
+    newInstance: newInstance$17,
     extend: extend$1r
   };
 
@@ -27137,11 +27137,11 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$18 = newInstance$1$(extend$1q, 'vtkWebGPUVertexInput');
+  const newInstance$16 = newInstance$1Z(extend$1q, 'vtkWebGPUVertexInput');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUVertexInput$1 = {
-    newInstance: newInstance$18,
+    newInstance: newInstance$16,
     extend: extend$1q
   };
 
@@ -27481,12 +27481,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$17 = macro.newInstance(extend$1p, 'vtkWebGPUSimpleMapper');
+  const newInstance$15 = macro.newInstance(extend$1p, 'vtkWebGPUSimpleMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSimpleMapper$1 = {
-    newInstance: newInstance$17,
+    newInstance: newInstance$15,
     extend: extend$1p
   };
 
@@ -27534,12 +27534,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$16 = macro.newInstance(extend$1o, 'vtkWebGPUFullScreenQuad');
+  const newInstance$14 = macro.newInstance(extend$1o, 'vtkWebGPUFullScreenQuad');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUFullScreenQuad$1 = {
-    newInstance: newInstance$16,
+    newInstance: newInstance$14,
     extend: extend$1o
   };
 
@@ -27665,12 +27665,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$15 = macro.newInstance(extend$1n);
+  const newInstance$13 = macro.newInstance(extend$1n);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBuffer$1 = {
-    newInstance: newInstance$15,
+    newInstance: newInstance$13,
     extend: extend$1n,
     ...Constants$6
   };
@@ -28022,12 +28022,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$14 = macro.newInstance(extend$1m);
+  const newInstance$12 = macro.newInstance(extend$1m);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUIndexBuffer$1 = {
-    newInstance: newInstance$14,
+    newInstance: newInstance$12,
     extend: extend$1m,
     ...Constants$6
   };
@@ -28378,12 +28378,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$13 = newInstance$1$(extend$1l);
+  const newInstance$11 = newInstance$1Z(extend$1l);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBufferManager$1 = {
-    newInstance: newInstance$13,
+    newInstance: newInstance$11,
     extend: extend$1l,
     ...STATIC$1,
     ...Constants$6
@@ -28611,12 +28611,12 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$12 = macro.newInstance(extend$1k, 'vtkWebGPUStorageBuffer');
+  const newInstance$10 = macro.newInstance(extend$1k, 'vtkWebGPUStorageBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUStorageBuffer$1 = {
-    newInstance: newInstance$12,
+    newInstance: newInstance$10,
     extend: extend$1k
   };
 
@@ -28945,12 +28945,12 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$11 = macro.newInstance(extend$1j, 'vtkWebGPUUniformBuffer');
+  const newInstance$$ = macro.newInstance(extend$1j, 'vtkWebGPUUniformBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUUniformBuffer$1 = {
-    newInstance: newInstance$11,
+    newInstance: newInstance$$,
     extend: extend$1j
   };
 
@@ -29449,10 +29449,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$10 = newInstance$1$(extend$1i, 'vtkWebGPURenderer');
+  const newInstance$_ = newInstance$1Z(extend$1i, 'vtkWebGPURenderer');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkRenderer', newInstance$10);
+  registerOverride('vtkRenderer', newInstance$_);
 
   const {
     CoordinateSystem: CoordinateSystem$2
@@ -29601,10 +29601,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$$ = macro.newInstance(extend$1h);
+  const newInstance$Z = macro.newInstance(extend$1h);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor', newInstance$$);
+  registerOverride('vtkActor', newInstance$Z);
 
   const {
     CoordinateSystem: CoordinateSystem$1
@@ -29739,10 +29739,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$_ = macro.newInstance(extend$1g);
+  const newInstance$Y = macro.newInstance(extend$1g);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor2D', newInstance$_);
+  registerOverride('vtkActor2D', newInstance$Y);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUCubeAxesActor methods
@@ -29796,10 +29796,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Z = newInstance$1$(extend$1f, 'vtkWebGPUCubeAxesActor');
+  const newInstance$X = newInstance$1Z(extend$1f, 'vtkWebGPUCubeAxesActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCubeAxesActor', newInstance$Z);
+  registerOverride('vtkCubeAxesActor', newInstance$X);
 
   const {
     DisplayLocation: DisplayLocation$1
@@ -29849,12 +29849,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Y = macro.newInstance(extend$1e, 'vtkProperty2D');
+  const newInstance$W = macro.newInstance(extend$1e, 'vtkProperty2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty2D$1 = {
-    newInstance: newInstance$Y,
+    newInstance: newInstance$W,
     extend: extend$1e,
     ...Constants$7
   };
@@ -30922,12 +30922,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$X = newInstance$1$(extend$1d, 'vtkWebGPUCellArrayMapper');
+  const newInstance$V = newInstance$1Z(extend$1d, 'vtkWebGPUCellArrayMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUCellArrayMapper$1 = {
-    newInstance: newInstance$X,
+    newInstance: newInstance$V,
     extend: extend$1d
   };
 
@@ -31026,10 +31026,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$W = newInstance$1$(extend$1c, 'vtkWebGPUPolyDataMapper');
+  const newInstance$U = newInstance$1Z(extend$1c, 'vtkWebGPUPolyDataMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper', newInstance$W);
+  registerOverride('vtkMapper', newInstance$U);
 
   const {
     PrimitiveTypes: PrimitiveTypes$1
@@ -31111,10 +31111,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$V = newInstance$1$(extend$1b, 'vtkWebGPUPolyDataMapper2D');
+  const newInstance$T = newInstance$1Z(extend$1b, 'vtkWebGPUPolyDataMapper2D');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper2D', newInstance$V);
+  registerOverride('vtkMapper2D', newInstance$T);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUScalarBarActor methods
@@ -31168,10 +31168,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$U = newInstance$1$(extend$1a, 'vtkWebGPUScalarBarActor');
+  const newInstance$S = newInstance$1Z(extend$1a, 'vtkWebGPUScalarBarActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkScalarBarActor', newInstance$U);
+  registerOverride('vtkScalarBarActor', newInstance$S);
 
   /* eslint-disable no-bitwise */
 
@@ -31246,12 +31246,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$T = macro.newInstance(extend$19);
+  const newInstance$R = macro.newInstance(extend$19);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSampler$1 = {
-    newInstance: newInstance$T,
+    newInstance: newInstance$R,
     extend: extend$19
   };
 
@@ -31375,12 +31375,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$S = macro.newInstance(extend$18);
+  const newInstance$Q = macro.newInstance(extend$18);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureView$1 = {
-    newInstance: newInstance$S,
+    newInstance: newInstance$Q,
     extend: extend$18
   };
 
@@ -31648,12 +31648,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$R = macro.newInstance(extend$17);
+  const newInstance$P = macro.newInstance(extend$17);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTexture$1 = {
-    newInstance: newInstance$R,
+    newInstance: newInstance$P,
     extend: extend$17
   };
 
@@ -31696,10 +31696,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Q = macro.newInstance(extend$16, 'vtkWebGPUPixelSpaceCallbackMapper');
+  const newInstance$O = macro.newInstance(extend$16, 'vtkWebGPUPixelSpaceCallbackMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$Q);
+  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$O);
 
   // ----------------------------------------------------------------------------
   // vtkFollower methods
@@ -32419,12 +32419,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$P = macro.newInstance(extend$14, 'vtkCamera');
+  const newInstance$N = macro.newInstance(extend$14, 'vtkCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkCamera$1 = {
-    newInstance: newInstance$P,
+    newInstance: newInstance$N,
     extend: extend$14
   };
 
@@ -32532,12 +32532,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$O = macro.newInstance(extend$13, 'vtkLight');
+  const newInstance$M = macro.newInstance(extend$13, 'vtkLight');
 
   // ----------------------------------------------------------------------------
 
   var vtkLight$1 = {
-    newInstance: newInstance$O,
+    newInstance: newInstance$M,
     extend: extend$13,
     LIGHT_TYPES
   };
@@ -32668,12 +32668,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$N = macro.newInstance(extend$12, 'vtkViewport');
+  const newInstance$L = macro.newInstance(extend$12, 'vtkViewport');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewport$1 = {
-    newInstance: newInstance$N,
+    newInstance: newInstance$L,
     extend: extend$12
   };
 
@@ -33234,12 +33234,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$M = newInstance$1$(extend$11, 'vtkRenderer');
+  const newInstance$K = newInstance$1Z(extend$11, 'vtkRenderer');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderer$1 = {
-    newInstance: newInstance$M,
+    newInstance: newInstance$K,
     extend: extend$11
   };
 
@@ -33414,12 +33414,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$L = macro.newInstance(extend$10, 'vtkRenderWindow');
+  const newInstance$J = macro.newInstance(extend$10, 'vtkRenderWindow');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindow$1 = {
-    newInstance: newInstance$L,
+    newInstance: newInstance$J,
     extend: extend$10,
     registerViewConstructor,
     listViewAPIs,
@@ -34524,12 +34524,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$K = macro.newInstance(extend$$, 'vtkRenderWindowInteractor');
+  const newInstance$I = macro.newInstance(extend$$, 'vtkRenderWindowInteractor');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowInteractor$1 = {
-    newInstance: newInstance$K,
+    newInstance: newInstance$I,
     extend: extend$$,
     handledEvents,
     ...Constants$5
@@ -34547,7 +34547,7 @@ fn main(
   //----------------------------------------------------------------------------
   // Description:
   // Transform from world to display coordinates.
-  function computeWorldToDisplay$1(renderer, x, y, z) {
+  function computeWorldToDisplay(renderer, x, y, z) {
     const view = renderer.getRenderWindow().getViews()[0];
     return view.worldToDisplay(x, y, z, renderer);
   }
@@ -34564,7 +34564,7 @@ fn main(
   // Static API
   // ----------------------------------------------------------------------------
   const STATIC = {
-    computeWorldToDisplay: computeWorldToDisplay$1,
+    computeWorldToDisplay,
     computeDisplayToWorld
   };
 
@@ -34705,12 +34705,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$J = macro.newInstance(extend$_, 'vtkInteractorObserver');
+  const newInstance$H = macro.newInstance(extend$_, 'vtkInteractorObserver');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorObserver$1 = {
-    newInstance: newInstance$J,
+    newInstance: newInstance$H,
     extend: extend$_,
     ...STATIC
   };
@@ -34865,12 +34865,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$I = macro.newInstance(extend$Z, 'vtkInteractorStyle');
+  const newInstance$G = macro.newInstance(extend$Z, 'vtkInteractorStyle');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyle$1 = {
-    newInstance: newInstance$I,
+    newInstance: newInstance$G,
     extend: extend$Z,
     ...vtkInteractorStyleConstants
   };
@@ -35229,12 +35229,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$H = macro.newInstance(extend$Y, 'vtkInteractorStyleTrackballCamera');
+  const newInstance$F = macro.newInstance(extend$Y, 'vtkInteractorStyleTrackballCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyleTrackballCamera$1 = {
-    newInstance: newInstance$H,
+    newInstance: newInstance$F,
     extend: extend$Y
   };
 
@@ -35496,11 +35496,11 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$G = newInstance$1$(extend$X, 'vtkFramebuffer');
+  const newInstance$E = newInstance$1Z(extend$X, 'vtkFramebuffer');
 
   // ----------------------------------------------------------------------------
   var vtkOpenGLFramebuffer = {
-    newInstance: newInstance$G,
+    newInstance: newInstance$E,
     extend: extend$X
   };
 
@@ -35572,12 +35572,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$F = macro.newInstance(extend$W, 'vtkRenderPass');
+  const newInstance$D = macro.newInstance(extend$W, 'vtkRenderPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderPass$1 = {
-    newInstance: newInstance$F,
+    newInstance: newInstance$D,
     extend: extend$W
   };
 
@@ -35873,12 +35873,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$E = macro.newInstance(extend$V, 'vtkOpenGLOrderIndependentTranslucentPass');
+  const newInstance$C = macro.newInstance(extend$V, 'vtkOpenGLOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLOrderIndependentTranslucentPass$1 = {
-    newInstance: newInstance$E,
+    newInstance: newInstance$C,
     extend: extend$V
   };
 
@@ -36014,12 +36014,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$D = macro.newInstance(extend$U, 'vtkForwardPass');
+  const newInstance$B = macro.newInstance(extend$U, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1$1 = {
-    newInstance: newInstance$D,
+    newInstance: newInstance$B,
     extend: extend$U
   };
 
@@ -36073,12 +36073,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$C = macro.newInstance(extend$T, 'vtkHardwareSelector');
+  const newInstance$A = macro.newInstance(extend$T, 'vtkHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector$1$1 = {
-    newInstance: newInstance$C,
+    newInstance: newInstance$A,
     extend: extend$T
   };
 
@@ -36162,12 +36162,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$B = macro.newInstance(extend$S, 'vtkSelectionNode');
+  const newInstance$z = macro.newInstance(extend$S, 'vtkSelectionNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkSelectionNode$1 = {
-    newInstance: newInstance$B,
+    newInstance: newInstance$z,
     extend: extend$S,
     ...Constants$4
   };
@@ -36859,12 +36859,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$A = macro.newInstance(extend$R, 'vtkOpenGLHardwareSelector');
+  const newInstance$y = macro.newInstance(extend$R, 'vtkOpenGLHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector = {
-    newInstance: newInstance$A,
+    newInstance: newInstance$y,
     extend: extend$R,
     ...Constants$b
   };
@@ -37768,12 +37768,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$z = macro.newInstance(extend$Q, 'vtkShaderCache');
+  const newInstance$x = macro.newInstance(extend$Q, 'vtkShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderCache$1 = {
-    newInstance: newInstance$z,
+    newInstance: newInstance$x,
     extend: extend$Q
   };
 
@@ -37893,12 +37893,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$y = macro.newInstance(extend$P, 'vtkOpenGLTextureUnitManager');
+  const newInstance$w = macro.newInstance(extend$P, 'vtkOpenGLTextureUnitManager');
 
   // ----------------------------------------------------------------------------
 
   var vtkTextureUnitManager = {
-    newInstance: newInstance$y,
+    newInstance: newInstance$w,
     extend: extend$P
   };
 
@@ -38033,12 +38033,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$x = macro.newInstance(extend$O, 'vtkRenderWindowViewNode');
+  const newInstance$v = macro.newInstance(extend$O, 'vtkRenderWindowViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowViewNode$1 = {
-    newInstance: newInstance$x,
+    newInstance: newInstance$v,
     extend: extend$O
   };
 
@@ -38807,7 +38807,7 @@ void main()
     model._glInformation = null;
     model.myFactory = vtkViewNodeFactory.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$w);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$u);
     /* eslint-enable no-use-before-define */
 
     model.shaderCache = vtkShaderCache$1.newInstance();
@@ -38829,13 +38829,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$w = macro.newInstance(extend$N, 'vtkOpenGLRenderWindow');
+  const newInstance$u = macro.newInstance(extend$N, 'vtkOpenGLRenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGL', newInstance$w);
+  registerViewConstructor('WebGL', newInstance$u);
 
   // methods we forward to the handle
   const forwarded = ['setBindGroup', 'setIndexBuffer', 'setVertexBuffer', 'draw', 'drawIndexed'];
@@ -39043,11 +39043,11 @@ void main()
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$v = newInstance$1$(extend$M, 'vtkWebGPURenderEncoder');
+  const newInstance$t = newInstance$1Z(extend$M, 'vtkWebGPURenderEncoder');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPURenderEncoder$1 = {
-    newInstance: newInstance$v,
+    newInstance: newInstance$t,
     extend: extend$M
   };
 
@@ -39142,12 +39142,12 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$u = macro.newInstance(extend$L, 'vtkWebGPUOpaquePass');
+  const newInstance$s = macro.newInstance(extend$L, 'vtkWebGPUOpaquePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOpaquePass$1 = {
-    newInstance: newInstance$u,
+    newInstance: newInstance$s,
     extend: extend$L
   };
 
@@ -39390,12 +39390,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$t = macro.newInstance(extend$K, 'vtkWebGPUOrderIndependentTranslucentPass');
+  const newInstance$r = macro.newInstance(extend$K, 'vtkWebGPUOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOrderIndepenentTranslucentPass = {
-    newInstance: newInstance$t,
+    newInstance: newInstance$r,
     extend: extend$K
   };
 
@@ -40272,12 +40272,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$s = macro.newInstance(extend$J, 'vtkWebGPUVolumePassFSQ');
+  const newInstance$q = macro.newInstance(extend$J, 'vtkWebGPUVolumePassFSQ');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePassFSQ$1 = {
-    newInstance: newInstance$s,
+    newInstance: newInstance$q,
     extend: extend$J
   };
 
@@ -40919,12 +40919,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$r = macro.newInstance(extend$I, 'vtkWebGPUVolumePass');
+  const newInstance$p = macro.newInstance(extend$I, 'vtkWebGPUVolumePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePass$1 = {
-    newInstance: newInstance$r,
+    newInstance: newInstance$p,
     extend: extend$I
   };
 
@@ -41123,12 +41123,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$q = macro.newInstance(extend$H, 'vtkForwardPass');
+  const newInstance$o = macro.newInstance(extend$H, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1 = {
-    newInstance: newInstance$q,
+    newInstance: newInstance$o,
     extend: extend$H
   };
 
@@ -41307,12 +41307,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$p = macro.newInstance(extend$G);
+  const newInstance$n = macro.newInstance(extend$G);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureManager$1 = {
-    newInstance: newInstance$p,
+    newInstance: newInstance$n,
     extend: extend$G
   };
 
@@ -41493,11 +41493,11 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$o = newInstance$1$(extend$F, 'vtkWebGPUDevice');
+  const newInstance$m = newInstance$1Z(extend$F, 'vtkWebGPUDevice');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUDevice$1 = {
-    newInstance: newInstance$o,
+    newInstance: newInstance$m,
     extend: extend$F
   };
 
@@ -41625,12 +41625,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$n = macro.newInstance(extend$E, 'vtkWebGPUHardwareSelectionPass');
+  const newInstance$l = macro.newInstance(extend$E, 'vtkWebGPUHardwareSelectionPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelectionPass$1 = {
-    newInstance: newInstance$n,
+    newInstance: newInstance$l,
     extend: extend$E
   };
 
@@ -41965,12 +41965,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$m = macro.newInstance(extend$D, 'vtkWebGPUHardwareSelector');
+  const newInstance$k = macro.newInstance(extend$D, 'vtkWebGPUHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelector$1 = {
-    newInstance: newInstance$m,
+    newInstance: newInstance$k,
     extend: extend$D
   };
 
@@ -42515,7 +42515,7 @@ fn main(
     vtkRenderWindowViewNode$1.extend(publicAPI, model, initialValues);
     model.myFactory = vtkWebGPUViewNodeFactory$1.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$l);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$j);
     /* eslint-enable no-use-before-define */
 
     // setup default forward pass rendering
@@ -42539,13 +42539,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$l = macro.newInstance(extend$C, 'vtkWebGPURenderWindow');
+  const newInstance$j = macro.newInstance(extend$C, 'vtkWebGPURenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGPU', newInstance$l);
+  registerViewConstructor('WebGPU', newInstance$j);
 
   // Process arguments from URL
   const userParams = vtkURLExtract.extractURLParameters();
@@ -42718,12 +42718,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$k = macro.newInstance(extend$B);
+  const newInstance$i = macro.newInstance(extend$B);
 
   // ----------------------------------------------------------------------------
 
   var vtkFullScreenRenderWindow$1 = {
-    newInstance: newInstance$k,
+    newInstance: newInstance$i,
     extend: extend$B
   };
 
@@ -43477,13 +43477,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$j = macro.newInstance(extend$A, 'vtkSTLReader');
+  const newInstance$h = macro.newInstance(extend$A, 'vtkSTLReader');
 
   // ----------------------------------------------------------------------------
 
   var vtkSTLReader$1 = {
     extend: extend$A,
-    newInstance: newInstance$j
+    newInstance: newInstance$h
   };
 
   const DEFAULT_LABEL = 'default';
@@ -44406,16 +44406,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$i = macro.newInstance(extend$q, 'vtkWidgetManager');
-
-  // ----------------------------------------------------------------------------
-
-  var vtkWidgetManager$1 = {
-    newInstance: newInstance$i,
-    extend: extend$q,
-    Constants: WidgetManagerConst,
-    getPixelWorldHeightAtCoord
-  };
+  macro.newInstance(extend$q, 'vtkWidgetManager');
 
   // ----------------------------------------------------------------------------
 
@@ -44588,7 +44579,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function newInstance$h(mixins, initialValues) {
+  function newInstance$g(mixins, initialValues) {
     let publicAPI = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     let model = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     let skipWidgetState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
@@ -44630,7 +44621,7 @@ fn main(
       this.model[listName] = [];
       // Create new Instance method
       this.publicAPI[`add${macro.capitalize(name)}`] = values => {
-        const instance = newInstance$h(mixins, {
+        const instance = newInstance$g(mixins, {
           ...initialValues,
           ...values
         });
@@ -44670,7 +44661,7 @@ fn main(
         name,
         initialValues
       } = _ref2;
-      const instance = newInstance$h(mixins, initialValues);
+      const instance = newInstance$g(mixins, initialValues);
       this.model[name] = instance;
       this.publicAPI.bindState(instance, labels);
       macro.setGet(this.publicAPI, this.model, [name]);
@@ -44704,7 +44695,7 @@ fn main(
       for (var _len = arguments.length, mixins = new Array(_len), _key = 0; _key < _len; _key++) {
         mixins[_key] = arguments[_key];
       }
-      return newInstance$h(mixins, {}, this.publicAPI, this.model, true);
+      return newInstance$g(mixins, {}, this.publicAPI, this.model, true);
     }
   }
 
@@ -44874,12 +44865,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$g = macro.newInstance(extend$j, 'vtkAbstractWidget');
+  const newInstance$f = macro.newInstance(extend$j, 'vtkAbstractWidget');
 
   // ----------------------------------------------------------------------------
 
   var vtkAbstractWidget$1 = {
-    newInstance: newInstance$g,
+    newInstance: newInstance$f,
     extend: extend$j
   };
 
@@ -45069,12 +45060,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$f = macro.newInstance(extend$i, 'vtkAbstractWidget');
+  const newInstance$e = macro.newInstance(extend$i, 'vtkAbstractWidget');
 
   // ----------------------------------------------------------------------------
 
   var vtkAbstractWidgetFactory$1 = {
-    newInstance: newInstance$f,
+    newInstance: newInstance$e,
     extend: extend$i
   };
 
@@ -45240,12 +45231,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$e = macro.newInstance(extend$h, 'vtkArrow2DSource');
+  const newInstance$d = macro.newInstance(extend$h, 'vtkArrow2DSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkArrow2DSource$1 = {
-    newInstance: newInstance$e,
+    newInstance: newInstance$d,
     extend: extend$h
   };
 
@@ -45549,12 +45540,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$d = macro.newInstance(extend$g, 'vtkGlyph3DMapper');
+  const newInstance$c = macro.newInstance(extend$g, 'vtkGlyph3DMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkGlyph3DMapper$1 = {
-    newInstance: newInstance$d,
+    newInstance: newInstance$c,
     extend: extend$g,
     ...Constants$2
   };
@@ -46150,12 +46141,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$c = macro.newInstance(extend$c, 'vtkSphereSource');
+  const newInstance$b = macro.newInstance(extend$c, 'vtkSphereSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkSphereSource$1 = {
-    newInstance: newInstance$c,
+    newInstance: newInstance$b,
     extend: extend$c
   };
 
@@ -46419,12 +46410,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$b = macro.newInstance(extend$b, 'vtkGlyphRepresentation');
+  const newInstance$a = macro.newInstance(extend$b, 'vtkGlyphRepresentation');
 
   // ----------------------------------------------------------------------------
 
   var vtkGlyphRepresentation$1 = {
-    newInstance: newInstance$b,
+    newInstance: newInstance$a,
     extend: extend$b
   };
 
@@ -46493,12 +46484,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$a = macro.newInstance(extend$a, 'vtkPixelSpaceCallbackMapper');
+  const newInstance$9 = macro.newInstance(extend$a, 'vtkPixelSpaceCallbackMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkPixelSpaceCallbackMapper$1 = {
-    newInstance: newInstance$a,
+    newInstance: newInstance$9,
     extend: extend$a
   };
 
@@ -46602,12 +46593,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$9 = macro.newInstance(extend$9, 'vtkConeSource');
+  const newInstance$8 = macro.newInstance(extend$9, 'vtkConeSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkConeSource$1 = {
-    newInstance: newInstance$9,
+    newInstance: newInstance$8,
     extend: extend$9
   };
 
@@ -46697,12 +46688,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$8 = macro.newInstance(extend$8, 'vtkCircleSource');
+  const newInstance$7 = macro.newInstance(extend$8, 'vtkCircleSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkCircleSource$1 = {
-    newInstance: newInstance$8,
+    newInstance: newInstance$7,
     extend: extend$8
   };
 
@@ -46948,12 +46939,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$7 = macro.newInstance(extend$7, 'vtkCubeSource');
+  const newInstance$6 = macro.newInstance(extend$7, 'vtkCubeSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkCubeSource$1 = {
-    newInstance: newInstance$7,
+    newInstance: newInstance$6,
     extend: extend$7
   };
 
@@ -47047,12 +47038,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$6 = macro.newInstance(extend$6, 'vtkArrow2DSource');
+  const newInstance$5 = macro.newInstance(extend$6, 'vtkArrow2DSource');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewFinderSource$1 = {
-    newInstance: newInstance$6,
+    newInstance: newInstance$5,
     extend: extend$6
   };
 
@@ -47354,12 +47345,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$5 = macro.newInstance(extend$5, 'vtkArrowHandleRepresentation');
+  const newInstance$4 = macro.newInstance(extend$5, 'vtkArrowHandleRepresentation');
 
   // ----------------------------------------------------------------------------
 
   var vtkArrowHandleRepresentation$1 = {
-    newInstance: newInstance$5,
+    newInstance: newInstance$4,
     extend: extend$5
   };
 
@@ -47414,13 +47405,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$4 = macro.newInstance(extend$4, 'vtkAbstractManipulator');
+  const newInstance$3 = macro.newInstance(extend$4, 'vtkAbstractManipulator');
 
   // ----------------------------------------------------------------------------
 
   var vtkAbstractManipulator$1 = {
     extend: extend$4,
-    newInstance: newInstance$4
+    newInstance: newInstance$3
   };
 
   function intersectDisplayWithPlane(x, y, planeOrigin, planeNormal, renderer, glRenderWindow) {
@@ -47461,14 +47452,14 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$3 = macro.newInstance(extend$3, 'vtkPlaneManipulator');
+  const newInstance$2 = macro.newInstance(extend$3, 'vtkPlaneManipulator');
 
   // ----------------------------------------------------------------------------
 
   var vtkPlanePointManipulator = {
     intersectDisplayWithPlane,
     extend: extend$3,
-    newInstance: newInstance$3
+    newInstance: newInstance$2
   };
 
   const VaryRadius$1 = {
@@ -48260,12 +48251,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$2 = macro.newInstance(extend$2, 'vtkTubeFilter');
+  const newInstance$1 = macro.newInstance(extend$2, 'vtkTubeFilter');
 
   // ----------------------------------------------------------------------------
 
   var vtkTubeFilter$1 = {
-    newInstance: newInstance$2,
+    newInstance: newInstance$1,
     extend: extend$2
   };
 
@@ -48425,12 +48416,12 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1 = macro.newInstance(extend$1, 'vtkPolyLineRepresentation');
+  const newInstance = macro.newInstance(extend$1, 'vtkPolyLineRepresentation');
 
   // ----------------------------------------------------------------------------
 
   var vtkPolyLineRepresentation$1 = {
-    newInstance: newInstance$1,
+    newInstance,
     extend: extend$1
   };
 
@@ -48933,18 +48924,74 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance = macro.newInstance(extend, 'vtkLineWidget');
+  macro.newInstance(extend, 'vtkLineWidget');
 
-  // ----------------------------------------------------------------------------
+  // Object templates
+  class FurthestPoint {
 
-  var vtkLineWidget$1 = {
-    newInstance,
-    extend
-  };
+      constructor(actorName) {
+          this.actorName = actorName;
+          this.x = 0;
+          this.y = 0;
+          this.z = 0;
+          this.distanceSquared = 0;
+      }
 
-  let modelCenter = [0, 0, 0]; 
-  let modelSize = 0;
+      updateCoords(actorRef){
 
+          this.resetCoords();
+          
+          const pointCoords = actorRef.getMapper().getInputData().getPoints().getData();
+          const actorCenter = actorRef.getCenter();
+          
+          for (let i = 0; i < pointCoords.length/3; i++) {
+              let pointX = pointCoords[i*3] - actorCenter[0];
+              let pointY = pointCoords[i*3+1] - actorCenter[1];
+              let pointZ = pointCoords[i*3+2] - actorCenter[2];
+              let pointDistanceSquared = pointX*pointX + pointY*pointY + pointZ*pointZ;
+
+              if (pointDistanceSquared > this.distanceSquared) {
+                  this.x = pointX;
+                  this.y = pointY;
+                  this.z = pointZ;
+                  this.distanceSquared = pointDistanceSquared;
+              }
+          }
+      }
+
+      getVector(){
+
+          return [this.x, this.y, this.z];
+      }
+
+      logPoint(){
+
+          console.log(`${this.actorName}; x: ${this.x}, y: ${this.y}, z: ${this.z},
+            squared distance: ${this.distanceSquared}`);
+      }
+
+      resetCoords(){
+
+          this.x = 0;
+          this.y = 0;
+          this.z = 0;
+          this.distanceSquared = 0;
+      }
+  }
+
+  // Objects
+  const templateFurthestPoint = new FurthestPoint("template");
+  const modelFurthestPoint = new FurthestPoint("model");
+  let currentXRotation = 0;
+  let currentYRotation = 0;
+  let currentZRotation = 0;
+  let initialShift = [0, 0, 0];
+  let currentXShift = 0;
+  let currentYShift = 0;
+  let currentZShift = 0;
+  let templateCenter = [0, 0, 0];
+
+  // When DOM content loaded
   document.addEventListener("DOMContentLoaded", () => {
 
       // Renderers and render windows
@@ -48953,7 +49000,7 @@ fn main(
       const renderWindow = fullScreenRenderer.getRenderWindow();
       const openGLRenderWindow = fullScreenRenderer.getApiSpecificRenderWindow();
 
-      const container = document.querySelector('body');
+      document.querySelector('body');
 
       // Selector 
       const selector = vtkHardwareSelector.newInstance({
@@ -48972,8 +49019,8 @@ fn main(
       fetchTemplate();
 
       // File actor
-      const reader = vtkSTLReader$1.newInstance();
-      const mapper = vtkMapper$1.newInstance({ scalarVisibility: false });
+      let reader = vtkSTLReader$1.newInstance();
+      let mapper = vtkMapper$1.newInstance({ scalarVisibility: false });
       let actor = vtkActor$1.newInstance();
 
       actor.setMapper(mapper);
@@ -48982,18 +49029,22 @@ fn main(
       // Sphere actor
       const sphereSource = vtkSphereSource$1.newInstance({
           center: [0, 0, 0],
-          radius: 0,
+          radius: 5,
       });
       const mapper1 = vtkMapper$1.newInstance();
       mapper1.setInputConnection(sphereSource.getOutputPort());
       const actor1 = vtkActor$1.newInstance();
       actor1.setMapper(mapper1);
+      actor1.getProperty().setColor(1, 0, 0);
+
+      //renderer.addActor(actor1);
 
       function fetchTemplate(){
 
-          fetch('/template/1')
+          fetch('/template/2')
           .then(response => response.json())
           .then(data => {
+              if (Object.keys(data).length == 0) return;
               var binaryString = atob(data);
               var bytes = new Uint8Array(binaryString.length);
               for (var i = 0; i < binaryString.length; i++) {
@@ -49001,16 +49052,38 @@ fn main(
               }
               var arrayBuffer = bytes.buffer;
               templateReader.parseAsArrayBuffer(arrayBuffer);
-              templateActor.getProperty().setColor([1.0, 0, 0]);
-              templateActor.getProperty().setOpacity(0.2);
-              templateActor.setPosition(0, 0, 0);
-              renderer.addActor(templateActor);
-
-              console.log(templateActor.getBounds());
-      
-              renderer.resetCamera();
-              renderWindow.render();
+              renderTemplate();
           });
+      }
+
+      function renderTemplate(){
+
+          // Set properties
+          templateActor.getProperty().setColor([1.0, 0, 0]);
+          templateActor.getProperty().setOpacity(0.2);
+
+          // Render
+          renderer.addActor(templateActor);
+          renderer.resetCamera();
+          renderWindow.render();
+
+          templateCenter = templateActor.getCenter();
+
+          console.log("template origin: " + templateActor.getOrigin());
+          console.log("template position: " + templateActor.getPosition());
+          console.log("template centre: " + templateCenter);
+          console.log('viewUp: ' + renderer.getActiveCamera().getFocalPoint());
+
+          sphereSource.setCenter(templateCenter);
+
+          // Save actor's furthest point
+          templateFurthestPoint.updateCoords(templateActor);
+          templateFurthestPoint.logPoint();
+
+          renderer.resetCamera();
+          renderWindow.render();
+
+          console.log('sphere centre: ' + actor1.getCenter());
       }
 
       function handleRender(){
@@ -49049,6 +49122,16 @@ fn main(
       // Parsing file data to mapper
       function parseFile(file){
 
+          renderer.removeActor(actor);
+          reader = vtkSTLReader$1.newInstance();
+          mapper = vtkMapper$1.newInstance({ scalarVisibility: false });
+          actor = vtkActor$1.newInstance();
+      
+          actor.setMapper(mapper);
+          mapper.setInputConnection(reader.getOutputPort());
+
+          loadFileToDb(file);
+
           const fileReader = new FileReader();
           fileReader.readAsArrayBuffer(file);
           fileReader.onload = () => {
@@ -49056,256 +49139,182 @@ fn main(
               renderNewModel();
           };
       }
+
+      function loadFileToDb(file) {
+          const textFileReader = new FileReader();
+          textFileReader.readAsText(file);
+          textFileReader.onload = () => {
+              const fileText = textFileReader.result;
+              console.log(fileText);
+          };
+      }
       
       // Update function
       function renderNewModel() {
 
+          console.log('NEW MODEL LOADED');
+          console.log('----------------');
           actor.getProperty().setColor(1.0, 1.0, 1.0);
-          actor.setPosition(0, 0, 0);
+
+          //renderer.resetCamera();
           renderer.addActor(actor);
-          console.log(actor.getBounds());
+          renderer.resetCamera();
+          renderWindow.render();
 
-          updateModelParam();
+          let modelCenter = actor.getCenter();
+          //actor.setOrigin(-1000, 0, 0);
+          console.log('model origin: ' + actor.getOrigin());
+          console.log('model position: ' + actor.getPosition());
+          console.log('model centre: ' + modelCenter);
 
-          //actor1.getProperty().setColor([0.95, 0.45, 0.95]);
-          //renderer.addActor(actor1);
+          // Save actor's furthest point
+          modelFurthestPoint.updateCoords(actor);
+          modelFurthestPoint.logPoint();
 
-          console.log('actor: ' + actor.getBounds());
-          console.log('template actor: ' + templateActor.getBounds());
+          //sphereSource.setCenter(modelFurthestPoint.x + center[0], modelFurthestPoint.y + center[1], modelFurthestPoint.z + center[2]);
 
           renderer.resetCamera();
           renderWindow.render();
+
+          actor.setOrigin(modelCenter);
+          initialShift = [
+              templateCenter[0] - modelCenter[0],
+              templateCenter[1] - modelCenter[1],
+              templateCenter[2] - modelCenter[2]
+          ];
+
+          currentXShift = initialShift[0];
+          currentYShift = initialShift[1];
+          currentZShift = initialShift[2];
+          updateModelPosition();
+          //alignActors();
+          //actor.rotateX(20);
+          //actor.rotateY(90);
+          renderer.resetCamera();
+          renderWindow.render();
+
+          console.log('model centre: ' + actor.getCenter());
+          //console.log('sphere centre: ' + actor1.getCenter());
       }
 
-      function updateModelParam(){
+      function updateModelPosition() {
 
-          modelCenter = actor.getCenter();
-          let bounds = actor.getBounds();
-          let xSize = bounds[1] - bounds[0];
-          let ySize = bounds[3] - bounds[2];
-          let zSize = bounds[5] - bounds[4];
-          modelSize = (xSize + ySize + zSize)/3;
-          console.log('modelCenter:', modelCenter);
-          console.log('modeSize:', modelSize);
-          sphereSource.setCenterFrom(modelCenter);
-          sphereSource.setRadius(modelSize/100);
-          console.log(sphereSource.getCenter());
-          console.log(sphereSource.getRadius());
+          actor.setPosition(currentXShift, currentYShift, currentZShift);
+          renderWindow.render();
       }
 
-      // Picking
-      function handlePicking(xp, yp, tolerance) {
-
-          const x1 = Math.floor(xp - tolerance);
-          const y1 = Math.floor(yp - tolerance);
-          const x2 = Math.ceil(xp + tolerance);
-          const y2 = Math.ceil(yp + tolerance);
-        
-          selector.setArea(x1, y1, x2, y2);
-        
-          if (selector.captureBuffers()) {
-              const pos = [xp, yp];
-              const outSelectedPosition = [0, 0];
-              const info = selector.getPixelInformation(
-                  pos,
-                  tolerance,
-                  outSelectedPosition
-              );
-              console.log("info:", info);
-        
-              if (info == null || info.prop == null) return [];
-        
-              const startPoint = openGLRenderWindow.displayToWorld(
-                  Math.round((x1 + x2) / 2),
-                  Math.round((y1 + y2) / 2),
-                  0,
-                  renderer
-              );
-        
-              const endPoint = openGLRenderWindow.displayToWorld(
-                  Math.round((x1 + x2) / 2),
-                  Math.round((y1 + y2) / 2),
-                  1,
-                  renderer
-              );
-        
-              const ray = [Array.from(startPoint), Array.from(endPoint)];
-        
-              const worldPosition = Array.from(
-                  openGLRenderWindow.displayToWorld(
-                      info.displayPosition[0],
-                      info.displayPosition[1],
-                      info.zValue,
-                      renderer
-                  )
-              );
-              console.log("World position:", worldPosition);
-        
-              const displayPosition = [
-                  info.displayPosition[0],
-                  info.displayPosition[1],
-                  info.zValue,
-              ];
-        
-              const selection = [];
-              selection[0] = {
-                  worldPosition,
-                  displayPosition,
-                  compositeID: info.compositeID,
-                  ...info.prop.get('representationId'),
-                  ray,
-              };
-              return selection;
-          }
-          return [];
-      }
-
-      function getScreenEventPositionFor(source) {
-
-          const bounds = container.getBoundingClientRect();
-          const [canvasWidth, canvasHeight] = openGLRenderWindow.getSize();
-          const scaleX = canvasWidth / bounds.width;
-          const scaleY = canvasHeight / bounds.height;
-          const position = {
-              x: scaleX * (source.clientX - bounds.left),
-              y: scaleY * (bounds.height - source.clientY + bounds.top),
-              z: 0,
-          };
-          return position;
-      }
-
-      function onMouseDown(e) {
-
-          if (e !== undefined) {
-              const sc = getScreenEventPositionFor(e);
-              console.log(sc);
-              const e1 = handlePicking(sc.x, sc.y, 10);
-              if (e1.length === 0) {
-                  console.warn('e1 null', e1);
-                  return;
-              }
-              let pickInfoText = `Screen Position: ${sc.x}, ${sc.y} \nPick Info:\n`;
-              pickInfoText += `${JSON.stringify(e1[0], null, 10)}`;
-              console.log(pickInfoText);
-          
-              sphereSource.setCenter(e1[0].worldPosition);
-              renderWindow.render();
-          }
-      }
-      // Widget manager
-      const widgetManager = vtkWidgetManager$1.newInstance();
-      widgetManager.setRenderer(renderer);
-      
-      let widget = null;
-      
-      let lineWidget = null;
-
-      // Line widget
-      const svgCleanupCallbacks = [];
-
-      function setupSVG(w) {
-
-          svgCleanupCallbacks.push(
-              bindSVGRepresentation(renderer, w.getWidgetState(), {
-                  mapState(widgetState, { size }) {
-                      const textState = widgetState.getText();
-                      const text = textState.getText();
-                      const origin = textState.getOrigin();
-                      if (origin) {
-                          const coords = computeWorldToDisplay(renderer, ...origin);
-                          const position = [coords[0], size[1] - coords[1]];
-                          return {
-                              text,
-                              position,
-                          };
-                      }
-                      return null;
-                  },
-                  render(data, h) {
-                      if (data) {
-                          return h(
-                              'text',
-                              {
-                                  key: 'lineText',
-                                  attrs: {
-                                      x: data.position[0],
-                                      y: data.position[1],
-                                      dx: 12,
-                                      dy: -12,
-                                      fill: 'white',
-                                      'font-size': 32,
-                                  },
-                              },
-                              data.text
-                          );
-                      }
-                      return [];
-                  },
-              })
-          );
-      }
-
-      document.querySelector('#annot-button').addEventListener('click', () => {
-          let currentHandle = null;
-          widgetManager.releaseFocus(widget);
-          widget = vtkLineWidget$1.newInstance();
-          // widget.placeWidget(cube.getOutputData().getBounds());
-          currentHandle = widgetManager.addWidget(widget);
-          lineWidget = currentHandle;
-          lineWidget.setText("test");
-
-          selectWidget(widgetManager.getWidgets().length - 1);
-          setupSVG(widget);
-        
-          ({
-              1: lineWidget.getWidgetState().getHandle1(),
-              2: lineWidget.getWidgetState().getHandle2(),
-          });
-        
-          //updateHandleShape(1);
-          //updateHandleShape(2);
-        
-          widgetManager.grabFocus(widget);
-        
-          currentHandle.onStartInteractionEvent(() => {
-              const index = widgetManager.getWidgets().findIndex((cwidget) => {
-                  if (DeepEqual$1(currentHandle.getWidgetState(), cwidget.getWidgetState()))
-                      return 1;
-                  return 0;
-              });
-              ({
-                  1: currentHandle.getWidgetState().getHandle1(),
-                  2: currentHandle.getWidgetState().getHandle2(),
-              });
-              selectWidget(index);
-              lineWidget = currentHandle;
-          });
-        });
       // Body listener
-      container.addEventListener('mousedown', onMouseDown);
+      //container.addEventListener('mousedown', onMouseDown);
 
       // Render button
       let renderBtn = document.getElementById("render-button");
       renderBtn.addEventListener("click", handleRender);
 
+      // Reset button
+      let resetBtn = document.getElementById('reset-camera');
+      resetBtn.addEventListener('click', () => {
+          let camera = renderer.getActiveCamera();
+          camera.setPosition(0, 0, 1);
+          camera.setFocalPoint(0, 0, 0);
+          camera.setViewUp(0, 1, 0);
+          renderer.resetCamera();
+          renderWindow.render();
+      });
       // Add annot
+      /*
       let annotBtn = document.getElementById('annot-button');
       annotBtn.addEventListener('click', toggleAnotMenu);
 
       let cancelBtn = document.getElementById('annot-cancel-button');
-      cancelBtn.addEventListener('click', toggleAnotMenu);
+      cancelBtn.addEventListener('click', toggleAnotMenu)
+      */
+
+      // Manipulation navbar
+      let transformDivs = document.querySelectorAll('.transform-div');
+
+      let rotationNavBtn = document.getElementById('rotation-nav-btn');
+      rotationNavBtn.addEventListener('click', () => {
+          transformDivs.forEach((transformDiv) => {
+              transformDiv.classList.remove('active');
+          });
+          let rotationDiv = document.getElementById('rotation-div');
+          rotationDiv.classList.add('active');
+      });
+
+      let movementNavBtn = document.getElementById('movement-nav-btn');
+      movementNavBtn.addEventListener('click', () => {
+          transformDivs.forEach((transformDiv) => {
+              transformDiv.classList.remove('active');
+          });
+          let movementDiv = document.getElementById('movement-div');
+          movementDiv.classList.add('active');
+      });
+      
+
+      // Rotation sliders
+      // X slider
+      let xSlider = document.getElementById('x-rotation');
+      let xSliderValue = document.getElementById('x-rotation-value');
+
+      // Update rotation value in p
+      xSlider.addEventListener('input', (e) => {
+          xSliderValue.innerHTML = e.target.value;
+      });
+
+      // Rotation on input
+      xSlider.addEventListener('input', (e) => {
+          actor.rotateWXYZ(e.target.value - currentXRotation, 1, 0, 0);
+          currentXRotation = e.target.value;
+          renderWindow.render();
+      });
+
+      // Y slider
+      let ySlider = document.getElementById('y-rotation');
+      let ySliderValue = document.getElementById('y-rotation-value');
+      ySlider.addEventListener('input', (e) => {
+          ySliderValue.innerHTML = e.target.value;
+      });
+
+      ySlider.addEventListener('input', (e) => {
+          actor.rotateWXYZ(e.target.value - currentYRotation, 0, 1, 0);
+          currentYRotation = e.target.value;
+          renderWindow.render();
+      });
+
+      // Z slider
+      let zSlider = document.getElementById('z-rotation');
+      let zSliderValue = document.getElementById('z-rotation-value');
+      zSlider.addEventListener('input', (e) => {
+          zSliderValue.innerHTML = e.target.value;
+      });
+
+      zSlider.addEventListener('input', (e) => {
+          actor.rotateWXYZ(e.target.value - currentZRotation, 0, 0, 1);
+          currentZRotation = e.target.value;
+          renderWindow.render();
+      });
+
+      // Movement inputs
+      // X
+      let xMovement = document.getElementById('x-movement');
+      xMovement.addEventListener('input', (e) => {
+          currentXShift = initialShift[0] + parseInt(e.target.value);
+          updateModelPosition();
+      });
+
+      // Y
+      let yMovement = document.getElementById('y-movement');
+      yMovement.addEventListener('input', (e) => {
+          currentYShift = initialShift[1] + parseInt(e.target.value);
+          updateModelPosition();
+      });
+
+      // Z
+      let zMovement = document.getElementById('z-movement');
+      zMovement.addEventListener('input', (e) => {
+          currentZShift = initialShift[2] + parseInt(e.target.value);
+          updateModelPosition();
+      });
   });
-
-  function toggleAnotMenu(){
-
-      let nav = document.getElementById('render-nav');
-      let canvas = document.querySelector('canvas');
-      let estDiv = document.getElementById('estimate-div');
-      nav.classList.toggle('blur');
-      canvas.classList.toggle('blur');
-      estDiv.classList.toggle('blur');
-      let popup = document.getElementById('anot-popup');
-      popup.classList.toggle('active');
-  }
 
 })();

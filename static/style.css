@@ -35,6 +35,20 @@ body{
     border: solid 2px #ffffff;
     border-radius: 10px;
 }
+.primary-button{
+    background-color: hsl(207, 60%, 50%);
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border: solid 2px #000000;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+}
+.form-container .primary-button{
+    min-width: 100%;
+}
 .form-title{
     font-size: 30px;
     color: #ffffff;
@@ -47,16 +61,8 @@ body{
     border-radius: 5px;
     box-sizing: border-box;
 }
-.primary-button{
-    width: 100%;
-    background-color: #3387cc;
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 10px;
-    border: solid 2px #000000;
-    border-radius: 5px;
-    cursor: pointer;
+.primary-button:hover{
+    background-color: hsl(207, 60%, 37%);
 }
 .form-info{
     color: #ffffff;
@@ -309,7 +315,7 @@ header{
     margin-bottom: 0;
 }
 #render-header .primary-button{
-    width: 106px;
+    min-width: 106px;
 }
 #render-header .secondary-button{
     width: 180px;
@@ -361,3 +367,52 @@ input[type="color"]{
     margin: 0;
     margin-left: 40px;
 }
+#manipulation-div{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 10px;
+    right: 10px;
+    width: 400px;
+    z-index: 100;
+    margin: 0;
+    border: 2px solid hsl(0, 0%, 0%);
+    border-radius: 5px;
+}
+#manipulation-nav{
+    display: flex;
+    gap: 0;
+}
+#manipulation-nav .primary-button{
+    border: 0px;
+    border-radius: 0;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+.transform-div{
+    display: none;
+}
+.transform-div.active{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px;
+    background-color: hsl(0, 0%, 72%);
+}
+.rotation-input{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.rotation-input p{
+    margin: 0;
+}
+.slider{
+    flex: 1;
+    opacity: 0.7;
+}
+.slider:hover {
+    opacity: 1;
+  }

@@ -7,7 +7,7 @@
     <script type="module" src="{{ url_for('static', filename='bundle.js') }}"></script>
     <title>Editor</title>
 </head>
-<body>
+<body id="{{ project_id }}">
     <header id="render-header">
         <div class="header-left">
             <svg width="52px" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -16,7 +16,7 @@
             <label for="3d-file" class="file-upload">3D data</label>
             <input id="3d-file" class="file-field" type="file" />
             <button id="render-button" class="primary-button">Render</button>
-            <button id="annot-button" class="secondary-button">New annotation</button>
+            <button id="reset-camera" class="primary-button">Reset camera</button>
         </div>
         <div class="header-right">
             <button id="save-button" class="primary-button">Save</button>
@@ -29,6 +29,47 @@
         <p>Sex: ?</p>
         <p>Age: ??</p>
         <button class="primary-button">Calculate</button>
+    </div>
+    <div id="manipulation-div">
+        <div id="manipulation-nav">
+            <button id="rotation-nav-btn" class="primary-button">Rotation</button>
+            <button id="movement-nav-btn" class="primary-button">Move</button>
+            <button id="options-nav-btn" class="primary-button">Settings</button>
+        </div>
+        <div id="rotation-div" class="transform-div active">
+            <div class="rotation-input">
+                <p>X</p>
+                <input type="range" min="0" max="360" value="0" class="slider" id="x-rotation">
+                <p id="x-rotation-value">0</p>
+            </div>
+            <div class="rotation-input" class="transform-div">
+                <p>Y</p>
+                <input type="range" min="0" max="360" value="0" class="slider" id="y-rotation">
+                <p id="y-rotation-value">0</p>
+            </div>
+            <div class="rotation-input" class="transform-div">
+                <p>Z</p>
+                <input type="range" min="0" max="360" value="0" class="slider" id="z-rotation">
+                <p id="z-rotation-value">0</p>
+            </div>
+        </div>
+        <div id="movement-div" class="transform-div">
+            <div class="rotation-input">
+                <p>X</p>
+                <input type="number" value="0" class="slider" id="x-movement">
+            </div>
+            <div class="rotation-input" class="transform-div">
+                <p>Y</p>
+                <input type="number" value="0" class="slider" id="y-movement">
+            </div>
+            <div class="rotation-input" class="transform-div">
+                <p>Z</p>
+                <input type="number" value="0" class="slider" id="z-movement">
+            </div>
+        </div>
+        <div id="options-div" class="transform-div">
+
+        </div>
     </div>
     <div id="anot-popup" class="popup">
         <h1>New annotation</h1>
