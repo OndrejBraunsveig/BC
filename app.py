@@ -2,7 +2,7 @@ import os
 import base64
 from datetime import datetime
 
-from flask import Flask, render_template, url_for, redirect, flash, session, jsonify, request
+from flask import Flask, render_template, url_for, redirect, flash, session, jsonify, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user
 from flask_wtf import FlaskForm
@@ -190,24 +190,26 @@ def add_template():
             flash('Template added succesfully!')
     return render_template('template-load.html')
 
-@app.route('/saveModel/<int:project_id>', methods=['GET', 'POST'])
+@app.route('/saveModel/<int:project_id>', methods=['POST'])
 def saveModel(project_id):
 
-    if request.method == 'POST':
-        jsonData = request.get_json()
-        model_data = jsonData['model_data']
-        project = Project.query.filter_by(id=project_id).first()
-        project.model_data = model_data
-        db.session.commit()
+    model_file = request.files['file']
+    model_blob = model_file.read()
 
-    return ('', 204)
+    project = Project.query.filter_by(id=project_id).first()
+    project.model_data = model_blob
+    db.session.commit()
+
+    return jsonify({"message": "Model saved successfully"}), 200
 
 @app.route('/loadModel/<int:project_id>', methods=['GET', 'POST'])
 def loadModel(project_id):
 
-    data = Project.query.filter_by(id=project_id).first()
-    if data:
-        return jsonify(data.model_data)
+    project = Project.query.filter_by(id=project_id).first()
+    model_blob = project.model_data
+    if model_blob:
+        model_base64 = base64.b64encode(model_blob).decode('utf-8')
+        return jsonify({"model_base64": model_base64})
     return {}
 
 if __name__ == '__main__':
