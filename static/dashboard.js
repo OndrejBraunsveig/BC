@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    let projectContainers = document.querySelectorAll('.project-container');
+    projectContainers.forEach(container => {
+
+        // Get project image from db
+        fetch(`/loadProjectImage/${container.id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data) return;
+            if (Object.keys(data).length == 0) return;
+            
+            let projectImg = container.querySelector('.project-img');
+            projectImg.src = `data:image/png;base64,${data.base64_image}`;
+        });
+    });
+
     // Add popup
     let addBtn = document.getElementById('add-button');
     addBtn.addEventListener('click', toggleAddMenu);

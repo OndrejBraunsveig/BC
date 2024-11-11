@@ -30,9 +30,10 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(30), nullable=False)
-    model_data = db.Column(db.String)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+    model_data = db.Column(db.String)
+    base64_image = db.Column(db.String)
 
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -146,6 +147,9 @@ def dashboard():
     projects = Project.query.filter_by(user_id=id)
     project_list = [p.__dict__ for p in projects]
 
+    if request.method == 'POST':
+        return redirect(url_for('dashboard'))
+
     return render_template('dashboard.html', projects=project_list, add_form=add_form,
                            edit_form=edit_form, delete_form=delete_form)
 
@@ -190,17 +194,46 @@ def add_template():
             flash('Template added succesfully!')
     return render_template('template-load.html')
 
+@app.route('/saveProjectImage/<int:project_id>', methods=['POST'])
+def save_model_image(project_id):
+
+    data = request.get_json()
+    base64_image = data.get('base64_image')
+
+    if base64_image:
+        project = Project.query.filter_by(id=project_id).first()
+        project.base64_image = base64_image
+        db.session.commit()
+
+        return jsonify({"message": "Image saved successfully"}), 200
+
+    return jsonify({"message": "Image save failed"}), 500
+
+@app.route('/loadProjectImage/<int:project_id>', methods=['GET'])
+def load_model_image(project_id):
+    
+    project = Project.query.filter_by(id=project_id).first()
+    base64_image = project.base64_image
+
+    if base64_image:
+        return jsonify({"base64_image": base64_image}), 200
+    
+    return {}
+
 @app.route('/saveModel/<int:project_id>', methods=['POST'])
 def saveModel(project_id):
 
     model_file = request.files['file']
     model_blob = model_file.read()
 
-    project = Project.query.filter_by(id=project_id).first()
-    project.model_data = model_blob
-    db.session.commit()
+    if model_blob:
+        project = Project.query.filter_by(id=project_id).first()
+        project.model_data = model_blob
+        db.session.commit()
 
-    return jsonify({"message": "Model saved successfully"}), 200
+        return jsonify({"message": "Model saved successfully"}), 200
+
+    return jsonify({"message": "Model save error"}), 500
 
 @app.route('/loadModel/<int:project_id>', methods=['GET', 'POST'])
 def loadModel(project_id):

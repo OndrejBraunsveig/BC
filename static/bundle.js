@@ -49375,10 +49375,10 @@ fn main(
           const fileReader = new FileReader();
           fileReader.readAsArrayBuffer(file);
           fileReader.onload = () => {
-              saveModel(file);
               reader.parseAsArrayBuffer(fileReader.result);
               renderNewModel();
               makeInitialShift();
+              actorToFile();
           };
       }
       
@@ -49396,6 +49396,15 @@ fn main(
           .then(response => {
               if (response.ok) {
                   console.log('Model saved succesfully');
+          
+                  // Update project image if response is ok
+                  renderWindow.getViews()[0].captureNextImage().then((image_data) => {
+                      const base64Image = image_data.split(",")[1];
+                      saveImage(base64Image);
+                  });
+          
+                  renderWindow.render();
+
               } else {
                   console.error('Model save failed');
               }
@@ -49421,6 +49430,26 @@ fn main(
 
               reader.parseAsArrayBuffer(arrayBuffer);
               renderNewModel();
+          });
+      }
+
+      function saveImage(base64Image) {
+
+          let project_id = document.body.id;
+
+          fetch(`/saveProjectImage/${project_id}`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ base64_image: base64Image })
+          })
+          .then(response => {
+              if (response.ok) {
+                  console.log('Image saved succesfully');
+              } else {
+                  console.error('Image save failed');
+              }
           });
       }
 
@@ -49581,7 +49610,7 @@ fn main(
           let actorDataset = vtkSTLWriter$1.writeSTL(actorPoly, 'binary');
           let actorFile = new File([actorDataset.buffer], 'actorFile.stl', { type: 'application/sla'});
 
-          return actorFile;
+          saveModel(actorFile);
       }
 
       function updateRotationQuat(deltaAngle, axis) {
@@ -49629,8 +49658,7 @@ fn main(
       // Save button
       let saveBtn = document.getElementById('save-button');
       saveBtn.addEventListener('click', () => {
-          let fileToSave = actorToFile();
-          saveModel(fileToSave);
+          actorToFile();
       });
 
       // Add annot

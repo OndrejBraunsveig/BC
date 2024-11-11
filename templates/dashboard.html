@@ -35,7 +35,7 @@
         <div class="dashboard-layout">
             {% for project in projects %}
                 <div id="{{ project['id'] }}" class="project-container">
-                    <img src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
+                    <img class="project-img" src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
                     <div class="title-card">
                         <h1 class="project-name">{{ project["name"] }}</h1>
                         <p>{{ project["updated_at"] }}</p>
@@ -48,19 +48,6 @@
                     </form> 
                 </div>
             {% endfor %}
-            <div class="project-container">
-                <img src="../static/images/sacrum.jpg" alt="editor1" width="200" height="200">
-                <div class="title-card">
-                    <h1>Example</h1>
-                    <p>15:15 | 25.04.2024</p>
-                </div>
-                <form action="{{ url_for('editor', project_id=2) }}">
-                    <div class="button-row">
-                        <input class="secondary-button" type="submit" value="Editor" />
-                        <button class="delete-button danger-button" type="button">Delete</button>
-                    </div>
-                </form> 
-            </div>
         </div>
     </main>
     <div id="add-popup" class="popup">
