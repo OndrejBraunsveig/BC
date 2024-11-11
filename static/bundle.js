@@ -49233,6 +49233,8 @@ fn main(
   let currentYShift = 0;
   let currentZShift = 0;
 
+  let alreadySaved = false;
+
   // When DOM content loaded
   document.addEventListener("DOMContentLoaded", () => {
 
@@ -49457,15 +49459,12 @@ fn main(
               templateCenter[2] - modelCenter[2]
           ];
 
-          currentXShift = initialShift[0];
-          currentYShift = initialShift[1];
-          currentZShift = initialShift[2];
-
           updateModelPosition();
           renderer.resetCamera();
           renderWindow.render();
 
-          console.log(actor.getMapper().getInputData().getPoints().getData());
+          // New model was loaded from file, reset save tracker
+          alreadySaved = false;
       }
 
       function actorToFile() {
@@ -49474,8 +49473,10 @@ fn main(
           let actorPoints = actorPoly.getPoints().getData();
           console.log('bounds at save start:');
           console.log(actorPoly.getPoints().getBounds());
-          console.log('actor center:');
-          console.log(actor.getCenter());
+          console.log('model center:');
+          console.log(modelCenter);
+          console.log('points at start:');
+          console.log(actorPoints);
           
           // TRANSLATE TO ORIGIN
           let transform = vtkTransform$1.newInstance();
@@ -49487,8 +49488,13 @@ fn main(
 
           let newPoints = new Float32Array(actorPoints.length);
           transform.transformPoints(actorPoints, newPoints);
+          // docasne
+          actorPoly.getPoints().setData(newPoints, 3);
 
           // ROTATION
+          console.log('bounds before rotation:');
+          console.log(actorPoly.getPoints().getBounds());
+          
           let rotMatrix = create$3();
           fromQuat(rotMatrix, cumulativeRotationQuat);
 
@@ -49499,19 +49505,33 @@ fn main(
           transform.transformPoints(newPoints, newNewPoints);
           actorPoly.getPoints().setData(newNewPoints, 3);
 
+          console.log('bounds after rotation:');
+          console.log(actorPoly.getPoints().getBounds());
+
           // TRANSLATION FIX AFTER ROTATION + TRANSLATION FROM ORIGIN
-          const bounds = actorPoly.getPoints().getBounds();
-          const xCentre = (bounds[0] + bounds[1])/2;
-          const yCentre = (bounds[2] + bounds[3])/2;
-          const zCentre = (bounds[4] + bounds[5])/2;
+          let bounds = actorPoly.getPoints().getBounds();
+          let xCentre = (bounds[0] + bounds[1])/2;
+          let yCentre = (bounds[2] + bounds[3])/2;
+          let zCentre = (bounds[4] + bounds[5])/2;
 
           transform = vtkTransform$1.newInstance();
-          matrix = vtkMatrixBuilder
-              .buildFromDegree()
-              .translate(-xCentre + modelCenter[0] + currentXShift,
-                  -yCentre + modelCenter[1] + currentYShift,
-                  -zCentre + modelCenter[2] + currentZShift)
-              .getMatrix();
+
+          // If one save already occured, omit initial shift
+          if (alreadySaved) {
+              matrix = vtkMatrixBuilder
+                  .buildFromDegree()
+                  .translate(-xCentre + modelCenter[0] + currentXShift,
+                      -yCentre + modelCenter[1] + currentYShift,
+                      -zCentre + modelCenter[2] + currentZShift)
+                  .getMatrix();
+          } else {
+              matrix = vtkMatrixBuilder
+                  .buildFromDegree()
+                  .translate(-xCentre + modelCenter[0] + initialShift[0] + currentXShift,
+                      -yCentre + modelCenter[1] + initialShift[1] + currentYShift,
+                      -zCentre + modelCenter[2] + initialShift[2] + currentZShift)
+                  .getMatrix();           
+          }
           transform.setMatrix(matrix);
 
           let nnnPoints = new Float32Array(actorPoints.length);
@@ -49519,9 +49539,44 @@ fn main(
           actorPoly.getPoints().setData(nnnPoints, 3);
           console.log(actorPoly.getPoints().getBounds());
           
-          // Update modelCentre (polyData in mapper changed, so we have to reflect that)
-          
-          
+          // Model was saved at least once
+          alreadySaved = true;
+
+          // Update modelCenter (polyData in mapper changed, so we have to reflect that)
+          bounds = actorPoly.getPoints().getBounds();
+          xCentre = (bounds[0] + bounds[1])/2;
+          yCentre = (bounds[2] + bounds[3])/2;
+          zCentre = (bounds[4] + bounds[5])/2;
+          modelCenter = [xCentre, yCentre, zCentre];
+          console.log('modelCentre after save:');
+          console.log(modelCenter);
+
+          // Reset sliders and variables
+
+          // Rotation
+          cumulativeRotationQuat = create();
+          currentXRotation = 0;
+          xSlider.value = 0;
+          xSliderValue.innerHTML = 0;
+          currentYRotation = 0;
+          ySlider.value = 0;
+          ySliderValue.innerHTML = 0;
+          currentZRotation = 0;
+          zSlider.value = 0;
+          zSliderValue.innerHTML = 0;
+          console.log(cumulativeRotationQuat);
+
+          // Shift
+          initialShift[0] += currentXShift;
+          currentXShift = 0;
+          initialShift[1] += currentYShift;
+          currentYShift = 0;
+          initialShift[2] += currentZShift;
+          currentZShift = 0;
+          xMovement.value = '0';
+          yMovement.value = '0';
+          zMovement.value = '0';
+
           // Get STL file from polydata
           let actorDataset = vtkSTLWriter$1.writeSTL(actorPoly, 'binary');
           let actorFile = new File([actorDataset.buffer], 'actorFile.stl', { type: 'application/sla'});
@@ -49541,7 +49596,9 @@ fn main(
 
       function updateModelPosition() {
 
-          actor.setPosition(currentXShift, currentYShift, currentZShift);
+          actor.setPosition(initialShift[0] + currentXShift,
+              initialShift[1] + currentYShift,
+              initialShift[2] + currentZShift);
           renderWindow.render();
       }
 
@@ -49639,8 +49696,6 @@ fn main(
           updateRotationQuat(deltaAngle, [0, 1, 0]);
           actor.rotateWXYZ(deltaAngle, 0, 1, 0);
           renderWindow.render();
-
-          console.log(actor.getOrientation());
       });
 
       // Z slider
@@ -49662,21 +49717,21 @@ fn main(
       // X
       let xMovement = document.getElementById('x-shift');
       xMovement.addEventListener('input', (e) => {
-          currentXShift = initialShift[0] + parseFloat(e.target.value);
+          currentXShift = parseFloat(e.target.value);
           updateModelPosition();
       });
 
       // Y
       let yMovement = document.getElementById('y-shift');
       yMovement.addEventListener('input', (e) => {
-          currentYShift = initialShift[1] + parseFloat(e.target.value);
+          currentYShift = parseFloat(e.target.value);
           updateModelPosition();
       });
 
       // Z
       let zMovement = document.getElementById('z-shift');
       zMovement.addEventListener('input', (e) => {
-          currentZShift = initialShift[2] + parseFloat(e.target.value);
+          currentZShift = parseFloat(e.target.value);
           updateModelPosition();
       });
   });
