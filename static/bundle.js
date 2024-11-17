@@ -5530,7 +5530,7 @@
   // newInstance
   // ----------------------------------------------------------------------------
 
-  function newInstance$1$(extend, className) {
+  function newInstance$20(extend, className) {
     const constructor = function () {
       let initialValues = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       const model = {};
@@ -6233,7 +6233,7 @@
     keystore,
     measurePromiseExecution,
     moveToProtected,
-    newInstance: newInstance$1$,
+    newInstance: newInstance$20,
     newTypedArray,
     newTypedArrayFrom,
     normalizeWheel: normalizeWheel$1,
@@ -6293,7 +6293,7 @@
     algo: algo,
     EVENT_ABORT: EVENT_ABORT,
     event: event,
-    newInstance: newInstance$1$,
+    newInstance: newInstance$20,
     chain: chain,
     isVtkObject: isVtkObject,
     traverseInstanceTree: traverseInstanceTree,
@@ -6496,7 +6496,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2k(publicAPI, model) {
+  function extend$2l(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$26, initialValues);
 
@@ -6515,13 +6515,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1_ = macro.newInstance(extend$2k, 'vtkViewNode');
+  const newInstance$1$ = macro.newInstance(extend$2l, 'vtkViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNode$1 = {
-    newInstance: newInstance$1_,
-    extend: extend$2k,
+    newInstance: newInstance$1$,
+    extend: extend$2l,
     PASS_TYPES
   };
 
@@ -6574,7 +6574,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2j(publicAPI, model) {
+  function extend$2k(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$25, initialValues);
 
@@ -6587,13 +6587,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Z = macro.newInstance(extend$2j, 'vtkViewNodeFactory');
+  const newInstance$1_ = macro.newInstance(extend$2k, 'vtkViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory$1$1 = {
-    newInstance: newInstance$1Z,
-    extend: extend$2j
+    newInstance: newInstance$1_,
+    extend: extend$2k
   };
 
   const CLASS_MAPPING$1 = Object.create(null);
@@ -6618,7 +6618,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2i(publicAPI, model) {
+  function extend$2j(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$24, initialValues);
 
@@ -6634,13 +6634,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Y = macro.newInstance(extend$2i, 'vtkOpenGLViewNodeFactory');
+  const newInstance$1Z = macro.newInstance(extend$2j, 'vtkOpenGLViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewNodeFactory = {
-    newInstance: newInstance$1Y,
-    extend: extend$2i
+    newInstance: newInstance$1Z,
+    extend: extend$2j
   };
 
   // ----------------------------------------------------------------------------
@@ -6701,7 +6701,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2h(publicAPI, model) {
+  function extend$2i(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$23, initialValues);
 
@@ -6727,10 +6727,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1X = newInstance$1$(extend$2h);
+  const newInstance$1Y = newInstance$20(extend$2i);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCamera', newInstance$1X);
+  registerOverride$1('vtkCamera', newInstance$1Y);
 
   const {
     vtkDebugMacro: vtkDebugMacro$9
@@ -6910,7 +6910,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2g(publicAPI, model) {
+  function extend$2h(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$22, initialValues);
 
@@ -6928,10 +6928,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1W = newInstance$1$(extend$2g, 'vtkOpenGLRenderer');
+  const newInstance$1X = newInstance$20(extend$2h, 'vtkOpenGLRenderer');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkRenderer', newInstance$1W);
+  registerOverride$1('vtkRenderer', newInstance$1X);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7083,7 +7083,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2f(publicAPI, model) {
+  function extend$2g(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$21, initialValues);
 
@@ -7108,10 +7108,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1V = newInstance$1$(extend$2f);
+  const newInstance$1W = newInstance$20(extend$2g);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor', newInstance$1V);
+  registerOverride$1('vtkActor', newInstance$1W);
 
   // ----------------------------------------------------------------------------
   // vtkOpenGLActor methods
@@ -7252,7 +7252,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2e(publicAPI, model) {
+  function extend$2f(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$20, initialValues);
 
@@ -7269,10 +7269,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1U = newInstance$1$(extend$2e);
+  const newInstance$1V = newInstance$20(extend$2f);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkActor2D', newInstance$1U);
+  registerOverride$1('vtkActor2D', newInstance$1V);
 
   function ascending(a, b) {
     return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -7418,7 +7418,7 @@
     prototype.constructor = constructor;
   }
 
-  function extend$2d(parent, definition) {
+  function extend$2e(parent, definition) {
     var prototype = Object.create(parent.prototype);
     for (var key in definition) prototype[key] = definition[key];
     return prototype;
@@ -7668,7 +7668,7 @@
     this.opacity = +opacity;
   }
 
-  define(Rgb, rgb$1, extend$2d(Color, {
+  define(Rgb, rgb$1, extend$2e(Color, {
     brighter(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
@@ -7766,7 +7766,7 @@
     this.opacity = +opacity;
   }
 
-  define(Hsl, hsl, extend$2d(Color, {
+  define(Hsl, hsl, extend$2e(Color, {
     brighter(k) {
       k = k == null ? brighter : Math.pow(brighter, k);
       return new Hsl(this.h, this.s, this.l * k, this.opacity);
@@ -11871,7 +11871,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2c(publicAPI, model) {
+  function extend$2d(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1$, initialValues);
 
@@ -11883,13 +11883,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1T = macro.newInstance(extend$2c, 'vtkPlane');
+  const newInstance$1U = macro.newInstance(extend$2d, 'vtkPlane');
 
   // ----------------------------------------------------------------------------
 
   var vtkPlane$1 = {
-    newInstance: newInstance$1T,
-    extend: extend$2c,
+    newInstance: newInstance$1U,
+    extend: extend$2d,
     ...STATIC$b
   };
 
@@ -12522,7 +12522,7 @@
       return intersects(this.bounds, otherBounds);
     }
   }
-  function newInstance$1S(initialValues) {
+  function newInstance$1T(initialValues) {
     const bounds = initialValues && initialValues.bounds;
     return new BoundingBox(bounds);
   }
@@ -12569,7 +12569,7 @@
     INIT_BOUNDS
   };
   var vtkBoundingBox = {
-    newInstance: newInstance$1S,
+    newInstance: newInstance$1T,
     ...STATIC$a
   };
 
@@ -12678,7 +12678,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2b(publicAPI, model) {
+  function extend$2c(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1_, initialValues);
 
@@ -12694,13 +12694,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1R = macro.newInstance(extend$2b, 'vtkProp');
+  const newInstance$1S = macro.newInstance(extend$2c, 'vtkProp');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp$1 = {
-    newInstance: newInstance$1R,
-    extend: extend$2b,
+    newInstance: newInstance$1S,
+    extend: extend$2c,
     ...Constants$h
   };
 
@@ -12839,7 +12839,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$2a(publicAPI, model) {
+  function extend$2b(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1Z, initialValues);
 
@@ -12865,13 +12865,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1Q = macro.newInstance(extend$2a, 'vtkProp3D');
+  const newInstance$1R = macro.newInstance(extend$2b, 'vtkProp3D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProp3D$1 = {
-    newInstance: newInstance$1Q,
-    extend: extend$2a
+    newInstance: newInstance$1R,
+    extend: extend$2b
   };
 
   const Shading$1 = {
@@ -12989,7 +12989,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$29(publicAPI, model) {
+  function extend$2a(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1Y, initialValues);
 
@@ -13004,13 +13004,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1P = macro.newInstance(extend$29, 'vtkProperty');
+  const newInstance$1Q = macro.newInstance(extend$2a, 'vtkProperty');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty$1 = {
-    newInstance: newInstance$1P,
-    extend: extend$29,
+    newInstance: newInstance$1Q,
+    extend: extend$2a,
     ...PropertyConst
   };
 
@@ -13165,7 +13165,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$28(publicAPI, model) {
+  function extend$29(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1X, initialValues);
 
@@ -13186,13 +13186,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1O = macro.newInstance(extend$28, 'vtkActor');
+  const newInstance$1P = macro.newInstance(extend$29, 'vtkActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkActor$1 = {
-    newInstance: newInstance$1O,
-    extend: extend$28
+    newInstance: newInstance$1P,
+    extend: extend$29
   };
 
   const DataTypeByteSize = {
@@ -13212,6 +13212,8 @@
     CHAR: 'Int8Array',
     SIGNED_CHAR: 'Int8Array',
     UNSIGNED_CHAR: 'Uint8Array',
+    UNSIGNED_CHAR_CLAMPED: 'Uint8ClampedArray',
+    // should be used for VTK.js internal purpose only
     SHORT: 'Int16Array',
     UNSIGNED_SHORT: 'Uint16Array',
     INT: 'Int32Array',
@@ -13589,7 +13591,7 @@
     publicAPI.getNumberOfTuples = () => model.size / model.numberOfComponents;
     publicAPI.getDataType = () => model.dataType;
     /* eslint-disable no-use-before-define */
-    publicAPI.newClone = () => newInstance$1N({
+    publicAPI.newClone = () => newInstance$1O({
       empty: true,
       name: model.name,
       dataType: model.dataType,
@@ -13718,7 +13720,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$27(publicAPI, model) {
+  function extend$28(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1W, initialValues);
     if (!model.empty && !model.values && !model.size) {
@@ -13748,13 +13750,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1N = newInstance$1$(extend$27, 'vtkDataArray');
+  const newInstance$1O = newInstance$20(extend$28, 'vtkDataArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataArray$1 = {
-    newInstance: newInstance$1N,
-    extend: extend$27,
+    newInstance: newInstance$1O,
+    extend: extend$28,
     ...STATIC$9,
     ...Constants$g
   };
@@ -13850,7 +13852,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$26(publicAPI, model) {
+  function extend$27(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1V, initialValues);
 
@@ -13865,7 +13867,7 @@
 
   // ----------------------------------------------------------------------------
   var vtkAbstractMapper$1 = {
-    extend: extend$26
+    extend: extend$27
   };
 
   // ----------------------------------------------------------------------------
@@ -13892,7 +13894,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  const defaultValues$b = initialValues => ({
+  const defaultValues$c = initialValues => ({
     bounds: [...vtkBoundingBox.INIT_BOUNDS],
     center: [0, 0, 0],
     viewSpecificProperties: {},
@@ -13901,9 +13903,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$25(publicAPI, model) {
+  function extend$26(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$b(initialValues));
+    Object.assign(model, defaultValues$c(initialValues));
     // Inheritance
     vtkAbstractMapper$1.extend(publicAPI, model, initialValues);
     macro.setGet(publicAPI, model, ['viewSpecificProperties']);
@@ -13913,7 +13915,7 @@
   // ----------------------------------------------------------------------------
 
   var vtkAbstractMapper3D$1 = {
-    extend: extend$25
+    extend: extend$26
   };
 
   const {
@@ -14166,7 +14168,7 @@
     doCopyAllOn: true,
     doCopyAllOff: false
   };
-  function extend$24(publicAPI, model) {
+  function extend$25(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1U, initialValues);
     macro.obj(publicAPI, model);
@@ -14175,13 +14177,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1M = macro.newInstance(extend$24, 'vtkFieldData');
+  const newInstance$1N = macro.newInstance(extend$25, 'vtkFieldData');
 
   // ----------------------------------------------------------------------------
 
   var vtkFieldData$1 = {
-    newInstance: newInstance$1M,
-    extend: extend$24
+    newInstance: newInstance$1N,
+    extend: extend$25
   };
 
   const AttributeTypes$1 = {
@@ -14427,7 +14429,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$23(publicAPI, model) {
+  function extend$24(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1T, initialValues);
 
@@ -14444,13 +14446,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1L = macro.newInstance(extend$23, 'vtkDataSetAttributes');
+  const newInstance$1M = macro.newInstance(extend$24, 'vtkDataSetAttributes');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSetAttributes$1 = {
-    newInstance: newInstance$1L,
-    extend: extend$23,
+    newInstance: newInstance$1M,
+    extend: extend$24,
     ...Constants$f
   };
 
@@ -14582,7 +14584,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$22(publicAPI, model) {
+  function extend$23(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1S, initialValues);
 
@@ -14596,13 +14598,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1K = macro.newInstance(extend$22, 'vtkDataSet');
+  const newInstance$1L = macro.newInstance(extend$23, 'vtkDataSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkDataSet$1 = {
-    newInstance: newInstance$1K,
-    extend: extend$22,
+    newInstance: newInstance$1L,
+    extend: extend$23,
     ...Constants$e
   };
 
@@ -14992,7 +14994,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$21(publicAPI, model) {
+  function extend$22(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1R, initialValues);
 
@@ -15018,13 +15020,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1J = macro.newInstance(extend$21, 'vtkImageData');
+  const newInstance$1K = macro.newInstance(extend$22, 'vtkImageData');
 
   // ----------------------------------------------------------------------------
 
   var vtkImageData$1 = {
-    newInstance: newInstance$1J,
-    extend: extend$21
+    newInstance: newInstance$1K,
+    extend: extend$22
   };
 
   const VectorMode$3 = {
@@ -15263,7 +15265,7 @@
       let newColors = null;
 
       // map scalars through lookup table only if needed
-      if (colorMode === ColorMode$2.DEFAULT && scalars.getDataType() === VtkDataTypes$4.UNSIGNED_CHAR || colorMode === ColorMode$2.DIRECT_SCALARS && scalars) {
+      if (colorMode === ColorMode$2.DEFAULT && (scalars.getDataType() === VtkDataTypes$4.UNSIGNED_CHAR || scalars.getDataType() === VtkDataTypes$4.UNSIGNED_CHAR_CLAMPED) || colorMode === ColorMode$2.DIRECT_SCALARS && scalars) {
         newColors = publicAPI.convertToRGBA(scalars, numberOfComponents, scalars.getNumberOfTuples());
       } else {
         const newscalars = {
@@ -15537,7 +15539,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$20(publicAPI, model) {
+  function extend$21(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1Q, initialValues);
 
@@ -15564,13 +15566,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1I = macro.newInstance(extend$20, 'vtkScalarsToColors');
+  const newInstance$1J = macro.newInstance(extend$21, 'vtkScalarsToColors');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarsToColors$1 = {
-    newInstance: newInstance$1I,
-    extend: extend$20,
+    newInstance: newInstance$1J,
+    extend: extend$21,
     ...vtkScalarsToColors$2
   };
 
@@ -15883,7 +15885,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1$(publicAPI, model) {
+  function extend$20(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1P, initialValues);
 
@@ -15926,13 +15928,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1H = macro.newInstance(extend$1$, 'vtkLookupTable');
+  const newInstance$1I = macro.newInstance(extend$20, 'vtkLookupTable');
 
   // ----------------------------------------------------------------------------
 
   var vtkLookupTable$1 = {
-    newInstance: newInstance$1H,
-    extend: extend$1$
+    newInstance: newInstance$1I,
+    extend: extend$20
   };
 
   let resolveCoincidentTopologyPolygonOffsetFaces = 1;
@@ -16570,7 +16572,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1_(publicAPI, model) {
+  function extend$1$(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1O, initialValues);
 
@@ -16589,13 +16591,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1G = macro.newInstance(extend$1_, 'vtkMapper');
+  const newInstance$1H = macro.newInstance(extend$1$, 'vtkMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper$1 = {
-    newInstance: newInstance$1G,
-    extend: extend$1_,
+    newInstance: newInstance$1H,
+    extend: extend$1$,
     ...staticOffsetAPI,
     ...otherStaticMethods,
     ...Constants$c
@@ -16707,7 +16709,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$a(initialValues) {
+  function defaultValues$b(initialValues) {
     return {
       empty: true,
       numberOfComponents: 1,
@@ -16718,21 +16720,21 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1Z(publicAPI, model) {
+  function extend$1_(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    vtkDataArray$1.extend(publicAPI, model, defaultValues$a(initialValues));
+    vtkDataArray$1.extend(publicAPI, model, defaultValues$b(initialValues));
     vtkCellArray(publicAPI, model);
   }
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1F = macro.newInstance(extend$1Z, 'vtkCellArray');
+  const newInstance$1G = macro.newInstance(extend$1_, 'vtkCellArray');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArray$1 = {
-    newInstance: newInstance$1F,
-    extend: extend$1Z,
+    newInstance: newInstance$1G,
+    extend: extend$1_,
     ...STATIC$8
   };
 
@@ -16818,7 +16820,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1Y(publicAPI, model) {
+  function extend$1Z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1N, initialValues);
     vtkDataArray$1.extend(publicAPI, model, initialValues);
@@ -16827,13 +16829,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1E = macro.newInstance(extend$1Y, 'vtkPoints');
+  const newInstance$1F = macro.newInstance(extend$1Z, 'vtkPoints');
 
   // ----------------------------------------------------------------------------
 
   var vtkPoints$1 = {
-    newInstance: newInstance$1E,
-    extend: extend$1Y
+    newInstance: newInstance$1F,
+    extend: extend$1Z
   };
 
   // ----------------------------------------------------------------------------
@@ -16945,7 +16947,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1X(publicAPI, model) {
+  function extend$1Y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1M, initialValues);
     macro.obj(publicAPI, model);
@@ -16958,13 +16960,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1D = macro.newInstance(extend$1X, 'vtkCell');
+  const newInstance$1E = macro.newInstance(extend$1Y, 'vtkCell');
 
   // ----------------------------------------------------------------------------
 
   var vtkCell$1 = {
-    newInstance: newInstance$1D,
-    extend: extend$1X
+    newInstance: newInstance$1E,
+    extend: extend$1Y
   };
 
   function resize(model, sz) {
@@ -17196,7 +17198,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1W(publicAPI, model) {
+  function extend$1X(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1L, initialValues);
     macro.obj(publicAPI, model);
@@ -17205,13 +17207,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1C = macro.newInstance(extend$1W, 'vtkCellLinks');
+  const newInstance$1D = macro.newInstance(extend$1X, 'vtkCellLinks');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellLinks$1 = {
-    newInstance: newInstance$1C,
-    extend: extend$1W
+    newInstance: newInstance$1D,
+    extend: extend$1X
   };
 
   const CellType = {
@@ -17461,7 +17463,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1V(publicAPI, model) {
+  function extend$1W(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1K, initialValues);
     macro.obj(publicAPI, model);
@@ -17472,13 +17474,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1B = macro.newInstance(extend$1V, 'vtkCellTypes');
+  const newInstance$1C = macro.newInstance(extend$1W, 'vtkCellTypes');
 
   // ----------------------------------------------------------------------------
 
   var vtkCellTypes$1 = {
-    newInstance: newInstance$1B,
-    extend: extend$1V,
+    newInstance: newInstance$1C,
+    extend: extend$1W,
     ...STATIC$7
   };
 
@@ -17722,7 +17724,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1U(publicAPI, model) {
+  function extend$1V(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1J, initialValues);
     vtkCell$1.extend(publicAPI, model, initialValues);
@@ -17732,13 +17734,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1A = macro.newInstance(extend$1U, 'vtkLine');
+  const newInstance$1B = macro.newInstance(extend$1V, 'vtkLine');
 
   // ----------------------------------------------------------------------------
 
   var vtkLine$1 = {
-    newInstance: newInstance$1A,
-    extend: extend$1U,
+    newInstance: newInstance$1B,
+    extend: extend$1V,
     ...STATIC$6,
     ...Constants$a
   };
@@ -17785,7 +17787,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1T(publicAPI, model) {
+  function extend$1U(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1I, initialValues);
 
@@ -17799,13 +17801,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1z = macro.newInstance(extend$1T, 'vtkPointSet');
+  const newInstance$1A = macro.newInstance(extend$1U, 'vtkPointSet');
 
   // ----------------------------------------------------------------------------
 
   var vtkPointSet$1 = {
-    newInstance: newInstance$1z,
-    extend: extend$1T
+    newInstance: newInstance$1A,
+    extend: extend$1U
   };
 
   // ----------------------------------------------------------------------------
@@ -18356,7 +18358,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1S(publicAPI, model) {
+  function extend$1T(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1H, initialValues);
     vtkCell$1.extend(publicAPI, model, initialValues);
@@ -18365,13 +18367,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1y = macro.newInstance(extend$1S, 'vtkTriangle');
+  const newInstance$1z = macro.newInstance(extend$1T, 'vtkTriangle');
 
   // ----------------------------------------------------------------------------
 
   var vtkTriangle$1 = {
-    newInstance: newInstance$1y,
-    extend: extend$1S,
+    newInstance: newInstance$1z,
+    extend: extend$1T,
     ...STATIC$5
   };
 
@@ -18584,7 +18586,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1R(publicAPI, model) {
+  function extend$1S(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1G, initialValues);
 
@@ -18599,13 +18601,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1x = macro.newInstance(extend$1R, 'vtkPolyData');
+  const newInstance$1y = macro.newInstance(extend$1S, 'vtkPolyData');
 
   // ----------------------------------------------------------------------------
 
   var vtkPolyData$1 = {
-    newInstance: newInstance$1x,
-    extend: extend$1R
+    newInstance: newInstance$1y,
+    extend: extend$1S
   };
 
   // ----------------------------------------------------------------------------
@@ -18826,7 +18828,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1Q(publicAPI, model) {
+  function extend$1R(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1F, initialValues);
 
@@ -18840,7 +18842,7 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1w = macro.newInstance(extend$1Q, 'vtkTexture');
+  const newInstance$1x = macro.newInstance(extend$1R, 'vtkTexture');
   const STATIC$4 = {
     generateMipmaps
   };
@@ -18848,8 +18850,8 @@
   // ----------------------------------------------------------------------------
 
   var vtkTexture$1 = {
-    newInstance: newInstance$1w,
-    extend: extend$1Q,
+    newInstance: newInstance$1x,
+    extend: extend$1R,
     ...STATIC$4
   };
 
@@ -19519,7 +19521,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$9(initialValues) {
+  function defaultValues$a(initialValues) {
     return {
       boundsScaleFactor: 1.3,
       camera: null,
@@ -19547,9 +19549,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1P(publicAPI, model) {
+  function extend$1Q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$9(initialValues));
+    Object.assign(model, defaultValues$a(initialValues));
 
     // Inheritance
     vtkActor$1.extend(publicAPI, model, initialValues);
@@ -19588,13 +19590,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1v = macro.newInstance(extend$1P, 'vtkCubeAxesActor');
+  const newInstance$1w = macro.newInstance(extend$1Q, 'vtkCubeAxesActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkCubeAxesActor$1 = {
-    newInstance: newInstance$1v,
-    extend: extend$1P,
+    newInstance: newInstance$1w,
+    extend: extend$1Q,
     newCubeAxesActorHelper
   };
 
@@ -19636,7 +19638,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1O(publicAPI, model) {
+  function extend$1P(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1E, initialValues);
 
@@ -19650,10 +19652,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1u = newInstance$1$(extend$1O, 'vtkOpenGLCubeAxesActor');
+  const newInstance$1v = newInstance$20(extend$1P, 'vtkOpenGLCubeAxesActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkCubeAxesActor', newInstance$1u);
+  registerOverride$1('vtkCubeAxesActor', newInstance$1v);
 
   const ObjectType$1 = {
     ARRAY_BUFFER: 0,
@@ -19786,7 +19788,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1N(publicAPI, model) {
+  function extend$1O(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1D, initialValues);
 
@@ -19799,13 +19801,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1t = macro.newInstance(extend$1N);
+  const newInstance$1u = macro.newInstance(extend$1O);
 
   // ----------------------------------------------------------------------------
 
   var vtkBufferObject = {
-    newInstance: newInstance$1t,
-    extend: extend$1N,
+    newInstance: newInstance$1u,
+    extend: extend$1O,
     ...STATIC$3,
     ...Constants$9
   };
@@ -20185,7 +20187,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1M(publicAPI, model) {
+  function extend$1N(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1C, initialValues);
 
@@ -20200,13 +20202,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1s = macro.newInstance(extend$1M);
+  const newInstance$1t = macro.newInstance(extend$1N);
 
   // ----------------------------------------------------------------------------
 
   var vtkCellArrayBufferObject = {
-    newInstance: newInstance$1s,
-    extend: extend$1M
+    newInstance: newInstance$1t,
+    extend: extend$1N
   };
 
   const {
@@ -20285,7 +20287,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1L(publicAPI, model) {
+  function extend$1M(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1B, initialValues);
 
@@ -20299,13 +20301,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1r = macro.newInstance(extend$1L, 'vtkShader');
+  const newInstance$1s = macro.newInstance(extend$1M, 'vtkShader');
 
   // ----------------------------------------------------------------------------
 
   var vtkShader$1 = {
-    newInstance: newInstance$1r,
-    extend: extend$1L
+    newInstance: newInstance$1s,
+    extend: extend$1M
   };
 
   const {
@@ -20829,7 +20831,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1K(publicAPI, model) {
+  function extend$1L(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1A, initialValues);
 
@@ -20854,13 +20856,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1q = macro.newInstance(extend$1K, 'vtkShaderProgram');
+  const newInstance$1r = macro.newInstance(extend$1L, 'vtkShaderProgram');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderProgram$1 = {
-    newInstance: newInstance$1q,
-    extend: extend$1K,
+    newInstance: newInstance$1r,
+    extend: extend$1L,
     substitute: substitute$1
   };
 
@@ -21144,7 +21146,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1J(publicAPI, model) {
+  function extend$1K(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1z, initialValues);
 
@@ -21168,13 +21170,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1p = macro.newInstance(extend$1J, 'vtkOpenGLVertexArrayObject');
+  const newInstance$1q = macro.newInstance(extend$1K, 'vtkOpenGLVertexArrayObject');
 
   // ----------------------------------------------------------------------------
 
   var vtkVertexArrayObject = {
-    newInstance: newInstance$1p,
-    extend: extend$1J
+    newInstance: newInstance$1q,
+    extend: extend$1K
   };
 
   const primTypes$2 = {
@@ -21361,7 +21363,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1I(publicAPI, model) {
+  function extend$1J(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1y, initialValues);
 
@@ -21382,13 +21384,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1o = macro.newInstance(extend$1I);
+  const newInstance$1p = macro.newInstance(extend$1J);
 
   // ----------------------------------------------------------------------------
 
   var vtkHelper = {
-    newInstance: newInstance$1o,
-    extend: extend$1I,
+    newInstance: newInstance$1p,
+    extend: extend$1J,
     primTypes: primTypes$2
   };
 
@@ -22776,7 +22778,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1H(publicAPI, model) {
+  function extend$1I(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1x, initialValues);
 
@@ -22803,18 +22805,18 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1n = newInstance$1$(extend$1H, 'vtkOpenGLTexture');
+  const newInstance$1o = newInstance$20(extend$1I, 'vtkOpenGLTexture');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLTexture$1 = {
-    newInstance: newInstance$1n,
-    extend: extend$1H,
+    newInstance: newInstance$1o,
+    extend: extend$1I,
     ...Constants$8
   };
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkTexture', newInstance$1n);
+  registerOverride$1('vtkTexture', newInstance$1o);
 
   var vtkPolyDataVS = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyDataVS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nattribute vec4 vertexMC;\n\n// frag position in VC\n//VTK::PositionVC::Dec\n\n// optional normal declaration\n//VTK::Normal::Dec\n\n// extra lighting parameters\n//VTK::Light::Dec\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// material property values\n//VTK::Color::Dec\n\n// clipping plane vars\n//VTK::Clip::Dec\n\n// camera and actor matrix values\n//VTK::Camera::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\n// picking support\n//VTK::Picking::Dec\n\nvoid main()\n{\n  //VTK::Color::Impl\n\n  //VTK::Normal::Impl\n\n  //VTK::TCoord::Impl\n\n  //VTK::Clip::Impl\n\n  //VTK::PrimID::Impl\n\n  //VTK::PositionVC::Impl\n\n  //VTK::Light::Impl\n\n  //VTK::Picking::Impl\n}\n";
 
@@ -24037,7 +24039,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1G(publicAPI, model) {
+  function extend$1H(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1w, initialValues);
 
@@ -24076,10 +24078,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1m = newInstance$1$(extend$1G, 'vtkOpenGLPolyDataMapper');
+  const newInstance$1n = newInstance$20(extend$1H, 'vtkOpenGLPolyDataMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper', newInstance$1m);
+  registerOverride$1('vtkMapper', newInstance$1n);
 
   const {
     ColorMode,
@@ -24229,7 +24231,7 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$1F(publicAPI, model) {
+  function extend$1G(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1v, initialValues);
 
@@ -24250,13 +24252,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1l = macro.newInstance(extend$1F, 'vtkMapper2D');
+  const newInstance$1m = macro.newInstance(extend$1G, 'vtkMapper2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkMapper2D$1 = {
-    newInstance: newInstance$1l,
-    extend: extend$1F
+    newInstance: newInstance$1m,
+    extend: extend$1G
   };
 
   var vtkPolyData2DFS = "//VTK::System::Dec\n\n/*=========================================================================\n\n  Program:   Visualization Toolkit\n  Module:    vtkPolyData2DFS.glsl\n\n  Copyright (c) Ken Martin, Will Schroeder, Bill Lorensen\n  All rights reserved.\n  See Copyright.txt or http://www.kitware.com/Copyright.htm for details.\n\n     This software is distributed WITHOUT ANY WARRANTY; without even\n     the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\n     PURPOSE.  See the above copyright notice for more information.\n\n=========================================================================*/\n\nuniform int PrimitiveIDOffset;\n\n// Texture coordinates\n//VTK::TCoord::Dec\n\n// Scalar coloring\n//VTK::Color::Dec\n\n// Depth Peeling\n//VTK::DepthPeeling::Dec\n\n// picking support\n//VTK::Picking::Dec\n\n// the output of this shader\n//VTK::Output::Dec\n\n// Apple Bug\n//VTK::PrimID::Dec\n\nvoid main()\n{\n  // Apple Bug\n  //VTK::PrimID::Impl\n\n  //VTK::Color::Impl\n  //VTK::TCoord::Impl\n\n  //VTK::DepthPeeling::Impl\n  //VTK::Picking::Impl\n\n  if (gl_FragData[0].a <= 0.0)\n    {\n    discard;\n    }\n}\n";
@@ -24690,7 +24692,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1E(publicAPI, model) {
+  function extend$1F(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1u, initialValues);
 
@@ -24724,10 +24726,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1k = newInstance$1$(extend$1E, 'vtkOpenGLPolyDataMapper2D');
+  const newInstance$1l = newInstance$20(extend$1F, 'vtkOpenGLPolyDataMapper2D');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkMapper2D', newInstance$1k);
+  registerOverride$1('vtkMapper2D', newInstance$1l);
 
   const {
     VectorMode
@@ -25451,7 +25453,7 @@
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$8(initialValues) {
+  function defaultValues$9(initialValues) {
     return {
       automated: true,
       autoLayout: null,
@@ -25485,9 +25487,9 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1D(publicAPI, model) {
+  function extend$1E(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$8(initialValues));
+    Object.assign(model, defaultValues$9(initialValues));
     if (!model.autoLayout) model.autoLayout = defaultAutoLayout(publicAPI, model);
     if (!model.generateTicks) model.generateTicks = defaultGenerateTicks();
 
@@ -25506,13 +25508,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1j = macro.newInstance(extend$1D, 'vtkScalarBarActor');
+  const newInstance$1k = macro.newInstance(extend$1E, 'vtkScalarBarActor');
 
   // ----------------------------------------------------------------------------
 
   var vtkScalarBarActor$1 = {
-    newInstance: newInstance$1j,
-    extend: extend$1D,
+    newInstance: newInstance$1k,
+    extend: extend$1E,
     newScalarBarActorHelper
   };
 
@@ -25554,7 +25556,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1C(publicAPI, model) {
+  function extend$1D(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1t, initialValues);
 
@@ -25568,10 +25570,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1i = newInstance$1$(extend$1C, 'vtkOpenGLScalarBarActor');
+  const newInstance$1j = newInstance$20(extend$1D, 'vtkOpenGLScalarBarActor');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkScalarBarActor', newInstance$1i);
+  registerOverride$1('vtkScalarBarActor', newInstance$1j);
 
   const {
     vtkErrorMacro: vtkErrorMacro$m
@@ -25755,7 +25757,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1B(publicAPI, model) {
+  function extend$1C(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1s, initialValues);
 
@@ -25782,10 +25784,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1h = newInstance$1$(extend$1B);
+  const newInstance$1i = newInstance$20(extend$1C);
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkSkybox', newInstance$1h);
+  registerOverride$1('vtkSkybox', newInstance$1i);
 
   // import { mat4, vec3 }     from 'gl-matrix';
   const {
@@ -25854,7 +25856,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1A(publicAPI, model) {
+  function extend$1B(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1r, initialValues);
 
@@ -25867,10 +25869,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1g = newInstance$1$(extend$1A, 'vtkOpenGLPixelSpaceCallbackMapper');
+  const newInstance$1h = newInstance$20(extend$1B, 'vtkOpenGLPixelSpaceCallbackMapper');
 
   // Register ourself to OpenGL backend if imported
-  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$1g);
+  registerOverride$1('vtkPixelSpaceCallbackMapper', newInstance$1h);
 
   const CLASS_MAPPING = Object.create(null);
   function registerOverride(className, fn) {
@@ -25894,7 +25896,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1z(publicAPI, model) {
+  function extend$1A(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1q, initialValues);
 
@@ -25910,13 +25912,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1f = macro.newInstance(extend$1z, 'vtkWebGPUViewNodeFactory');
+  const newInstance$1g = macro.newInstance(extend$1A, 'vtkWebGPUViewNodeFactory');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUViewNodeFactory$1 = {
-    newInstance: newInstance$1f,
-    extend: extend$1z
+    newInstance: newInstance$1g,
+    extend: extend$1A
   };
 
   // ----------------------------------------------------------------------------
@@ -26016,7 +26018,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1y(publicAPI, model) {
+  function extend$1z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1p, initialValues);
 
@@ -26044,10 +26046,10 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1e = macro.newInstance(extend$1y);
+  const newInstance$1f = macro.newInstance(extend$1z);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCamera', newInstance$1e);
+  registerOverride('vtkCamera', newInstance$1f);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUBindGroup methods
@@ -26131,7 +26133,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1x(publicAPI, model) {
+  function extend$1y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1o, initialValues);
 
@@ -26149,13 +26151,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1d = macro.newInstance(extend$1x);
+  const newInstance$1e = macro.newInstance(extend$1y);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBindGroup$1 = {
-    newInstance: newInstance$1d,
-    extend: extend$1x
+    newInstance: newInstance$1e,
+    extend: extend$1y
   };
 
   // ----------------------------------------------------------------------------
@@ -26189,7 +26191,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1w(publicAPI, model) {
+  function extend$1x(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1n, initialValues);
 
@@ -26204,13 +26206,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1c = macro.newInstance(extend$1w, 'vtkWebGPUShaderModule');
+  const newInstance$1d = macro.newInstance(extend$1x, 'vtkWebGPUShaderModule');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderModule$1 = {
-    newInstance: newInstance$1c,
-    extend: extend$1w
+    newInstance: newInstance$1d,
+    extend: extend$1x
   };
 
   // perform in place string substitutions, indicate if a substitution was done
@@ -26275,7 +26277,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1v(publicAPI, model) {
+  function extend$1w(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1m, initialValues);
 
@@ -26292,13 +26294,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$1b = macro.newInstance(extend$1v, 'vtkWebGPUShaderCache');
+  const newInstance$1c = macro.newInstance(extend$1w, 'vtkWebGPUShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderCache$1 = {
-    newInstance: newInstance$1b,
-    extend: extend$1v,
+    newInstance: newInstance$1c,
+    extend: extend$1w,
     substitute
   };
 
@@ -26382,7 +26384,7 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$1u(publicAPI, model) {
+  function extend$1v(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1l, initialValues);
 
@@ -26399,12 +26401,12 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$1a = newInstance$1$(extend$1u, 'vtkWebGPUPipeline');
+  const newInstance$1b = newInstance$20(extend$1v, 'vtkWebGPUPipeline');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUPipeline$1 = {
-    newInstance: newInstance$1a,
-    extend: extend$1u
+    newInstance: newInstance$1b,
+    extend: extend$1v
   };
 
   // ----------------------------------------------------------------------------
@@ -26503,7 +26505,7 @@
 
   // ----------------------------------------------------------------------------
 
-  function extend$1t(publicAPI, model) {
+  function extend$1u(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1k, initialValues);
     model.outputNames = [];
@@ -26525,13 +26527,13 @@
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$19 = macro.newInstance(extend$1t, 'vtkWebGPUShaderDescription');
+  const newInstance$1a = macro.newInstance(extend$1u, 'vtkWebGPUShaderDescription');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUShaderDescription$1 = {
-    newInstance: newInstance$19,
-    extend: extend$1t
+    newInstance: newInstance$1a,
+    extend: extend$1u
   };
 
   // ----------------------------------------------------------------------------
@@ -27120,7 +27122,7 @@
   };
 
   // ----------------------------------------------------------------------------
-  function extend$1s(publicAPI, model) {
+  function extend$1t(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1j, initialValues);
 
@@ -27137,12 +27139,12 @@
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$18 = newInstance$1$(extend$1s, 'vtkWebGPUVertexInput');
+  const newInstance$19 = newInstance$20(extend$1t, 'vtkWebGPUVertexInput');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUVertexInput$1 = {
-    newInstance: newInstance$18,
-    extend: extend$1s
+    newInstance: newInstance$19,
+    extend: extend$1t
   };
 
   const vtkWebGPUSimpleMapperVS = `
@@ -27455,7 +27457,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1r(publicAPI, model) {
+  function extend$1s(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1i, initialValues);
 
@@ -27481,13 +27483,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$17 = macro.newInstance(extend$1r, 'vtkWebGPUSimpleMapper');
+  const newInstance$18 = macro.newInstance(extend$1s, 'vtkWebGPUSimpleMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSimpleMapper$1 = {
-    newInstance: newInstance$17,
-    extend: extend$1r
+    newInstance: newInstance$18,
+    extend: extend$1s
   };
 
   // ----------------------------------------------------------------------------
@@ -27521,7 +27523,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1q(publicAPI, model) {
+  function extend$1r(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1h, initialValues);
 
@@ -27534,13 +27536,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$16 = macro.newInstance(extend$1q, 'vtkWebGPUFullScreenQuad');
+  const newInstance$17 = macro.newInstance(extend$1r, 'vtkWebGPUFullScreenQuad');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUFullScreenQuad$1 = {
-    newInstance: newInstance$16,
-    extend: extend$1q
+    newInstance: newInstance$17,
+    extend: extend$1r
   };
 
   const BufferUsage$6 = {
@@ -27652,7 +27654,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1p(publicAPI, model) {
+  function extend$1q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1g, initialValues);
 
@@ -27665,13 +27667,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$15 = macro.newInstance(extend$1p);
+  const newInstance$16 = macro.newInstance(extend$1q);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBuffer$1 = {
-    newInstance: newInstance$15,
-    extend: extend$1p,
+    newInstance: newInstance$16,
+    extend: extend$1q,
     ...Constants$6
   };
 
@@ -28010,7 +28012,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1o(publicAPI, model) {
+  function extend$1p(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1f, initialValues);
 
@@ -28022,13 +28024,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$14 = macro.newInstance(extend$1o);
+  const newInstance$15 = macro.newInstance(extend$1p);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUIndexBuffer$1 = {
-    newInstance: newInstance$14,
-    extend: extend$1o,
+    newInstance: newInstance$15,
+    extend: extend$1p,
     ...Constants$6
   };
 
@@ -28366,7 +28368,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1n(publicAPI, model) {
+  function extend$1o(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1e, initialValues);
 
@@ -28378,13 +28380,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$13 = newInstance$1$(extend$1n);
+  const newInstance$14 = newInstance$20(extend$1o);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUBufferManager$1 = {
-    newInstance: newInstance$13,
-    extend: extend$1n,
+    newInstance: newInstance$14,
+    extend: extend$1o,
     ...STATIC$2,
     ...Constants$6
   };
@@ -28577,7 +28579,7 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  function extend$1m(publicAPI, model) {
+  function extend$1n(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1d, initialValues);
 
@@ -28611,13 +28613,13 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$12 = macro.newInstance(extend$1m, 'vtkWebGPUStorageBuffer');
+  const newInstance$13 = macro.newInstance(extend$1n, 'vtkWebGPUStorageBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUStorageBuffer$1 = {
-    newInstance: newInstance$12,
-    extend: extend$1m
+    newInstance: newInstance$13,
+    extend: extend$1n
   };
 
   const {
@@ -28909,7 +28911,7 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  function extend$1l(publicAPI, model) {
+  function extend$1m(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1c, initialValues);
 
@@ -28945,13 +28947,13 @@ struct ${model.label}Struct
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$11 = macro.newInstance(extend$1l, 'vtkWebGPUUniformBuffer');
+  const newInstance$12 = macro.newInstance(extend$1m, 'vtkWebGPUUniformBuffer');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUUniformBuffer$1 = {
-    newInstance: newInstance$11,
-    extend: extend$1l
+    newInstance: newInstance$12,
+    extend: extend$1m
   };
 
   const {
@@ -29399,7 +29401,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1k(publicAPI, model) {
+  function extend$1l(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1b, initialValues);
 
@@ -29449,10 +29451,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$10 = newInstance$1$(extend$1k, 'vtkWebGPURenderer');
+  const newInstance$11 = newInstance$20(extend$1l, 'vtkWebGPURenderer');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkRenderer', newInstance$10);
+  registerOverride('vtkRenderer', newInstance$11);
 
   const {
     CoordinateSystem: CoordinateSystem$2
@@ -29577,7 +29579,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1j(publicAPI, model) {
+  function extend$1k(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$1a, initialValues);
 
@@ -29601,10 +29603,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$$ = macro.newInstance(extend$1j);
+  const newInstance$10 = macro.newInstance(extend$1k);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor', newInstance$$);
+  registerOverride('vtkActor', newInstance$10);
 
   const {
     CoordinateSystem: CoordinateSystem$1
@@ -29715,7 +29717,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1i(publicAPI, model) {
+  function extend$1j(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$19, initialValues);
 
@@ -29739,10 +29741,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$_ = macro.newInstance(extend$1i);
+  const newInstance$$ = macro.newInstance(extend$1j);
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkActor2D', newInstance$_);
+  registerOverride('vtkActor2D', newInstance$$);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUCubeAxesActor methods
@@ -29782,7 +29784,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1h(publicAPI, model) {
+  function extend$1i(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$18, initialValues);
 
@@ -29796,10 +29798,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Z = newInstance$1$(extend$1h, 'vtkWebGPUCubeAxesActor');
+  const newInstance$_ = newInstance$20(extend$1i, 'vtkWebGPUCubeAxesActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkCubeAxesActor', newInstance$Z);
+  registerOverride('vtkCubeAxesActor', newInstance$_);
 
   const {
     DisplayLocation: DisplayLocation$1
@@ -29834,7 +29836,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1g(publicAPI, model) {
+  function extend$1h(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$17, initialValues);
 
@@ -29849,13 +29851,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Y = macro.newInstance(extend$1g, 'vtkProperty2D');
+  const newInstance$Z = macro.newInstance(extend$1h, 'vtkProperty2D');
 
   // ----------------------------------------------------------------------------
 
   var vtkProperty2D$1 = {
-    newInstance: newInstance$Y,
-    extend: extend$1g,
+    newInstance: newInstance$Z,
+    extend: extend$1h,
     ...Constants$7
   };
 
@@ -30872,7 +30874,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1f(publicAPI, model) {
+  function extend$1g(publicAPI, model) {
     let initiaLalues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$16, initiaLalues);
 
@@ -30922,13 +30924,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$X = newInstance$1$(extend$1f, 'vtkWebGPUCellArrayMapper');
+  const newInstance$Y = newInstance$20(extend$1g, 'vtkWebGPUCellArrayMapper');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUCellArrayMapper$1 = {
-    newInstance: newInstance$X,
-    extend: extend$1f
+    newInstance: newInstance$Y,
+    extend: extend$1g
   };
 
   const {
@@ -31012,7 +31014,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1e(publicAPI, model) {
+  function extend$1f(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$15, initialValues);
 
@@ -31026,10 +31028,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$W = newInstance$1$(extend$1e, 'vtkWebGPUPolyDataMapper');
+  const newInstance$X = newInstance$20(extend$1f, 'vtkWebGPUPolyDataMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper', newInstance$W);
+  registerOverride('vtkMapper', newInstance$X);
 
   const {
     PrimitiveTypes: PrimitiveTypes$1
@@ -31089,7 +31091,7 @@ fn main(
   // Object factory
   // ----------------------------------------------------------------------------
 
-  function defaultValues$7(initialValues) {
+  function defaultValues$8(initialValues) {
     return {
       primitives: [],
       ...initialValues
@@ -31097,9 +31099,9 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  function extend$1d(publicAPI, model) {
+  function extend$1e(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    Object.assign(model, defaultValues$7(initialValues));
+    Object.assign(model, defaultValues$8(initialValues));
 
     // Inheritance
     vtkViewNode$1.extend(publicAPI, model, initialValues);
@@ -31111,10 +31113,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$V = newInstance$1$(extend$1d, 'vtkWebGPUPolyDataMapper2D');
+  const newInstance$W = newInstance$20(extend$1e, 'vtkWebGPUPolyDataMapper2D');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkMapper2D', newInstance$V);
+  registerOverride('vtkMapper2D', newInstance$W);
 
   // ----------------------------------------------------------------------------
   // vtkWebGPUScalarBarActor methods
@@ -31154,7 +31156,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1c(publicAPI, model) {
+  function extend$1d(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$14, initialValues);
 
@@ -31168,10 +31170,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$U = newInstance$1$(extend$1c, 'vtkWebGPUScalarBarActor');
+  const newInstance$V = newInstance$20(extend$1d, 'vtkWebGPUScalarBarActor');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkScalarBarActor', newInstance$U);
+  registerOverride('vtkScalarBarActor', newInstance$V);
 
   /* eslint-disable no-bitwise */
 
@@ -31220,7 +31222,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1b(publicAPI, model) {
+  function extend$1c(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$13, initialValues);
 
@@ -31246,13 +31248,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$T = macro.newInstance(extend$1b);
+  const newInstance$U = macro.newInstance(extend$1c);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUSampler$1 = {
-    newInstance: newInstance$T,
-    extend: extend$1b
+    newInstance: newInstance$U,
+    extend: extend$1c
   };
 
   // ----------------------------------------------------------------------------
@@ -31347,7 +31349,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$1a(publicAPI, model) {
+  function extend$1b(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$12, initialValues);
 
@@ -31375,13 +31377,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$S = macro.newInstance(extend$1a);
+  const newInstance$T = macro.newInstance(extend$1b);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureView$1 = {
-    newInstance: newInstance$S,
-    extend: extend$1a
+    newInstance: newInstance$T,
+    extend: extend$1b
   };
 
   const {
@@ -31635,7 +31637,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$19(publicAPI, model) {
+  function extend$1a(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$11, initialValues);
 
@@ -31648,13 +31650,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$R = macro.newInstance(extend$19);
+  const newInstance$S = macro.newInstance(extend$1a);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTexture$1 = {
-    newInstance: newInstance$R,
-    extend: extend$19
+    newInstance: newInstance$S,
+    extend: extend$1a
   };
 
   // ----------------------------------------------------------------------------
@@ -31683,7 +31685,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$18(publicAPI, model) {
+  function extend$19(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$10, initialValues);
 
@@ -31696,10 +31698,10 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$Q = macro.newInstance(extend$18, 'vtkWebGPUPixelSpaceCallbackMapper');
+  const newInstance$R = macro.newInstance(extend$19, 'vtkWebGPUPixelSpaceCallbackMapper');
 
   // Register ourself to WebGPU backend if imported
-  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$Q);
+  registerOverride('vtkPixelSpaceCallbackMapper', newInstance$R);
 
   // ----------------------------------------------------------------------------
   // vtkFollower methods
@@ -31790,7 +31792,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$17(publicAPI, model) {
+  function extend$18(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$$, initialValues);
 
@@ -31808,7 +31810,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  macro.newInstance(extend$17, 'vtkFollower');
+  macro.newInstance(extend$18, 'vtkFollower');
 
   const {
     vtkDebugMacro: vtkDebugMacro$4
@@ -32401,7 +32403,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$16(publicAPI, model) {
+  function extend$17(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$_, initialValues);
 
@@ -32419,13 +32421,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$P = macro.newInstance(extend$16, 'vtkCamera');
+  const newInstance$Q = macro.newInstance(extend$17, 'vtkCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkCamera$1 = {
-    newInstance: newInstance$P,
-    extend: extend$16
+    newInstance: newInstance$Q,
+    extend: extend$17
   };
 
   // ----------------------------------------------------------------------------
@@ -32517,7 +32519,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$15(publicAPI, model) {
+  function extend$16(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$Z, initialValues);
 
@@ -32532,13 +32534,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$O = macro.newInstance(extend$15, 'vtkLight');
+  const newInstance$P = macro.newInstance(extend$16, 'vtkLight');
 
   // ----------------------------------------------------------------------------
 
   var vtkLight$1 = {
-    newInstance: newInstance$O,
-    extend: extend$15,
+    newInstance: newInstance$P,
+    extend: extend$16,
     LIGHT_TYPES
   };
 
@@ -32654,7 +32656,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$14(publicAPI, model) {
+  function extend$15(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$Y, initialValues);
 
@@ -32668,13 +32670,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$N = macro.newInstance(extend$14, 'vtkViewport');
+  const newInstance$O = macro.newInstance(extend$15, 'vtkViewport');
 
   // ----------------------------------------------------------------------------
 
   var vtkViewport$1 = {
-    newInstance: newInstance$N,
-    extend: extend$14
+    newInstance: newInstance$O,
+    extend: extend$15
   };
 
   const {
@@ -33209,7 +33211,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$13(publicAPI, model) {
+  function extend$14(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$X, initialValues);
 
@@ -33234,13 +33236,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$M = newInstance$1$(extend$13, 'vtkRenderer');
+  const newInstance$N = newInstance$20(extend$14, 'vtkRenderer');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderer$1 = {
-    newInstance: newInstance$M,
-    extend: extend$13
+    newInstance: newInstance$N,
+    extend: extend$14
   };
 
   const DEFAULT_VIEW_API = 'WebGL';
@@ -33396,7 +33398,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$12(publicAPI, model) {
+  function extend$13(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$W, initialValues);
 
@@ -33414,13 +33416,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$L = macro.newInstance(extend$12, 'vtkRenderWindow');
+  const newInstance$M = macro.newInstance(extend$13, 'vtkRenderWindow');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindow$1 = {
-    newInstance: newInstance$L,
-    extend: extend$12,
+    newInstance: newInstance$M,
+    extend: extend$13,
     registerViewConstructor,
     listViewAPIs,
     newAPISpecificView
@@ -34497,7 +34499,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$11(publicAPI, model) {
+  function extend$12(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$V, initialValues);
 
@@ -34524,13 +34526,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$K = macro.newInstance(extend$11, 'vtkRenderWindowInteractor');
+  const newInstance$L = macro.newInstance(extend$12, 'vtkRenderWindowInteractor');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowInteractor$1 = {
-    newInstance: newInstance$K,
-    extend: extend$11,
+    newInstance: newInstance$L,
+    extend: extend$12,
     handledEvents,
     ...Constants$5
   };
@@ -34680,7 +34682,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$10(publicAPI, model) {
+  function extend$11(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$U, initialValues);
 
@@ -34705,13 +34707,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$J = macro.newInstance(extend$10, 'vtkInteractorObserver');
+  const newInstance$K = macro.newInstance(extend$11, 'vtkInteractorObserver');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorObserver$1 = {
-    newInstance: newInstance$J,
-    extend: extend$10,
+    newInstance: newInstance$K,
+    extend: extend$11,
     ...STATIC$1
   };
 
@@ -34852,7 +34854,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$$(publicAPI, model) {
+  function extend$10(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$T, initialValues);
 
@@ -34865,13 +34867,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$I = macro.newInstance(extend$$, 'vtkInteractorStyle');
+  const newInstance$J = macro.newInstance(extend$10, 'vtkInteractorStyle');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyle$1 = {
-    newInstance: newInstance$I,
-    extend: extend$$,
+    newInstance: newInstance$J,
+    extend: extend$10,
     ...vtkInteractorStyleConstants
   };
 
@@ -35211,7 +35213,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$_(publicAPI, model) {
+  function extend$$(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$S, initialValues);
 
@@ -35229,13 +35231,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$H = macro.newInstance(extend$_, 'vtkInteractorStyleTrackballCamera');
+  const newInstance$I = macro.newInstance(extend$$, 'vtkInteractorStyleTrackballCamera');
 
   // ----------------------------------------------------------------------------
 
   var vtkInteractorStyleTrackballCamera$1 = {
-    newInstance: newInstance$H,
-    extend: extend$_
+    newInstance: newInstance$I,
+    extend: extend$$
   };
 
   function identity(i) {
@@ -35429,12 +35431,8 @@ fn main(
       }
     };
     publicAPI.getSize = () => {
-      const size = [0, 0];
-      if (model.glFramebuffer !== null) {
-        size[0] = model.glFramebuffer.width;
-        size[1] = model.glFramebuffer.height;
-      }
-      return size;
+      if (model.glFramebuffer == null) return null;
+      return [model.glFramebuffer.width, model.glFramebuffer.height];
     };
     publicAPI.populateFramebuffer = () => {
       if (!model.context) {
@@ -35478,7 +35476,7 @@ fn main(
   };
 
   // ----------------------------------------------------------------------------
-  function extend$Z(publicAPI, model) {
+  function extend$_(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$R, initialValues);
 
@@ -35496,12 +35494,12 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$G = newInstance$1$(extend$Z, 'vtkFramebuffer');
+  const newInstance$H = newInstance$20(extend$_, 'vtkFramebuffer');
 
   // ----------------------------------------------------------------------------
   var vtkOpenGLFramebuffer = {
-    newInstance: newInstance$G,
-    extend: extend$Z
+    newInstance: newInstance$H,
+    extend: extend$_
   };
 
   // ----------------------------------------------------------------------------
@@ -35556,7 +35554,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$Y(publicAPI, model) {
+  function extend$Z(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$Q, initialValues);
 
@@ -35572,13 +35570,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$F = macro.newInstance(extend$Y, 'vtkRenderPass');
+  const newInstance$G = macro.newInstance(extend$Z, 'vtkRenderPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderPass$1 = {
-    newInstance: newInstance$F,
-    extend: extend$Y
+    newInstance: newInstance$G,
+    extend: extend$Z
   };
 
   const {
@@ -35802,6 +35800,11 @@ void main()
       gl.depthFunc(gl.LEQUAL);
       model.translucentRGBATexture.deactivate();
       model.translucentRTexture.deactivate();
+
+      // restore scissor + viewport from renderer
+      const ts = renNode.getTiledSizeAndOrigin();
+      gl.scissor(ts.lowerLeftU, ts.lowerLeftV, ts.usize, ts.vsize);
+      gl.viewport(ts.lowerLeftU, ts.lowerLeftV, ts.usize, ts.vsize);
     };
     publicAPI.getShaderReplacement = () => {
       if (model._supported) {
@@ -35854,7 +35857,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$X(publicAPI, model) {
+  function extend$Y(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$P, initialValues);
 
@@ -35873,13 +35876,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$E = macro.newInstance(extend$X, 'vtkOpenGLOrderIndependentTranslucentPass');
+  const newInstance$F = macro.newInstance(extend$Y, 'vtkOpenGLOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkOpenGLOrderIndependentTranslucentPass$1 = {
-    newInstance: newInstance$E,
-    extend: extend$X
+    newInstance: newInstance$F,
+    extend: extend$Y
   };
 
   // ----------------------------------------------------------------------------
@@ -36000,7 +36003,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$W(publicAPI, model) {
+  function extend$X(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$O, initialValues);
 
@@ -36014,13 +36017,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$D = macro.newInstance(extend$W, 'vtkForwardPass');
+  const newInstance$E = macro.newInstance(extend$X, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1$1 = {
-    newInstance: newInstance$D,
-    extend: extend$W
+    newInstance: newInstance$E,
+    extend: extend$X
   };
 
   const {
@@ -36059,7 +36062,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$V(publicAPI, model) {
+  function extend$W(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$N, initialValues);
 
@@ -36073,13 +36076,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$C = macro.newInstance(extend$V, 'vtkHardwareSelector');
+  const newInstance$D = macro.newInstance(extend$W, 'vtkHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector$1$1 = {
-    newInstance: newInstance$C,
-    extend: extend$V
+    newInstance: newInstance$D,
+    extend: extend$W
   };
 
   /**
@@ -36147,7 +36150,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$U(publicAPI, model) {
+  function extend$V(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$M, initialValues);
 
@@ -36162,13 +36165,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$B = macro.newInstance(extend$U, 'vtkSelectionNode');
+  const newInstance$C = macro.newInstance(extend$V, 'vtkSelectionNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkSelectionNode$1 = {
-    newInstance: newInstance$B,
-    extend: extend$U,
+    newInstance: newInstance$C,
+    extend: extend$V,
     ...Constants$4
   };
 
@@ -36408,7 +36411,7 @@ void main()
         model.framebuffer.setOpenGLRenderWindow(model._openGLRenderWindow);
         model.framebuffer.saveCurrentBindingsAndBuffers();
         const fbSize = model.framebuffer.getSize();
-        if (fbSize[0] !== size[0] || fbSize[1] !== size[1]) {
+        if (!fbSize || fbSize[0] !== size[0] || fbSize[1] !== size[1]) {
           model.framebuffer.create(size[0], size[1]);
           // this calls model.framebuffer.bind()
           model.framebuffer.populateFramebuffer();
@@ -36836,7 +36839,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$T(publicAPI, model) {
+  function extend$U(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$L, initialValues);
 
@@ -36859,13 +36862,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$A = macro.newInstance(extend$T, 'vtkOpenGLHardwareSelector');
+  const newInstance$B = macro.newInstance(extend$U, 'vtkOpenGLHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkHardwareSelector = {
-    newInstance: newInstance$A,
-    extend: extend$T,
+    newInstance: newInstance$B,
+    extend: extend$U,
     ...Constants$b
   };
 
@@ -37750,7 +37753,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$S(publicAPI, model) {
+  function extend$T(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$K, initialValues);
 
@@ -37768,13 +37771,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$z = macro.newInstance(extend$S, 'vtkShaderCache');
+  const newInstance$A = macro.newInstance(extend$T, 'vtkShaderCache');
 
   // ----------------------------------------------------------------------------
 
   var vtkShaderCache$1 = {
-    newInstance: newInstance$z,
-    extend: extend$S
+    newInstance: newInstance$A,
+    extend: extend$T
   };
 
   const {
@@ -37877,7 +37880,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$R(publicAPI, model) {
+  function extend$S(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$J, initialValues);
     macro.obj(publicAPI, model);
@@ -37893,13 +37896,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$y = macro.newInstance(extend$R, 'vtkOpenGLTextureUnitManager');
+  const newInstance$z = macro.newInstance(extend$S, 'vtkOpenGLTextureUnitManager');
 
   // ----------------------------------------------------------------------------
 
   var vtkTextureUnitManager = {
-    newInstance: newInstance$y,
-    extend: extend$R
+    newInstance: newInstance$z,
+    extend: extend$S
   };
 
   // ----------------------------------------------------------------------------
@@ -38015,7 +38018,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$Q(publicAPI, model) {
+  function extend$R(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$I, initialValues);
     if (!model.size) {
@@ -38033,13 +38036,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$x = macro.newInstance(extend$Q, 'vtkRenderWindowViewNode');
+  const newInstance$y = macro.newInstance(extend$R, 'vtkRenderWindowViewNode');
 
   // ----------------------------------------------------------------------------
 
   var vtkRenderWindowViewNode$1 = {
-    newInstance: newInstance$x,
-    extend: extend$Q
+    newInstance: newInstance$y,
+    extend: extend$R
   };
 
   // This is used to access the underlying 3D context
@@ -38267,10 +38270,8 @@ void main()
       return model.containerSize || model.size;
     };
     publicAPI.getFramebufferSize = () => {
-      if (model.activeFramebuffer) {
-        return model.activeFramebuffer.getSize();
-      }
-      return model.size;
+      const fbSize = model.activeFramebuffer?.getSize();
+      return fbSize || model.size;
     };
     publicAPI.getPixelData = (x1, y1, x2, y2) => {
       const pixels = new Uint8Array((x2 - x1 + 1) * (y2 - y1 + 1) * 4);
@@ -38777,7 +38778,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$P(publicAPI, model) {
+  function extend$Q(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$H, initialValues);
 
@@ -38807,7 +38808,7 @@ void main()
     model._glInformation = null;
     model.myFactory = vtkViewNodeFactory.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$w);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$x);
     /* eslint-enable no-use-before-define */
 
     model.shaderCache = vtkShaderCache$1.newInstance();
@@ -38829,13 +38830,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$w = macro.newInstance(extend$P, 'vtkOpenGLRenderWindow');
+  const newInstance$x = macro.newInstance(extend$Q, 'vtkOpenGLRenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGL', newInstance$w);
+  registerViewConstructor('WebGL', newInstance$x);
 
   // methods we forward to the handle
   const forwarded = ['setBindGroup', 'setIndexBuffer', 'setVertexBuffer', 'draw', 'drawIndexed'];
@@ -38978,7 +38979,7 @@ void main()
   };
 
   // ----------------------------------------------------------------------------
-  function extend$O(publicAPI, model) {
+  function extend$P(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$G, initialValues);
 
@@ -39043,12 +39044,12 @@ void main()
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$v = newInstance$1$(extend$O, 'vtkWebGPURenderEncoder');
+  const newInstance$w = newInstance$20(extend$P, 'vtkWebGPURenderEncoder');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPURenderEncoder$1 = {
-    newInstance: newInstance$v,
-    extend: extend$O
+    newInstance: newInstance$w,
+    extend: extend$P
   };
 
   // ----------------------------------------------------------------------------
@@ -39128,7 +39129,7 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  function extend$N(publicAPI, model) {
+  function extend$O(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$F, initialValues);
 
@@ -39142,13 +39143,13 @@ void main()
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$u = macro.newInstance(extend$N, 'vtkWebGPUOpaquePass');
+  const newInstance$v = macro.newInstance(extend$O, 'vtkWebGPUOpaquePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOpaquePass$1 = {
-    newInstance: newInstance$u,
-    extend: extend$N
+    newInstance: newInstance$v,
+    extend: extend$O
   };
 
   // ----------------------------------------------------------------------------
@@ -39376,7 +39377,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$M(publicAPI, model) {
+  function extend$N(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$E, initialValues);
 
@@ -39390,13 +39391,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$t = macro.newInstance(extend$M, 'vtkWebGPUOrderIndependentTranslucentPass');
+  const newInstance$u = macro.newInstance(extend$N, 'vtkWebGPUOrderIndependentTranslucentPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUOrderIndepenentTranslucentPass = {
-    newInstance: newInstance$t,
-    extend: extend$M
+    newInstance: newInstance$u,
+    extend: extend$N
   };
 
   const BlendMode = {
@@ -40244,7 +40245,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$L(publicAPI, model) {
+  function extend$M(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$D, initialValues);
 
@@ -40272,13 +40273,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$s = macro.newInstance(extend$L, 'vtkWebGPUVolumePassFSQ');
+  const newInstance$t = macro.newInstance(extend$M, 'vtkWebGPUVolumePassFSQ');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePassFSQ$1 = {
-    newInstance: newInstance$s,
-    extend: extend$L
+    newInstance: newInstance$t,
+    extend: extend$M
   };
 
   const {
@@ -40897,7 +40898,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$K(publicAPI, model) {
+  function extend$L(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$C, initialValues);
 
@@ -40919,13 +40920,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$r = macro.newInstance(extend$K, 'vtkWebGPUVolumePass');
+  const newInstance$s = macro.newInstance(extend$L, 'vtkWebGPUVolumePass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUVolumePass$1 = {
-    newInstance: newInstance$r,
-    extend: extend$K
+    newInstance: newInstance$s,
+    extend: extend$L
   };
 
   const finalBlitFragTemplate = `
@@ -41109,7 +41110,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$J(publicAPI, model) {
+  function extend$K(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$B, initialValues);
 
@@ -41123,13 +41124,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$q = macro.newInstance(extend$J, 'vtkForwardPass');
+  const newInstance$r = macro.newInstance(extend$K, 'vtkForwardPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkForwardPass$1 = {
-    newInstance: newInstance$q,
-    extend: extend$J
+    newInstance: newInstance$r,
+    extend: extend$K
   };
 
   const {
@@ -41295,7 +41296,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$I(publicAPI, model) {
+  function extend$J(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$A, initialValues);
 
@@ -41307,13 +41308,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$p = macro.newInstance(extend$I);
+  const newInstance$q = macro.newInstance(extend$J);
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUTextureManager$1 = {
-    newInstance: newInstance$p,
-    extend: extend$I
+    newInstance: newInstance$q,
+    extend: extend$J
   };
 
   /**
@@ -41464,7 +41465,7 @@ fn main(
   };
 
   // ----------------------------------------------------------------------------
-  function extend$H(publicAPI, model) {
+  function extend$I(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$z, initialValues);
 
@@ -41493,12 +41494,12 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  const newInstance$o = newInstance$1$(extend$H, 'vtkWebGPUDevice');
+  const newInstance$p = newInstance$20(extend$I, 'vtkWebGPUDevice');
 
   // ----------------------------------------------------------------------------
   var vtkWebGPUDevice$1 = {
-    newInstance: newInstance$o,
-    extend: extend$H
+    newInstance: newInstance$p,
+    extend: extend$I
   };
 
   // ----------------------------------------------------------------------------
@@ -41611,7 +41612,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$G(publicAPI, model) {
+  function extend$H(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$y, initialValues);
 
@@ -41625,13 +41626,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$n = macro.newInstance(extend$G, 'vtkWebGPUHardwareSelectionPass');
+  const newInstance$o = macro.newInstance(extend$H, 'vtkWebGPUHardwareSelectionPass');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelectionPass$1 = {
-    newInstance: newInstance$n,
-    extend: extend$G
+    newInstance: newInstance$o,
+    extend: extend$H
   };
 
   const {
@@ -41949,7 +41950,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$F(publicAPI, model) {
+  function extend$G(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$x, initialValues);
 
@@ -41965,13 +41966,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$m = macro.newInstance(extend$F, 'vtkWebGPUHardwareSelector');
+  const newInstance$n = macro.newInstance(extend$G, 'vtkWebGPUHardwareSelector');
 
   // ----------------------------------------------------------------------------
 
   var vtkWebGPUHardwareSelector$1 = {
-    newInstance: newInstance$m,
-    extend: extend$F
+    newInstance: newInstance$n,
+    extend: extend$G
   };
 
   const {
@@ -42494,7 +42495,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$E(publicAPI, model) {
+  function extend$F(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$w, initialValues);
 
@@ -42515,7 +42516,7 @@ fn main(
     vtkRenderWindowViewNode$1.extend(publicAPI, model, initialValues);
     model.myFactory = vtkWebGPUViewNodeFactory$1.newInstance();
     /* eslint-disable no-use-before-define */
-    model.myFactory.registerOverride('vtkRenderWindow', newInstance$l);
+    model.myFactory.registerOverride('vtkRenderWindow', newInstance$m);
     /* eslint-enable no-use-before-define */
 
     // setup default forward pass rendering
@@ -42539,13 +42540,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$l = macro.newInstance(extend$E, 'vtkWebGPURenderWindow');
+  const newInstance$m = macro.newInstance(extend$F, 'vtkWebGPURenderWindow');
 
   // ----------------------------------------------------------------------------
   // Register API specific RenderWindow implementation
   // ----------------------------------------------------------------------------
 
-  registerViewConstructor('WebGPU', newInstance$l);
+  registerViewConstructor('WebGPU', newInstance$m);
 
   // Process arguments from URL
   const userParams = vtkURLExtract.extractURLParameters();
@@ -42704,7 +42705,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$D(publicAPI, model) {
+  function extend$E(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$v, initialValues);
 
@@ -42718,13 +42719,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$k = macro.newInstance(extend$D);
+  const newInstance$l = macro.newInstance(extend$E);
 
   // ----------------------------------------------------------------------------
 
   var vtkFullScreenRenderWindow$1 = {
-    newInstance: newInstance$k,
-    extend: extend$D
+    newInstance: newInstance$l,
+    extend: extend$E
   };
 
   /**
@@ -43453,7 +43454,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$C(publicAPI, model) {
+  function extend$D(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$u, initialValues);
 
@@ -43477,13 +43478,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$j = macro.newInstance(extend$C, 'vtkSTLReader');
+  const newInstance$k = macro.newInstance(extend$D, 'vtkSTLReader');
 
   // ----------------------------------------------------------------------------
 
   var vtkSTLReader$1 = {
-    extend: extend$C,
-    newInstance: newInstance$j
+    extend: extend$D,
+    newInstance: newInstance$k
   };
 
   const FormatTypes = {
@@ -43646,7 +43647,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$B(publicAPI, model) {
+  function extend$C(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$t, initialValues);
 
@@ -43663,13 +43664,13 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  const newInstance$i = macro.newInstance(extend$B, 'vtkSTLWriter');
+  const newInstance$j = macro.newInstance(extend$C, 'vtkSTLWriter');
 
   // ----------------------------------------------------------------------------
 
   var vtkSTLWriter$1 = {
-    newInstance: newInstance$i,
-    extend: extend$B,
+    newInstance: newInstance$j,
+    extend: extend$C,
     ...STATIC
   };
 
@@ -43677,7 +43678,7 @@ fn main(
   // vtkTransform methods
   // ----------------------------------------------------------------------------
   // eslint-disable-next-line import/no-mutable-exports
-  let newInstance$h;
+  let newInstance$i;
   function vtkTransform(publicAPI, model) {
     // Set our className
     model.classHierarchy.push('vtkAbstractTransform', 'vtkHomogeneousTransform', 'vtkTransform');
@@ -43745,7 +43746,7 @@ fn main(
       }
       return out;
     };
-    publicAPI.getInverse = () => newInstance$h({
+    publicAPI.getInverse = () => newInstance$i({
       matrix: vtkMath.invertMatrix(Array.from(model.matrix), [], 4),
       preMultiplyFlag: model.preMultiplyFlag
     });
@@ -43762,7 +43763,7 @@ fn main(
 
   // ----------------------------------------------------------------------------
 
-  function extend$A(publicAPI, model) {
+  function extend$B(publicAPI, model) {
     let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     Object.assign(model, DEFAULT_VALUES$s, initialValues);
     macro.obj(publicAPI, model);
@@ -43772,11 +43773,148 @@ fn main(
   }
 
   // ----------------------------------------------------------------------------
-  newInstance$h = macro.newInstance(extend$A, 'vtkTransform');
+  newInstance$i = macro.newInstance(extend$B, 'vtkTransform');
 
   // ----------------------------------------------------------------------------
 
   var vtkTransform$1 = {
+    newInstance: newInstance$i,
+    extend: extend$B
+  };
+
+  // ----------------------------------------------------------------------------
+  // vtkPolyDataNormals methods
+  // ----------------------------------------------------------------------------
+
+  function vtkPolyDataNormals(publicAPI, model) {
+    // Set our className
+    model.classHierarchy.push('vtkPolyDataNormals');
+    publicAPI.vtkPolyDataNormalsExecute = (numberOfPolys, polysData, pointsData) => {
+      if (!pointsData) {
+        return null;
+      }
+      const pointNormals = new Float32Array(pointsData.length);
+      const cellNormals = new Float32Array(3 * numberOfPolys);
+      let cellNormalComponent = 0;
+      let numberOfPoints = 0;
+      const polysDataLength = polysData.length;
+      const cellPointIds = [0, 0, 0];
+      const cellNormal = [0, 0, 0];
+      for (let c = 0; c < polysDataLength; c += numberOfPoints + 1) {
+        numberOfPoints = polysData[c];
+        if (numberOfPoints < 3) {
+          continue; // eslint-disable-line
+        }
+
+        for (let i = 1; i <= 3; ++i) {
+          cellPointIds[i - 1] = 3 * polysData[c + i];
+        }
+        vtkTriangle$1.computeNormal(pointsData.slice(cellPointIds[0], cellPointIds[0] + 3), pointsData.slice(cellPointIds[1], cellPointIds[1] + 3), pointsData.slice(cellPointIds[2], cellPointIds[2] + 3), cellNormal);
+        cellNormals[cellNormalComponent++] = cellNormal[0];
+        cellNormals[cellNormalComponent++] = cellNormal[1];
+        cellNormals[cellNormalComponent++] = cellNormal[2];
+        if (model.computePointNormals) {
+          for (let i = 1; i <= numberOfPoints; ++i) {
+            let pointId = 3 * polysData[c + i];
+            pointNormals[pointId] += cellNormal[0];
+            pointNormals[++pointId] += cellNormal[1];
+            pointNormals[++pointId] += cellNormal[2];
+          }
+        }
+      }
+
+      // Normalize point normals.
+      // A point normal is the sum of all the cell normals the point belongs to
+      if (model.computePointNormals) {
+        const pointNormal = [0, 0, 0];
+        for (let i = 0; i < pointsData.length;) {
+          pointNormal[0] = pointNormals[i];
+          pointNormal[1] = pointNormals[i + 1];
+          pointNormal[2] = pointNormals[i + 2];
+          vtkMath.normalize(pointNormal);
+          pointNormals[i++] = pointNormal[0];
+          pointNormals[i++] = pointNormal[1];
+          pointNormals[i++] = pointNormal[2];
+        }
+      }
+      return [cellNormals, pointNormals];
+    };
+    publicAPI.requestData = (inData, outData) => {
+      const numberOfInputs = publicAPI.getNumberOfInputPorts();
+      if (!numberOfInputs) {
+        return;
+      }
+      const input = inData[0];
+      if (!input) {
+        return;
+      }
+      const output = vtkPolyData$1.newInstance();
+      output.setPoints(input.getPoints());
+      output.setVerts(input.getVerts());
+      output.setLines(input.getLines());
+      output.setPolys(input.getPolys());
+      output.setStrips(input.getStrips());
+      output.getPointData().passData(input.getPointData());
+      output.getCellData().passData(input.getCellData());
+      output.getFieldData().passData(input.getFieldData());
+      const [cellNormals, pointNormals] = publicAPI.vtkPolyDataNormalsExecute(input.getNumberOfPolys(), input.getPolys().getData(), input.getPoints().getData());
+      if (model.computePointNormals) {
+        const outputPointNormals = vtkDataArray$1.newInstance({
+          numberOfComponents: 3,
+          name: 'Normals',
+          values: pointNormals
+        });
+        output.getPointData().setNormals(outputPointNormals);
+      }
+      if (model.computeCellNormals) {
+        const outputCellNormals = vtkDataArray$1.newInstance({
+          numberOfComponents: 3,
+          name: 'Normals',
+          values: cellNormals
+        });
+        output.getCellData().setNormals(outputCellNormals);
+      }
+      outData[0] = output;
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  // Object factory
+  // ----------------------------------------------------------------------------
+  function defaultValues$7(initialValues) {
+    return {
+      computeCellNormals: false,
+      computePointNormals: true,
+      ...initialValues
+    };
+  }
+
+  // ----------------------------------------------------------------------------
+  function extend$A(publicAPI, model) {
+    let initialValues = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    Object.assign(model, defaultValues$7(initialValues));
+
+    /* Make this a VTK object */
+
+    macro.obj(publicAPI, model);
+
+    /* Also make it an algorithm with one input and one output */
+
+    macro.algo(publicAPI, model, 1, 1);
+    macro.setGet(publicAPI, model, ['computeCellNormals', 'computePointNormals']);
+
+    /* Object specific methods */
+
+    vtkPolyDataNormals(publicAPI, model);
+  }
+
+  // ----------------------------------------------------------------------------
+
+  const newInstance$h = macro.newInstance(extend$A, 'vtkPolyDataNormals');
+
+  // ----------------------------------------------------------------------------
+
+  var vtkPolyDataNormals$1 = {
     newInstance: newInstance$h,
     extend: extend$A
   };
@@ -49228,12 +49366,9 @@ fn main(
   let currentXRotation = 0;
   let currentYRotation = 0;
   let currentZRotation = 0;
-  let initialShift = [0, 0, 0];
   let currentXShift = 0;
   let currentYShift = 0;
   let currentZShift = 0;
-
-  let alreadySaved = false;
 
   // When DOM content loaded
   document.addEventListener("DOMContentLoaded", () => {
@@ -49285,11 +49420,12 @@ fn main(
 
       function fetchTemplate() {
 
-          fetch('/template/2')
+          fetch('/template/3')
           .then(response => response.json())
           .then(data => {
               if (Object.keys(data).length == 0) return;
-              var binaryString = atob(data);
+              var binaryString = atob(data.template_base64);
+
               var bytes = new Uint8Array(binaryString.length);
               for (var i = 0; i < binaryString.length; i++) {
                   bytes[i] = binaryString.charCodeAt(i);
@@ -49474,6 +49610,9 @@ fn main(
           renderer.resetCamera();
           renderWindow.render();
 
+          console.log('template bounds: ');
+          console.log(templateActor.getBounds());
+
           actor.setOrigin(modelCenter);
 
           renderer.resetCamera();
@@ -49482,30 +49621,33 @@ fn main(
 
       function makeInitialShift() {
 
-          initialShift = [
-              templateCenter[0] - modelCenter[0],
-              templateCenter[1] - modelCenter[1],
-              templateCenter[2] - modelCenter[2]
-          ];
-
+          currentXShift = templateCenter[0] - modelCenter[0];
+          currentYShift = templateCenter[1] - modelCenter[1];
+          currentZShift = templateCenter[2] - modelCenter[2];
           updateModelPosition();
+
           renderer.resetCamera();
           renderWindow.render();
 
-          // New model was loaded from file, reset save tracker
-          alreadySaved = false;
+          console.log('actor bounds: ');
+          console.log(actor.getBounds());
       }
 
       function actorToFile() {
 
           let actorPoly = actor.getMapper().getInputData();
           let actorPoints = actorPoly.getPoints().getData();
-          console.log('bounds at save start:');
+          console.log('poly bounds at save start:');
           console.log(actorPoly.getPoints().getBounds());
-          console.log('model center:');
+          console.log('actor bounds at save start');
+          console.log(actor.getBounds());
+          console.log('actor center at save start:');
+          console.log(actor.getCenter());
+          console.log('actor origin at save start:');
+          console.log(actor.getOrigin());
+          console.log('model center at save start:');
           console.log(modelCenter);
-          console.log('points at start:');
-          console.log(actorPoints);
+          actor.getPosition();
           
           // TRANSLATE TO ORIGIN
           let transform = vtkTransform$1.newInstance();
@@ -49539,48 +49681,64 @@ fn main(
 
           // TRANSLATION FIX AFTER ROTATION + TRANSLATION FROM ORIGIN
           let bounds = actorPoly.getPoints().getBounds();
-          let xCentre = (bounds[0] + bounds[1])/2;
-          let yCentre = (bounds[2] + bounds[3])/2;
-          let zCentre = (bounds[4] + bounds[5])/2;
+          (bounds[0] + bounds[1])/2;
+          (bounds[2] + bounds[3])/2;
+          (bounds[4] + bounds[5])/2;
 
           transform = vtkTransform$1.newInstance();
 
-          // If one save already occured, omit initial shift
-          if (alreadySaved) {
-              matrix = vtkMatrixBuilder
-                  .buildFromDegree()
-                  .translate(-xCentre + modelCenter[0] + currentXShift,
-                      -yCentre + modelCenter[1] + currentYShift,
-                      -zCentre + modelCenter[2] + currentZShift)
-                  .getMatrix();
-          } else {
-              matrix = vtkMatrixBuilder
-                  .buildFromDegree()
-                  .translate(-xCentre + modelCenter[0] + initialShift[0] + currentXShift,
-                      -yCentre + modelCenter[1] + initialShift[1] + currentYShift,
-                      -zCentre + modelCenter[2] + initialShift[2] + currentZShift)
-                  .getMatrix();           
-          }
+          matrix = vtkMatrixBuilder
+              .buildFromDegree()
+              .translate(modelCenter[0] + currentXShift,
+                  modelCenter[1] + currentYShift,
+                  modelCenter[2] + currentZShift)
+              .getMatrix();
           transform.setMatrix(matrix);
 
           let nnnPoints = new Float32Array(actorPoints.length);
           transform.transformPoints(newNewPoints, nnnPoints);
           actorPoly.getPoints().setData(nnnPoints, 3);
-          console.log(actorPoly.getPoints().getBounds());
+
+          renderer.removeActor(actor);
           
-          // Model was saved at least once
-          alreadySaved = true;
+          const normalsFilter = vtkPolyDataNormals$1.newInstance();
+          normalsFilter.setInputData(actorPoly);
+          normalsFilter.update();
+          
+          mapper.setInputConnection(normalsFilter.getOutputPort());
+          mapper.update();
+
+          actorPoly.modified();
+          console.log(actorPoly.getPoints().getBounds());
+
+          actor = vtkActor$1.newInstance();
+          actor.setMapper(mapper);
+          renderer.addActor(actor);
+
+          renderWindow.render();
 
           // Update modelCenter (polyData in mapper changed, so we have to reflect that)
-          bounds = actorPoly.getPoints().getBounds();
-          xCentre = (bounds[0] + bounds[1])/2;
-          yCentre = (bounds[2] + bounds[3])/2;
-          zCentre = (bounds[4] + bounds[5])/2;
-          modelCenter = [xCentre, yCentre, zCentre];
-          console.log('modelCentre after save:');
-          console.log(modelCenter);
+          
+          actor.setPosition(0, 0, 0);
+          renderWindow.render();
 
+          console.log('actor origin: ');
+          console.log(actor.getOrigin());
+          console.log('actor position:');
+          console.log(actor.getPosition());
+          console.log('actor bounds:');
+          console.log(actor.getBounds());
+          console.log('actorCentre: ');
+          console.log(actor.getCenter());
+          
+          modelCenter = actor.getCenter();
+          actor.setOrigin(modelCenter);
+          
+          renderWindow.render();
           // Reset sliders and variables
+          
+          console.log('actor orientation:');
+          console.log(actor.getOrientation());
 
           // Rotation
           cumulativeRotationQuat = create();
@@ -49596,11 +49754,8 @@ fn main(
           console.log(cumulativeRotationQuat);
 
           // Shift
-          initialShift[0] += currentXShift;
           currentXShift = 0;
-          initialShift[1] += currentYShift;
           currentYShift = 0;
-          initialShift[2] += currentZShift;
           currentZShift = 0;
           xMovement.value = '0';
           yMovement.value = '0';
@@ -49625,10 +49780,23 @@ fn main(
 
       function updateModelPosition() {
 
-          actor.setPosition(initialShift[0] + currentXShift,
-              initialShift[1] + currentYShift,
-              initialShift[2] + currentZShift);
+          actor.setPosition(currentXShift, currentYShift, currentZShift);
           renderWindow.render();
+      }
+
+      function calculate() {
+
+          let project_id = document.body.id;
+
+          fetch(`/calculate/${project_id}`)
+          .then(response => {
+              if (response.ok) {
+                  console.log('Pohoda');
+              } else {
+                  console.log('Nepohoda');
+              }
+          });
+          
       }
 
       // Body listener
@@ -49659,6 +49827,12 @@ fn main(
       let saveBtn = document.getElementById('save-button');
       saveBtn.addEventListener('click', () => {
           actorToFile();
+      });
+
+      // Calculate button
+      let calculateBtn = document.getElementById('calculate-button');
+      calculateBtn.addEventListener('click', () => {
+          calculate();
       });
 
       // Add annot
@@ -49704,8 +49878,9 @@ fn main(
 
       // Rotation on input
       xSlider.addEventListener('input', (e) => {
-          let deltaAngle = e.target.value - currentXRotation;
-          currentXRotation = e.target.value;
+          let angle = parseInt(e.target.value);
+          let deltaAngle = angle - currentXRotation;
+          currentXRotation = angle;
           updateRotationQuat(deltaAngle, [1, 0, 0]);
           actor.rotateWXYZ(deltaAngle, 1, 0, 0);
           renderWindow.render();
@@ -49719,8 +49894,9 @@ fn main(
       });
 
       ySlider.addEventListener('input', (e) => {
-          let deltaAngle = e.target.value - currentYRotation;
-          currentYRotation = e.target.value;
+          let angle = parseInt(e.target.value);
+          let deltaAngle = angle - currentYRotation;
+          currentYRotation = angle;
           updateRotationQuat(deltaAngle, [0, 1, 0]);
           actor.rotateWXYZ(deltaAngle, 0, 1, 0);
           renderWindow.render();
@@ -49734,8 +49910,9 @@ fn main(
       });
 
       zSlider.addEventListener('input', (e) => {
-          let deltaAngle = e.target.value - currentZRotation;
-          currentZRotation = e.target.value;
+          let angle = parseInt(e.target.value);
+          let deltaAngle = angle - currentZRotation;
+          currentZRotation = angle;
           updateRotationQuat(deltaAngle, [0, 0, 1]);
           actor.rotateWXYZ(deltaAngle, 0, 0, 1);
           renderWindow.render();

@@ -9,6 +9,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
+from .rekonstrukce import reconstruction
+from .stl_to_mha import STL2Mask
+from .M3_calculation import M3_calc
+from .warp import warp
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -38,7 +42,7 @@ class Project(db.Model):
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    model_data = db.Column(db.String)
+    template_data = db.Column(db.String)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -168,13 +172,6 @@ def editor(project_id):
 
     return render_template('editor.html', project_id=project_id)
 
-@app.route('/template/<id>', methods=['GET'])
-def template(id):
-    data = Template.query.filter_by(id=id).first()
-    if data:
-        return jsonify(data.model_data)
-    return {}
-
 @app.route('/addTemplate', methods=['GET', 'POST'])
 def add_template():
     if request.method == 'POST':
@@ -186,13 +183,22 @@ def add_template():
             flash('No selected file')
             return redirect(request.url)
         if file and is_allowed_file(file.filename):
-            byte_array = file.read()
-            bytes_base64 = (base64.b64encode(byte_array)).decode()
-            new_template = Template(name=request.form['template-name'], model_data=bytes_base64)
+            template_blob = file.read()
+            new_template = Template(name=request.form['template-name'], template_data=template_blob)
             db.session.add(new_template)
             db.session.commit()
             flash('Template added succesfully!')
     return render_template('template-load.html')
+
+@app.route('/template/<id>', methods=['GET'])
+def template(id):
+    template = Template.query.filter_by(id=id).first()
+    template_blob = template.template_data
+
+    if template_blob:
+        template_base64 = base64.b64encode(template_blob).decode('utf-8')
+        return jsonify({"template_base64": template_base64})
+    return {}
 
 @app.route('/saveProjectImage/<int:project_id>', methods=['POST'])
 def save_model_image(project_id):
@@ -244,6 +250,42 @@ def loadModel(project_id):
         model_base64 = base64.b64encode(model_blob).decode('utf-8')
         return jsonify({"model_base64": model_base64})
     return {}
+
+@app.route('/calculate/<int:project_id>', methods=['GET'])
+def calculate(project_id):
+
+    project = Project.query.filter_by(id=project_id).first()
+    template = Template.query.filter_by(id=3).first()
+
+    model_blob = project.model_data
+    template_blob = template.template_data
+    if model_blob and template_blob:
+
+        # Model to STL
+        with open(f'{project_id}.stl', 'wb') as f:
+            f.write(model_blob)
+    
+        # Template to STL
+        with open(f'T_3.stl', 'wb') as f:
+            f.write(template_blob)
+
+        # Poisson a decimation to model STL
+        reconstruction(project_id)
+
+        # Template to MHA
+        STL2Mask('T_3')
+
+        # Model to MHA
+        STL2Mask(f'R_{project_id}')
+
+        # Calculate M3 distance from model MHA
+        M3_calc(project_id)
+
+        warp(project_id)
+
+        return jsonify({"message": "Vsechno v klidu"}), 200
+
+    return jsonify({"message": "Bohuzel"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
