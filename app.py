@@ -1,4 +1,5 @@
 import os
+import sys
 import base64
 from datetime import datetime
 
@@ -9,11 +10,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
-from .rekonstrukce import reconstruction
-from .stl_to_mha import STL2Mask
-from .M3_calculation import M3_calc
-from .warp import warp
-from .morfer import morf
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from rekonstrukce import reconstruction
+from stl_to_mha import STL2Mask
+from M3_calculation import M3_calc
+from warp import warp
+from morfer import morf
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')

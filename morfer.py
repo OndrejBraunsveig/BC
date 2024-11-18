@@ -7,7 +7,7 @@ from stl import mesh as stlmesh
 import ants
 import glob
 from tqdm import trange
-from .ct_mesher import stl_from_ct
+from ct_mesher import stl_from_ct
 import pyvista as pv
 import math
 from pathlib import Path
