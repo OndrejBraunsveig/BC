@@ -74,7 +74,9 @@ def warp(project_id):
 
     ants.write_transform(afftxinv, afn_inv)
     ants.image_write(warptxinv, warp_inv)
-        
+    
+    # Remove reduced model MHA file
+    os.remove(f'R_{project_id}.mha')
 
         
 

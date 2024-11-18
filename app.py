@@ -13,6 +13,7 @@ from .rekonstrukce import reconstruction
 from .stl_to_mha import STL2Mask
 from .M3_calculation import M3_calc
 from .warp import warp
+from .morfer import morf
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -282,6 +283,7 @@ def calculate(project_id):
         M3_calc(project_id)
 
         warp(project_id)
+        morf(project_id)
 
         return jsonify({"message": "Vsechno v klidu"}), 200
 

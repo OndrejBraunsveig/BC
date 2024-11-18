@@ -49452,6 +49452,7 @@ fn main(
           console.log("template origin: " + templateActor.getOrigin());
           console.log("template position: " + templateActor.getPosition());
           console.log("template centre: " + templateCenter);
+          console.log('template bounds: ' + templateActor.getBounds());
 
           sphereSource.setCenter(templateCenter);
 
@@ -49514,6 +49515,7 @@ fn main(
               reader.parseAsArrayBuffer(fileReader.result);
               renderNewModel();
               makeInitialShift();
+              toggleInfo();
               actorToFile();
           };
       }
@@ -49540,10 +49542,10 @@ fn main(
                   });
           
                   renderWindow.render();
-
               } else {
                   console.error('Model save failed');
               }
+              toggleInfo();
           });
       }
 
@@ -49601,6 +49603,7 @@ fn main(
           renderer.resetCamera();
           renderWindow.render();
 
+          actor.getBounds();
           modelCenter = actor.getCenter();
           //actor.setOrigin(-1000, 0, 0);
           console.log('model origin: ' + actor.getOrigin());
@@ -49659,7 +49662,6 @@ fn main(
 
           let newPoints = new Float32Array(actorPoints.length);
           transform.transformPoints(actorPoints, newPoints);
-          // docasne
           actorPoly.getPoints().setData(newPoints, 3);
 
           // ROTATION
@@ -49795,6 +49797,7 @@ fn main(
               } else {
                   console.log('Nepohoda');
               }
+              toggleInfo();
           });
           
       }
@@ -49826,12 +49829,18 @@ fn main(
       // Save button
       let saveBtn = document.getElementById('save-button');
       saveBtn.addEventListener('click', () => {
+          let text = document.getElementById('info-popup-text');
+          text.innerHTML = 'Saving...';
+          toggleInfo();
           actorToFile();
       });
 
       // Calculate button
       let calculateBtn = document.getElementById('calculate-button');
       calculateBtn.addEventListener('click', () => {
+          let text = document.getElementById('info-popup-text');
+          text.innerHTML = 'Calculating...';
+          toggleInfo();
           calculate();
       });
 
@@ -49940,5 +49949,19 @@ fn main(
           updateModelPosition();
       });
   });
+
+  function toggleInfo() {
+
+      let header = document.getElementById('render-header');
+      let canvas = document.querySelector('canvas');
+      let estDiv = document.getElementById('estimate-div');
+      let manipulationDiv = document.getElementById('manipulation-div');
+      header.classList.toggle('blur');
+      canvas.classList.toggle('blur');
+      estDiv.classList.toggle('blur');
+      manipulationDiv.classList.toggle('blur');
+      let popup = document.getElementById('info-popup');
+      popup.classList.toggle('active');
+  }
 
 })();

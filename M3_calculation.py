@@ -33,7 +33,7 @@ def process_files(file_path):
 
     if largest_distance is not None:
         data.append({
-            "Model Name": os.path.basename(file_path),
+            "Model Name": file_path,
             "M3": largest_distance
         })
 
@@ -45,6 +45,9 @@ def M3_calc(project_id):
 
     output_table = process_files(file_path)
 
-    output_table.to_csv("M3_distance.csv", index=False)
+    output_table.to_csv(f"M3_distance_{project_id}.csv", index=False)
     print("Processing completed. Output saved to M3_distance.csv")
+
+    # Remove reduced stl file
+    os.remove(file_path)
 

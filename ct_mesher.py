@@ -1,16 +1,21 @@
 import ants
-import meshio
+#import meshio
 import vtk
 from pymeshfix import _meshfix
-import gmsh
-import pygmsh
+
+# They use meshio and are not used
+#import gmsh
+#import pygmsh
+
 import pymeshlab as pmsh
-from vtk.util import numpy_support
+from vtkmodules.util import numpy_support
 import numpy as np
 import netgen as libngpy
 import pyvista as pv
 import pyacvd
 
+'''
+You need meshio for this function, which causes issues for Linux deploy
 
 def tetrahedral_mesher_bad(stl_file_name, mesh_file_name, detail_level, size_range):
     geom = libngpy._stl.STLGeometry(stl_file_name)
@@ -21,6 +26,7 @@ def tetrahedral_mesher_bad(stl_file_name, mesh_file_name, detail_level, size_ran
     points = mesh_netgen.Coordinates()
     mesh = meshio.Mesh(points=points, cells=[("tetra", cells)]) # only tets
     mesh.write(mesh_file_name)
+'''
 
 
 def vtk2stl(image, iter_num=50, relax=0.1, dec=0.0):
@@ -104,6 +110,8 @@ def only_ACVD(stl_file_name, ratio):
         remesh = clus.create_mesh()
         remesh.save(stl_file_name)
     
+'''
+You need meshio import
 
 def tetrahedral_mesher(stl_file_name, mesh_file_name, detail_level, size_range):
     gmsh.initialize()
@@ -126,6 +134,4 @@ def tetrahedral_mesher(stl_file_name, mesh_file_name, detail_level, size_range):
         mesh = meshio.Mesh(points=mesh.points, cells=[("tetra", mesh.cells_dict['tetra'])]) # only tets
         mesh.write(mesh_file_name)
         return mesh
-
-if __name__ == '__main__':
-    pass
+'''

@@ -127,11 +127,6 @@ body{
 .blur{
     filter: blur(20px);
 }
-.popup.active{
-    visibility: visible;
-    opacity: 1;
-    filter: none;
-}
 header{
     display: flex;
     justify-content: space-between;
@@ -241,6 +236,7 @@ header{
     flex-direction: column;
     align-items: center;
     position: fixed;
+    z-index: 100;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -251,6 +247,11 @@ header{
     visibility: hidden;
     opacity: 0;
     transition: 0.5s;
+}
+.popup.active{
+    visibility: visible;
+    opacity: 1;
+    filter: none;
 }
 #add-popup{
     width: 400px;
@@ -415,4 +416,4 @@ input[type="color"]{
 }
 .slider:hover {
     opacity: 1;
-  }
+}
