@@ -23,10 +23,10 @@ def compute_mesh(image, stl_file_name):
 
 def morf(project_id):
     # Paths to input files and directories
-    points_path = 'left_points.csv'
+    points_path = 'right_points.csv'
     #source = '/media/anatom/Nový svazek/osazovani_bodu/NM/demons/warped_dex/'
-    template_path = 'T_3.mha'
-    template_stl_path = 'T_morf_3.stl'
+    template_path = 'T_7.mha'
+    template_stl_path = 'T_morf_7.stl'
     #folder_path = "/media/anatom/Nový svazek/osazovani_bodu/NM/dex/"
     #cloud_points = '/media/anatom/Nový svazek/osazovani_bodu/template/'
     output_filename = f'results_{project_id}.csv'
@@ -228,9 +228,9 @@ def morf(project_id):
     print(final_results.head())
 
     # Remove all files
-    os.remove('T_3.stl')
-    os.remove('T_3.mha')
-    os.remove('T_morf_3.stl')
+    os.remove('T_7.stl')
+    os.remove('T_7.mha')
+    os.remove('T_morf_7.stl')
     os.remove(f'warped_R_{project_id}.mha')
     # upravit jmeno pri ukladani jeste
     os.remove(f'M3_distance_{project_id}.csv')

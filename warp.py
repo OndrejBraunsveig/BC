@@ -19,7 +19,7 @@ def warp(project_id):
 
     filename = f'R_{project_id}'
     model_mha = f'{filename}.mha'
-    template_mha = 'T_3.mha'
+    template_mha = 'T_7.mha'
 
     # Load the moving and fixed images
     original_image = ants.image_read(model_mha)

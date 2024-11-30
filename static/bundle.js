@@ -49420,7 +49420,7 @@ fn main(
 
       function fetchTemplate() {
 
-          fetch('/template/3')
+          fetch('/template/7')
           .then(response => response.json())
           .then(data => {
               if (Object.keys(data).length == 0) return;
@@ -49612,9 +49612,6 @@ fn main(
 
           renderer.resetCamera();
           renderWindow.render();
-
-          console.log('template bounds: ');
-          console.log(templateActor.getBounds());
 
           actor.setOrigin(modelCenter);
 
