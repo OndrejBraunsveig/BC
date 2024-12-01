@@ -49379,8 +49379,6 @@ fn main(
       const renderWindow = fullScreenRenderer.getRenderWindow();
       const openGLRenderWindow = fullScreenRenderer.getApiSpecificRenderWindow();
 
-      vtkSTLWriter$1.newInstance();
-
       // Selector 
       const selector = vtkHardwareSelector.newInstance({
           captureZValues: true,
@@ -49389,9 +49387,9 @@ fn main(
       selector.attach(openGLRenderWindow, renderer);
 
       // Template actor
-      const templateReader = vtkSTLReader$1.newInstance();
-      const templateMapper = vtkMapper$1.newInstance({ scalarVisibility: false });
-      const templateActor = vtkActor$1.newInstance();
+      let templateReader = vtkSTLReader$1.newInstance();
+      let templateMapper = vtkMapper$1.newInstance({ scalarVisibility: false });
+      let templateActor = vtkActor$1.newInstance();
 
       templateActor.setMapper(templateMapper);
       templateMapper.setInputConnection(templateReader.getOutputPort());
@@ -49403,7 +49401,8 @@ fn main(
 
       actor.setMapper(mapper);
       mapper.setInputConnection(reader.getOutputPort());
-      fetchTemplate();
+      let template_id = document.getElementById('active-template-id').innerHTML;
+      fetchTemplate(template_id);
 
       // Sphere actor
       const sphereSource = vtkSphereSource$1.newInstance({
@@ -49418,9 +49417,11 @@ fn main(
 
       //renderer.addActor(actor1);
 
-      function fetchTemplate() {
+      function fetchTemplate(template_id) {
 
-          fetch('/template/7')
+          let project_id = document.getElementById('project-id').innerHTML;
+
+          fetch(`/project/${project_id}/template/${template_id}`)
           .then(response => response.json())
           .then(data => {
               if (Object.keys(data).length == 0) return;
@@ -49431,6 +49432,16 @@ fn main(
                   bytes[i] = binaryString.charCodeAt(i);
               }
               var arrayBuffer = bytes.buffer;
+
+              // Reset template variables
+              renderer.removeActor(templateActor);
+              templateReader = vtkSTLReader$1.newInstance();
+              templateMapper = vtkMapper$1.newInstance({ scalarVisibility: false });
+              templateActor = vtkActor$1.newInstance();
+
+              templateActor.setMapper(templateMapper);
+              templateMapper.setInputConnection(templateReader.getOutputPort());
+
               templateReader.parseAsArrayBuffer(arrayBuffer);
               renderTemplate();
           });
@@ -49802,6 +49813,23 @@ fn main(
       // Body listener
       //container.addEventListener('mousedown', onMouseDown);
 
+      // Template dropdown
+      let dropdownBtn = document.querySelector('.dropdown-button');
+      dropdownBtn.addEventListener('click', () => {
+          document.querySelector('.dropdown-content').classList.toggle('show');
+      });
+
+      let dropdownItems = document.querySelectorAll('.dropdown-item');
+      dropdownItems.forEach((item) => {
+          item.addEventListener('click', (e) => {
+              dropdownItems.forEach(di => di.classList.remove('active'));
+              item.classList.add('active');
+
+              fetchTemplate(e.target.id);
+          });
+      });
+
+      // File button
       let fileLabel = document.getElementById('3d-file-label');
       let fileInput = document.getElementById('3d-file');
       fileInput.addEventListener('input', (e) => {
@@ -49949,7 +49977,7 @@ fn main(
 
   function toggleInfo() {
 
-      let header = document.getElementById('render-header');
+      let header = document.getElementById('editor-header');
       let canvas = document.querySelector('canvas');
       let estDiv = document.getElementById('estimate-div');
       let manipulationDiv = document.getElementById('manipulation-div');

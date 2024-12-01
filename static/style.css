@@ -305,25 +305,61 @@ header{
 .popup .danger-button{
     width: 40%;
 }
-#render-header{
+.hidden-info{
+    display: none;
+}
+#editor-header{
     position: absolute;
     width: 100%;
     z-index: 100;
     align-items: center;
     margin: 0;
 }
-#render-header .file-upload{
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    margin-top: 16px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px hsla(0, 0%, 0%, 0.2);
+    border: 2px solid hsl(0, 0%, 0%);
+    border-top: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 100;  
+}
+.dropdown-content button{
+    border: none;
+    background-color: hsl(0, 0%, 72%);
+    padding: 10px 20px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+.dropdown-content .active{
+    background-color: hsl(0, 0%, 50%);
+}
+.dropdown-item:hover{
+    background-color: hsl(0, 0%, 65%);
+}
+.show{
+    display: block;
+}
+#editor-header .file-upload{
     margin-bottom: 0;
 }
-#render-header .primary-button{
+#editor-header .primary-button{
     min-width: 106px;
 }
-#render-header .secondary-button{
-    width: 180px;
-    margin: 0;
+#editor-header .secondary-button{
+    min-width: 106px;
 }
-#render-header .file-upload{
+#editor-header .file-upload{
     width: 132px;
+    text-align: center;
 }
 #exit-button {
     margin-right: 10px;

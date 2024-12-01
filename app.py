@@ -44,11 +44,11 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(30), nullable=False)
-    active_template_id = db.Column(db.Integer, nullable=False, default=3)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
     model_data = db.Column(db.String)
     base64_image = db.Column(db.String)
+    active_template_id = db.Column(db.Integer, nullable=False, default=6)
 
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -259,15 +259,26 @@ def dashboard():
     if request.method == 'POST':
         return redirect(url_for('dashboard'))
 
-    return render_template('dashboard.html', projects=project_list, add_form=add_form,
-                           edit_form=edit_form, delete_form=delete_form)
+    return render_template('dashboard.html',
+                           projects=project_list,
+                           add_form=add_form,
+                           edit_form=edit_form,
+                           delete_form=delete_form)
 
 # Editor route
 @app.route('/editor/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def editor(project_id):
 
-    return render_template('editor.html', project_id=project_id)
+    project = Project.query.filter_by(id=project_id).first()
+    active_template_id = project.active_template_id
+    
+    all_templates = Template.query.all()
+
+    return render_template('editor.html',
+                           project_id=project_id,
+                           active_template_id=active_template_id,
+                           all_templates=all_templates)
 
 # Template routes
 @app.route('/addTemplate', methods=['GET', 'POST'])
@@ -301,13 +312,17 @@ def add_template():
 
     return render_template('template-load.html')
 
-@app.route('/template/<id>', methods=['GET'])
-def template(id):
+@app.route('/project/<project_id>/template/<template_id>', methods=['GET'])
+def template(project_id, template_id):
 
     try:
-        filename = f'T{id}'
+        filename = f'T{template_id}'
         file_id = getIdFromName(TEMPLATE_FOLDER_ID, filename)
         file_bytes = downloadFromCloud(file_id)
+
+        project = Project.query.filter_by(id=project_id).first()
+        project.active_template_id = template_id
+        db.session.commit()
 
         template_base64 = base64.b64encode(file_bytes).decode('utf-8')
         return jsonify({"template_base64": template_base64})
