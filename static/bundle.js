@@ -49373,6 +49373,10 @@ fn main(
   // When DOM content loaded
   document.addEventListener("DOMContentLoaded", () => {
 
+      // Info text
+      let infoDiv = document.getElementById('info-div');
+      let infoText = document.getElementById('info-text');
+
       // Renderers and render windows
       const fullScreenRenderer = vtkFullScreenRenderWindow$1.newInstance();
       const renderer = fullScreenRenderer.getRenderer();
@@ -49394,6 +49398,11 @@ fn main(
       templateActor.setMapper(templateMapper);
       templateMapper.setInputConnection(templateReader.getOutputPort());
 
+      let template_id = document.getElementById('active-template-id').innerHTML;
+      infoText.innerHTML = 'Loading template...';
+      infoDiv.classList.toggle('slidedown');
+      fetchTemplate(template_id);
+
       // File actor
       let reader = vtkSTLReader$1.newInstance();
       let mapper = vtkMapper$1.newInstance({ scalarVisibility: false });
@@ -49401,8 +49410,6 @@ fn main(
 
       actor.setMapper(mapper);
       mapper.setInputConnection(reader.getOutputPort());
-      let template_id = document.getElementById('active-template-id').innerHTML;
-      fetchTemplate(template_id);
 
       // Sphere actor
       const sphereSource = vtkSphereSource$1.newInstance({
@@ -49465,12 +49472,7 @@ fn main(
           console.log("template centre: " + templateCenter);
           console.log('template bounds: ' + templateActor.getBounds());
 
-          sphereSource.setCenter(templateCenter);
-
-          renderer.resetCamera();
-          renderWindow.render();
-
-          console.log('sphere centre: ' + actor1.getCenter());
+          infoText.innerHTML = 'Loading user model...';
           loadModel();
       }
 
@@ -49524,9 +49526,11 @@ fn main(
           fileReader.readAsArrayBuffer(file);
           fileReader.onload = () => {
               reader.parseAsArrayBuffer(fileReader.result);
+
               renderNewModel();
               makeInitialShift();
-              toggleInfo();
+
+              infoText.innerHTML = 'Saving...';
               actorToFile();
           };
       }
@@ -49547,6 +49551,7 @@ fn main(
                   console.log('Model saved succesfully');
           
                   // Update project image if response is ok
+                  renderer.resetCamera();
                   renderWindow.getViews()[0].captureNextImage().then((image_data) => {
                       const base64Image = image_data.split(",")[1];
                       saveImage(base64Image);
@@ -49556,7 +49561,7 @@ fn main(
               } else {
                   console.error('Model save failed');
               }
-              toggleInfo();
+              infoDiv.classList.toggle('slidedown');
           });
       }
 
@@ -49579,6 +49584,7 @@ fn main(
 
               reader.parseAsArrayBuffer(arrayBuffer);
               renderNewModel();
+              infoDiv.classList.toggle('slidedown');
           });
       }
 
@@ -49805,7 +49811,6 @@ fn main(
               } else {
                   console.log('Nepohoda');
               }
-              toggleInfo();
           });
           
       }
@@ -49825,6 +49830,8 @@ fn main(
               dropdownItems.forEach(di => di.classList.remove('active'));
               item.classList.add('active');
 
+              infoText.innerHTML = 'Changing template...';
+              infoDiv.classList.toggle('slidedown');
               fetchTemplate(e.target.id);
           });
       });
@@ -49834,11 +49841,14 @@ fn main(
       let fileInput = document.getElementById('3d-file');
       fileInput.addEventListener('input', (e) => {
           fileLabel.innerHTML = e.target.files[0].name;
+          infoText.innerHTML = 'Loading STL file...';
+          infoDiv.classList.toggle('slidedown');
+          handleRender();
       });
 
       // Render button
-      let renderBtn = document.getElementById("render-button");
-      renderBtn.addEventListener("click", handleRender);
+      // let renderBtn = document.getElementById("render-button");
+      // renderBtn.addEventListener("click", handleRender);
 
       // Reset button
       let resetBtn = document.getElementById('reset-camera');
@@ -49854,18 +49864,16 @@ fn main(
       // Save button
       let saveBtn = document.getElementById('save-button');
       saveBtn.addEventListener('click', () => {
-          let text = document.getElementById('info-popup-text');
-          text.innerHTML = 'Saving...';
-          toggleInfo();
+          infoText.innerHTML = 'Saving...';
+          infoDiv.classList.toggle('slidedown');
           actorToFile();
       });
 
       // Calculate button
       let calculateBtn = document.getElementById('calculate-button');
       calculateBtn.addEventListener('click', () => {
-          let text = document.getElementById('info-popup-text');
-          text.innerHTML = 'Calculating...';
-          toggleInfo();
+          infoText.innerHTML = 'Calculating...';
+          infoDiv.classList.toggle('slidedown');
           calculate();
       });
 
@@ -49974,19 +49982,5 @@ fn main(
           updateModelPosition();
       });
   });
-
-  function toggleInfo() {
-
-      let header = document.getElementById('editor-header');
-      let canvas = document.querySelector('canvas');
-      let estDiv = document.getElementById('estimate-div');
-      let manipulationDiv = document.getElementById('manipulation-div');
-      header.classList.toggle('blur');
-      canvas.classList.toggle('blur');
-      estDiv.classList.toggle('blur');
-      manipulationDiv.classList.toggle('blur');
-      let popup = document.getElementById('info-popup');
-      popup.classList.toggle('active');
-  }
 
 })();

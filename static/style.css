@@ -364,6 +364,24 @@ header{
 #exit-button {
     margin-right: 10px;
 }
+#info-div{
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    margin-left: 40%;
+    margin-right: 40%;
+    text-align: center;
+    font-weight: bold;
+    z-index: 99;
+    background-color: hsl(0, 0%, 72%);
+    border: 2px solid hsl(0, 0%, 0%);
+    border-radius: 20px;
+    transition: transform 1s ease;
+}
+.slidedown{
+    transform: translateY(80px);
+}
 #anot-popup{
     width: 400px;
     height: auto;

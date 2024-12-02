@@ -27,9 +27,8 @@
                     {% endfor %}
                 </div>
             </div>
-            <label id="3d-file-label" for="3d-file" class="file-upload">Load model</label>
+            <label id="3d-file-label" for="3d-file" class="file-upload">Load STL</label>
             <input id="3d-file" class="file-field" type="file" />
-            <button id="render-button" class="primary-button">Render</button>
             <button id="reset-camera" class="primary-button">Reset camera</button>
         </div>
         <div class="header-right">
@@ -39,6 +38,9 @@
             </form>
         </div>
     </header>
+    <div id="info-div">
+        <p id="info-text">Saving...</p>
+    </div>
     <div id="estimate-div">
         <p>Sex: ?</p>
         <p>Age: ??</p>
