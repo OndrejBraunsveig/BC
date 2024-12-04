@@ -1,9 +1,9 @@
 import pymeshlab as ml
 import os
 
-def reconstruction(project_id):
+def reconstruction(project_model_filename):
 
-    filepath = f'{project_id}.stl'
+    filepath = f'{project_model_filename}.stl'
 
     # Load mesh from stl file
     ms = ml.MeshSet()

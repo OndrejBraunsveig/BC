@@ -17,13 +17,13 @@ from google.oauth2 import service_account
 from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
+from memory_profiler import profile
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 
 from rekonstrukce import reconstruction
 from stl_to_mha import STL2Mask
-from M3_calculation import M3_calc
 from warp import warp
 from morfer import morf
 
@@ -49,6 +49,17 @@ class Project(db.Model):
     model_data = db.Column(db.String)
     base64_image = db.Column(db.String)
     active_template_id = db.Column(db.Integer, nullable=False, default=6)
+    M1 = db.Column(db.Float, default=0)
+    M2 = db.Column(db.Float, default=0)
+    M3 = db.Column(db.Float, default=0)
+    M4 = db.Column(db.Float, default=0)
+    M5 = db.Column(db.Float, default=0)
+    M6 = db.Column(db.Float, default=0)
+    M7 = db.Column(db.Float, default=0)
+    M8 = db.Column(db.Float, default=0)
+    M9 = db.Column(db.Float, default=0)
+    M10 = db.Column(db.Float, default=0)
+    
 
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -112,6 +123,7 @@ def uploadToCloud(folder_id, filename, file_bytes):
 
     return file
 
+@profile
 def downloadFromCloud(file_id):
 
     request = service.files().get_media(fileId=file_id)
@@ -275,10 +287,24 @@ def editor(project_id):
     
     all_templates = Template.query.all()
 
+    M_distances = {
+        'M1': project.M1,
+        'M2': project.M2,
+        'M3': project.M3,
+        'M4': project.M4,
+        'M5': project.M5,
+        'M6': project.M6,
+        'M7': project.M7,
+        'M8': project.M8,
+        'M9': project.M9,
+        'M10': project.M10,               
+    }
+
     return render_template('editor.html',
                            project_id=project_id,
                            active_template_id=active_template_id,
-                           all_templates=all_templates)
+                           all_templates=all_templates,
+                           M_distances=M_distances)
 
 # Template routes
 @app.route('/addTemplate', methods=['GET', 'POST'])
@@ -366,11 +392,25 @@ def saveModel(project_id):
         model_bytes = io.BytesIO(model_file.read())
         uploadToCloud(PROJECT_MODELS_FOLDER_ID, filename, model_bytes)
 
+        # Reset M distances
+        project = Project.query.filter_by(id=project_id)
+        project.M1 = 0
+        project.M2 = 0
+        project.M3 = 0
+        project.M4 = 0
+        project.M5 = 0
+        project.M6 = 0
+        project.M7 = 0
+        project.M8 = 0
+        project.M9 = 0
+        project.M10 = 0
+
         return jsonify({"message": "Model saved successfully"}), 200
     except:
         return jsonify({"message": "Model save error"}), 500
 
 @app.route('/loadModel/<int:project_id>', methods=['GET', 'POST'])
+@profile
 def loadModel(project_id):
 
     try:
@@ -378,8 +418,7 @@ def loadModel(project_id):
         file_id = getIdFromName(PROJECT_MODELS_FOLDER_ID, filename)
         file_bytes = downloadFromCloud(file_id)
 
-        model_base64 = base64.b64encode(file_bytes).decode('utf-8')
-        return jsonify({"model_base64": model_base64})
+        return jsonify({"model_base64": base64.b64encode(file_bytes).decode('utf-8')})
     except:
         return {}
 
@@ -387,41 +426,60 @@ def loadModel(project_id):
 @app.route('/calculate/<int:project_id>', methods=['GET'])
 def calculate(project_id):
 
-    filename = f'T7'
-    file_id = getIdFromName(TEMPLATE_FOLDER_ID, filename)
+    project = Project.query.filter_by(id=project_id).first()
+
+    template_id = project.active_template_id
+    template_filename = f'T{template_id}'
+    file_id = getIdFromName(TEMPLATE_FOLDER_ID, template_filename)
     template_bytes = downloadFromCloud(file_id)
 
-    filename = f'PM{project_id}'
-    file_id = getIdFromName(PROJECT_MODELS_FOLDER_ID, filename)
+    project_model_filename = f'PM{project_id}'
+    file_id = getIdFromName(PROJECT_MODELS_FOLDER_ID, project_model_filename)
     model_bytes = downloadFromCloud(file_id)
 
-    try:
+    #try:
         # Template to STL
-        with open(f'T_7.stl', 'wb') as f:
-            f.write(template_bytes)
+    with open(f'{template_filename}.stl', 'wb') as f:
+        f.write(template_bytes)
+        del template_bytes
 
-        # Model to STL
-        with open(f'{project_id}.stl', 'wb') as f:
-            f.write(model_bytes)
+    # Model to STL
+    with open(f'{project_model_filename}.stl', 'wb') as f:
+        f.write(model_bytes)
+        del model_bytes
 
-        # Poisson a decimation to model STL
-        reconstruction(project_id)
+    # Poisson a decimation to model STL
+    reconstruction(project_model_filename)
 
-        # Template to MHA
-        STL2Mask('T_7')
+    # Template to MHA
+    STL2Mask(template_filename)
 
-        # Model to MHA
-        STL2Mask(f'R_{project_id}')
+    # Model to MHA
+    STL2Mask(f'R_{project_model_filename}')
 
-        # Calculate M3 distance from model MHA
-        M3_calc(project_id)
+    # Calculate M3 distance from model MHA
+    #M3_calc(project_model_filename)
 
-        warp(project_id)
-        morf(project_id)
+    warp(project_model_filename, template_filename)
+    results = morf(project_model_filename, template_filename)
 
-        return jsonify({"message": "Vsechno v klidu"}), 200
-    except:
-        return jsonify({"message": "Bohuzel"}), 500
+    project.M1 = results['M1']
+    project.M2 = results['M2']
+    project.M3 = results['M3']
+    project.M4 = results['M4']
+    project.M5 = results['M5']
+    project.M6 = results['M6']
+    project.M7 = results['M7']
+    project.M8 = results['M8']
+    project.M9 = results['M9']
+    project.M10 = results['M10']
+
+    db.session.commit()
+
+
+    return jsonify({"message": "Vsechno v klidu", "M_distances": results}), 200
+    #except:
+        #return jsonify({"message": "Bohuzel"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

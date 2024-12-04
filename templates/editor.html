@@ -43,7 +43,7 @@
     </div>
     <div id="estimate-div">
         <p>Sex: ?</p>
-        <p>Age: ??</p>
+        <button id="results-button" class="primary-button">Results</button>
         <button id="calculate-button" class="primary-button">Calculate</button>
     </div>
     <div id="manipulation-div">
@@ -86,8 +86,20 @@
         <div id="options-div" class="transform-div">
         </div>
     </div>
-    <div id="info-popup" class="popup">
-        <h1 id="info-popup-text">Saving in progress...</h1>
+    <div id="results-popup" class="popup">
+        <table>
+            <tr>
+                <th>Distance</th>
+                <th>Value</th>
+            </tr>
+            {% for item in M_distances.items() %}
+                <tr>
+                    <td>{{ item[0] }}</td>
+                    <td id="{{ item[0] }}" class="m-value">{{ item[1] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <button id="results-cancel" class="terciary-button">Cancel</button>
     </div>
     <div id="anot-popup" class="popup">
         <h1>New annotation</h1>

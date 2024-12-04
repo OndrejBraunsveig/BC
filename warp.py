@@ -15,11 +15,11 @@ from tqdm import trange
 from scipy.spatial import KDTree
 import numpy as np
 
-def warp(project_id):
+def warp(project_model_filename, template_filename):
 
-    filename = f'R_{project_id}'
+    filename = f'R_{project_model_filename}'
     model_mha = f'{filename}.mha'
-    template_mha = 'T_7.mha'
+    template_mha = f'{template_filename}.mha'
 
     # Load the moving and fixed images
     original_image = ants.image_read(model_mha)
@@ -76,7 +76,7 @@ def warp(project_id):
     ants.image_write(warptxinv, warp_inv)
     
     # Remove reduced model MHA file
-    os.remove(f'R_{project_id}.mha')
+    os.remove(f'R_{project_model_filename}.mha')
 
         
 

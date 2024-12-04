@@ -398,7 +398,7 @@ input[type="color"]{
 #estimate-div{
     position: absolute;
     display: flex;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
     bottom: 0;
     left: 0;
@@ -416,11 +416,37 @@ input[type="color"]{
     font-size: 25px;
     font-weight: bold;
     margin: 0;
+    margin-right: 20px;
 }
 #estimate-div .primary-button{
     width: auto;
     margin: 0;
-    margin-left: 40px;
+}
+#results-popup{
+    top: 50%;
+    width: 200px;
+    padding: 10px;
+}
+#results-popup table{
+    width: 100%;
+    background-color: hsl(0, 0%, 100%);
+    text-align: center;
+}
+#results-popup tr{
+    margin: 0;
+}
+#results-popup th{
+    background-color: hsl(0, 0%, 65%);
+    margin-bottom: 8px;
+    padding: 6px;
+}
+#results-popup td{
+    background-color: hsl(0, 0%, 80%);
+    padding: 6px;
+}
+#results-popup .terciary-button{
+    margin-top: 20px;
+    width: 70%;
 }
 #manipulation-div{
     position: absolute;

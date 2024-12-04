@@ -21,15 +21,15 @@ def compute_mesh(image, stl_file_name):
     detail_level = 1.5
     stl_from_ct(image, lower_int, iter_num, relax, detail_level, stl_file_name, method='ACVD', ratio=15)
 
-def morf(project_id):
+def morf(project_model_filename, template_filename) -> dict:
     # Paths to input files and directories
-    points_path = 'right_points.csv'
+    points_path = f'{template_filename}_points.csv'
     #source = '/media/anatom/Nový svazek/osazovani_bodu/NM/demons/warped_dex/'
-    template_path = 'T_7.mha'
-    template_stl_path = 'T_morf_7.stl'
+    template_path = f'{template_filename}.mha'
+    template_stl_path = f'{template_filename}_morf.stl'
     #folder_path = "/media/anatom/Nový svazek/osazovani_bodu/NM/dex/"
     #cloud_points = '/media/anatom/Nový svazek/osazovani_bodu/template/'
-    output_filename = f'results_{project_id}.csv'
+    #output_filename = f'results_{project_model_filename}.csv'
 
 # Load the reference points from the CSV file
     points = pd.read_csv(points_path)
@@ -60,7 +60,7 @@ def morf(project_id):
     all_points_trns = []
 
     # Step 2: Apply transformations to reference points for each patient
-    patient = project_id
+    patient = project_model_filename
     aff_fwd_file = f"R_{patient}_afn_fwd.mat"
     warp_fwd_file = f"R_{patient}_warp_fwd.nii.gz"
     if os.path.exists(aff_fwd_file) and os.path.exists(warp_fwd_file):
@@ -79,10 +79,10 @@ def morf(project_id):
     # Combine all transformed points and save them to a CSV file
     if all_points_trns:
         combined_points_trns = pd.concat(all_points_trns, ignore_index=True)
-        combined_points_trns.to_csv(f'combined_transformed_points_{project_id}.csv', index=False)
+        combined_points_trns.to_csv(f'combined_transformed_points_{project_model_filename}.csv', index=False)
 
     # Step 3: Load combined transformed points and perform distance calculations
-    combined_points = pd.read_csv(f'combined_transformed_points_{project_id}.csv')
+    combined_points = pd.read_csv(f'combined_transformed_points_{project_model_filename}.csv')
 
     # Function to calculate Euclidean distance between two points
     def calculate_distance(point1, point2):
@@ -92,7 +92,7 @@ def morf(project_id):
     id_pairs = [(0, 1), (2, 3), (4, 5), (6, 7), (8, 9), (8, 10), (11, 12), (13, 14)]
 
     # Initialize a dictionary to store the results for each patient
-    results = {'patient': f'R_{patient}', 'M1': [], 'M2': [], 'M5': [], 'M6': [], 'M7': [], 'M8': [], 'M9': [], 'M10': [], 'M4': []}
+    results = {'M1': 0, 'M2': 0, 'M5': 0, 'M6': 0, 'M7': 0, 'M8': 0, 'M9': 0, 'M10': 0, 'M4': 0}
 
     # Unique patients in the dataset
     unique_patients = combined_points['patient'].unique()
@@ -146,14 +146,10 @@ def morf(project_id):
         # Add distances for this patient to the results
         #results['patient'].append(patient)
         for dim in ['M1', 'M2', 'M5', 'M7', 'M8', 'M9', 'M10']:
-            results[dim].append(patient_distances.get(dim, np.nan))  # Use NaN if distance is missing
-        results['M6'].append(patient_distances.get('M6', np.nan))
-        results['M4'].append(M4)  # Add M4 for this patient
+            results[dim] = patient_distances.get(dim, np.nan) # Use NaN if distance is missing
+        results['M6'] = patient_distances.get('M6', np.nan)
+        results['M4'] = M4  # Add M4 for this patient
 
-    # Convert results to a DataFrame
-    results_df = pd.DataFrame(results)
-
-    """
     # Step 5: Process STL files to compute M3 distances
     def compute_max_distance(points):
         D = distance_matrix(points, points, p=2)
@@ -166,81 +162,53 @@ def morf(project_id):
             mesh_data = stlmesh.Mesh.from_file(file_path)
             vertices = mesh_data.vectors.reshape(-1, 3)
 
-            if len(vertices) == 0:
-                print(f"No vertices found in {file_path}.")
-                return None, file_path
-
-            # Limit the number of points for calculation
+            # Omezení počtu bodů pro výpočet
             sampled_indices = np.random.choice(len(vertices), min(len(vertices), max_points), replace=False)
             sampled_vertices = vertices[sampled_indices]
 
             point1, point2 = compute_max_distance(sampled_vertices)
             largest_distance = np.linalg.norm(point1 - point2)
-            return largest_distance, file_path
+            return largest_distance
         except Exception as e:
             print(f"Error processing {file_path}: {e}")
-            return None, file_path
+            return None
 
-    def process_files_parallel(file_paths, max_workers):
-        data = []
+    file_path = f'R_{project_model_filename}.stl'
 
-        with ProcessPoolExecutor(max_workers=max_workers) as executor:
-            futures = [executor.submit(process_stl_file, file_path) for file_path in file_paths]
+    results['M3'] = process_stl_file(file_path)
 
-            for future in futures:
-                largest_distance, file_path = future.result()
-                if largest_distance is not None:
-                    data.append({
-                        "Model Name": os.path.basename(file_path),
-                        "M3": largest_distance
-                    })
+    # Remove reduced stl file
+    os.remove(file_path)
 
-        output_table = pd.DataFrame(data)
-        return output_table
-
-    # Adjust max_workers based on CPU count
-    max_workers = min(os.cpu_count(), 20)
-
-    # Collect STL files from the directory
-    stl_files = [os.path.join(folder_path, file) for file in os.listdir(folder_path) if file.lower().endswith(".stl")]
-    output_table = process_files_parallel(stl_files, max_workers)
-    output_table.to_csv("M3_distance.csv", index=False)
-    """
-    # Merge M3 distances with the rest of the calculated results
-    output_table = pd.read_csv(f'M3_distance_{project_id}.csv')
-    output_table['Model Name'] = output_table['Model Name'].str.replace('.stl', '', regex=False)
-    final_results = results_df.merge(output_table[['Model Name', 'M3']], left_on='patient', right_on='Model Name', how='left').drop(columns=['Model Name'])
-
-    # Fill missing M3 values with NA
-    final_results['M3'].fillna('NA', inplace=True)
-
-    # Reorder columns to place M3 in the correct position
-    final_results = final_results[['patient', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10']]
+    # Convert numpy float to Python float and round it to 2 decimal places
+    results = {k: round(v.item(), 2) for k, v in results.items()}
+    print(results)
 
     # Round all numerical values to 2 decimal places
-    final_results.update(final_results.select_dtypes(include=[np.number]).round(2))
+    #final_results.update(final_results.select_dtypes(include=[np.number]).round(2))
 
+    """
     # Save the final results
     final_results.to_csv(output_filename, sep=';', index=False)
 
     # Debugging output for verification
     print("Final results saved to:", output_filename)
     print(final_results.head())
+    """
 
     # Remove all files
-    os.remove('T_7.stl')
-    os.remove('T_7.mha')
-    os.remove('T_morf_7.stl')
-    os.remove(f'warped_R_{project_id}.mha')
-    # upravit jmeno pri ukladani jeste
-    os.remove(f'M3_distance_{project_id}.csv')
-    os.remove(f'combined_transformed_points_{project_id}.csv')
-    os.remove(f'R_{project_id}_afn_fwd.mat')
-    os.remove(f'R_{project_id}_afn_inv.mat')
-    os.remove(f'R_{project_id}_warp_fwd.nii.gz')
-    os.remove(f'R_{project_id}_warp_inv.nii.gz')
+    os.remove(f'{template_filename}.stl')
+    os.remove(f'{template_filename}.mha')
+    os.remove(f'{template_filename}_morf.stl')
+    os.remove(f'warped_R_{project_model_filename}.mha')
+    os.remove(f'combined_transformed_points_{project_model_filename}.csv')
+    os.remove(f'R_{project_model_filename}_afn_fwd.mat')
+    os.remove(f'R_{project_model_filename}_afn_inv.mat')
+    os.remove(f'R_{project_model_filename}_warp_fwd.nii.gz')
+    os.remove(f'R_{project_model_filename}_warp_inv.nii.gz')
 
-    # prozatimni
-    os.remove(f'results_{project_id}.csv')
+    #os.remove(f'results_{project_id}.csv')
+
+    return results
 
 

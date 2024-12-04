@@ -49535,34 +49535,43 @@ fn main(
           };
       }
       
-      function saveModel(file) {
+      async function saveModel(file) {
 
+          let saveSuccess = false;
           let project_id = document.body.id;
           
           const formData = new FormData();
           formData.append('file', file);
 
-          fetch(`/saveModel/${project_id}`, {
+          let response = await fetch(`/saveModel/${project_id}`, {
               method : 'POST',
               body : formData
-          })
-          .then(response => {
-              if (response.ok) {
-                  console.log('Model saved succesfully');
-          
-                  // Update project image if response is ok
-                  renderer.resetCamera();
-                  renderWindow.getViews()[0].captureNextImage().then((image_data) => {
-                      const base64Image = image_data.split(",")[1];
-                      saveImage(base64Image);
-                  });
-          
-                  renderWindow.render();
-              } else {
-                  console.error('Model save failed');
-              }
-              infoDiv.classList.toggle('slidedown');
           });
+          
+          if (response.ok) {
+              console.log('Model saved succesfully');
+      
+              // Update project image if response is ok
+              renderer.resetCamera();
+              renderWindow.getViews()[0].captureNextImage().then((image_data) => {
+                  const base64Image = image_data.split(",")[1];
+                  saveImage(base64Image);
+              });
+      
+              renderWindow.render();
+
+              let MValueElements = document.querySelectorAll('.m-value');
+              MValueElements.forEach((element) => {
+                  element.innerHTML = 0;
+              });
+
+              saveSuccess = true;
+          } else {
+              console.error('Model save failed');
+          }
+
+              infoDiv.classList.toggle('slidedown');
+              return saveSuccess;
       }
 
       function loadModel() {
@@ -49572,8 +49581,10 @@ fn main(
           fetch(`/loadModel/${project_id}`)
           .then(response => response.json())
           .then(data => {
-              if (!data) return;
-              if (Object.keys(data).length == 0) return;
+              if (!data) {
+                  infoDiv.classList.toggle('slidedown');
+                  return
+              }            if (Object.keys(data).length == 0) return;
               var binaryString = atob(data.model_base64);
 
               var bytes = new Uint8Array(binaryString.length);
@@ -49650,7 +49661,11 @@ fn main(
           console.log(actor.getBounds());
       }
 
-      function actorToFile() {
+      async function actorToFile() {
+
+          // Info update
+          infoText.innerHTML = 'Saving...';
+          infoDiv.classList.toggle('slidedown');
 
           let actorPoly = actor.getMapper().getInputData();
           let actorPoints = actorPoly.getPoints().getData();
@@ -49781,7 +49796,8 @@ fn main(
           let actorDataset = vtkSTLWriter$1.writeSTL(actorPoly, 'binary');
           let actorFile = new File([actorDataset.buffer], 'actorFile.stl', { type: 'application/sla'});
 
-          saveModel(actorFile);
+          let success = await saveModel(actorFile);
+          return success;
       }
 
       function updateRotationQuat(deltaAngle, axis) {
@@ -49800,19 +49816,30 @@ fn main(
           renderWindow.render();
       }
 
-      function calculate() {
+      async function calculate() {
 
+          let success = await actorToFile();
+          if (!success) return;
+
+          infoText.innerHTML = 'Calculating...';
+          infoDiv.classList.toggle('slidedown');
           let project_id = document.body.id;
 
+          // Pak vyresit kdyz calculate failne
+
           fetch(`/calculate/${project_id}`)
-          .then(response => {
-              if (response.ok) {
-                  console.log('Pohoda');
-              } else {
-                  console.log('Nepohoda');
-              }
+          .then(response => response.json())
+          .then(data => {
+              // Get M_distances and update them in table
+              let MDistances = data.M_distances;
+              Object.entries(MDistances).forEach(([key, value]) => {
+                  let keyElement = document.getElementById(key);
+                  keyElement.innerHTML = value;
+              });
+              console.log(data.message);
+
+              infoDiv.classList.toggle('slidedown');
           });
-          
       }
 
       // Body listener
@@ -49864,16 +49891,23 @@ fn main(
       // Save button
       let saveBtn = document.getElementById('save-button');
       saveBtn.addEventListener('click', () => {
-          infoText.innerHTML = 'Saving...';
-          infoDiv.classList.toggle('slidedown');
           actorToFile();
+      });
+
+      // Results button
+      let resultsBtn = document.getElementById('results-button');
+      resultsBtn.addEventListener('click', () => {
+          toggleResults();
+      });
+
+      let resultsCancelBtn = document.getElementById('results-cancel');
+      resultsCancelBtn.addEventListener('click', () => {
+          toggleResults();
       });
 
       // Calculate button
       let calculateBtn = document.getElementById('calculate-button');
       calculateBtn.addEventListener('click', () => {
-          infoText.innerHTML = 'Calculating...';
-          infoDiv.classList.toggle('slidedown');
           calculate();
       });
 
@@ -49982,5 +50016,21 @@ fn main(
           updateModelPosition();
       });
   });
+
+  function toggleResults(){
+
+      let header = document.getElementById('editor-header');
+      let info = document.getElementById('info-div');
+      let canvas = document.querySelector('canvas');
+      let estimateDiv = document.getElementById('estimate-div');
+      let manipulationDiv = document.getElementById('manipulation-div');
+      header.classList.toggle('blur');
+      info.classList.toggle('blur');
+      canvas.classList.toggle('blur');
+      estimateDiv.classList.toggle('blur');
+      manipulationDiv.classList.toggle('blur');
+      let popup = document.getElementById('results-popup');
+      popup.classList.toggle('active');
+  }
 
 })();
