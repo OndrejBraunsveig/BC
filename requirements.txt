@@ -31,6 +31,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib==3.9.2
 mdurl==0.1.2
+memory-profiler==0.61.0
 netgen-mesher==6.2.2405
 netgen_occt==7.8.1
 numpy==2.0.1
@@ -44,6 +45,7 @@ platformdirs==4.3.6
 pooch==1.8.2
 proto-plus==1.25.0
 protobuf==5.28.3
+psutil==6.1.0
 psycopg2==2.9.9
 psycopg2-binary==2.9.9
 pyacvd==0.3.1
