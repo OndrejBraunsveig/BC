@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <script src="{{ url_for('static', filename='all-templates.js') }}"></script>
+    <title>Templates</title>
+</head>
+<body>
+    <header id="dashboard-header">
+        <div class="header-left">
+            <svg width="52px" height="52px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.3562 15.2061L10.9313 16.6311C10.5378 17.0246 10.562 17.674 10.7105 18.2103C10.9908 19.2235 10.6058 20.519 9.86257 21.2622C8.87884 22.2459 7.28391 22.2459 6.30018 21.2622C5.31645 20.2785 5.31646 18.6835 6.30018 17.6998C5.31646 18.6835 3.72152 18.6835 2.73779 17.6998C1.75407 16.7161 1.75407 15.1212 2.73779 14.1374C3.48101 13.3942 4.77646 13.0092 5.7897 13.2895C6.32603 13.438 6.97541 13.4622 7.3689 13.0687L13.0687 7.3689C13.4622 6.97541 13.438 6.32603 13.2895 5.7897C13.0092 4.77646 13.3942 3.48102 14.1374 2.73779C15.1212 1.75407 16.7161 1.75407 17.6998 2.73779C18.6835 3.72152 18.6835 5.31646 17.6998 6.30018C18.6835 5.31646 20.2785 5.31646 21.2622 6.30018C22.2459 7.28391 22.2459 8.87884 21.2622 9.86257C20.519 10.6058 19.2235 10.9908 18.2103 10.7105C17.674 10.562 17.0246 10.5378 16.6311 10.9313L15.2061 12.3562" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <button id="add-button" class="primary-button">Create new template</button>
+            <form action="{{ url_for('dashboard') }}">
+                <button id="projects-button" class="primary-button">Projects</button>
+            </form>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <form action="">
+                    <input class="search-field" type="text" placeholder="Search..." name="search">
+                </form>
+                <button class="search-button" type="submit">
+                    <svg class="search-logo" width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <form action="{{ url_for('logout') }}" class="logout-form">
+                <button id="logout-button" class="primary-button">Logout</button>
+            </form>
+        </div>
+    </header>
+    <div class="centered">
+        <table id="template-table">
+            <tr>
+                <th>Name</th>
+                <th>Added by</th>
+                <th>Created at</th>
+                <th>Action</th>
+            </tr>
+            {% for template in all_templates %}
+                <tr id="{{ template.id }}">
+                    <td class="template-name">{{ template.name }}</td>
+                    <td>{{ template.added_by }}</td>
+                    <td>{{ template.created_at }}</td>
+                    <td>
+                        <svg class="delete-svg" width="24px" height="24px" viewBox="0 0 482.428 482.429" fill="#000000" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M381.163,57.799h-75.094C302.323,25.316,274.686,0,241.214,0c-33.471,0-61.104,25.315-64.85,57.799h-75.098
+                                c-30.39,0-55.111,24.728-55.111,55.117v2.828c0,23.223,14.46,43.1,34.83,51.199v260.369c0,30.39,24.724,55.117,55.112,55.117
+                                h210.236c30.389,0,55.111-24.729,55.111-55.117V166.944c20.369-8.1,34.83-27.977,34.83-51.199v-2.828
+                                C436.274,82.527,411.551,57.799,381.163,57.799z M241.214,26.139c19.037,0,34.927,13.645,38.443,31.66h-76.879
+                                C206.293,39.783,222.184,26.139,241.214,26.139z M375.305,427.312c0,15.978-13,28.979-28.973,28.979H136.096
+                                c-15.973,0-28.973-13.002-28.973-28.979V170.861h268.182V427.312z M410.135,115.744c0,15.978-13,28.979-28.973,28.979H101.266
+                                c-15.973,0-28.973-13.001-28.973-28.979v-2.828c0-15.978,13-28.979,28.973-28.979h279.897c15.973,0,28.973,13.001,28.973,28.979
+                                V115.744z"/>
+                            <path d="M171.144,422.863c7.218,0,13.069-5.853,13.069-13.068V262.641c0-7.216-5.852-13.07-13.069-13.07
+                                c-7.217,0-13.069,5.854-13.069,13.07v147.154C158.074,417.012,163.926,422.863,171.144,422.863z"/>
+                            <path d="M241.214,422.863c7.218,0,13.07-5.853,13.07-13.068V262.641c0-7.216-5.854-13.07-13.07-13.07
+                                c-7.217,0-13.069,5.854-13.069,13.07v147.154C228.145,417.012,233.996,422.863,241.214,422.863z"/>
+                            <path d="M311.284,422.863c7.217,0,13.068-5.853,13.068-13.068V262.641c0-7.216-5.852-13.07-13.068-13.07
+                                c-7.219,0-13.07,5.854-13.07,13.07v147.154C298.213,417.012,304.067,422.863,311.284,422.863z"/>
+                        </svg>
+                    </td>
+                </tr>          
+            {% endfor %}
+        </table>
+    </div>
+    <div id="add-popup" class="popup">
+        <h1>Create new template</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="text" class="form-control" placeholder="Template name" minlength="3" maxlength="25" name="template-name">
+            <label id="stl-file-label" for="stl-file-input" class="file-upload">Load STL</label>
+            <input type="file" id="stl-file-input" class="file-field" name="STL"/>
+            <label id="csv-file-label" for="csv-file-input" class="file-upload">Load CSV</label>
+            <input type="file" id="csv-file-input" class="file-field" name="CSV"/>
+            <div class="button-row">
+                <button type="submit" class="primary-button">Confirm</button>
+                <button type="button" id="add-cancel-button" class="terciary-button cancel-button">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div id="edit-popup" class="popup">
+        <form method="post">
+            {{ edit_form.hidden_tag() }}
+
+            {{ edit_form.edit_id(id="edit-id", type="hidden") }}
+            <input id="edit-old-name" class="form-control disabled-input" type="text" disabled>
+            {{ edit_form.new_name(id="edit-name", class="form-control", autocomplete="off") }}
+            <div class="button-row">
+                {{ edit_form.submit(class="primary-button") }}
+                <button id="edit-cancel-button" class="terciary-button cancel button" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <div id="danger-popup" class="popup">
+        <form method="post">
+            {{ delete_form.hidden_tag() }}
+
+            {{ delete_form.delete_id(id="delete-id", type="hidden") }}
+            <h1>Do you really want to delete this template?</h1>
+            <input id="delete-old-name" class="form-control disabled-input" type="text" disabled>
+            <div class="button-row">
+                {{ delete_form.submit(class="danger-button") }}
+                <button id="delete-cancel-button" class="terciary-button cancel-button" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

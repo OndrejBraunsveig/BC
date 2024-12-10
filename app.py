@@ -18,6 +18,7 @@ from wtforms import StringField, PasswordField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length, ValidationError
 import bcrypt
 from memory_profiler import profile
+import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
@@ -46,7 +47,6 @@ class Project(db.Model):
     name = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
-    model_data = db.Column(db.String)
     base64_image = db.Column(db.String)
     active_template_id = db.Column(db.Integer, nullable=False, default=6)
     M1 = db.Column(db.Float, default=0)
@@ -64,6 +64,8 @@ class Project(db.Model):
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    added_by = db.Column(db.String(20), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
 
 # Google Drive access
 API_NAME = 'drive'
@@ -78,7 +80,7 @@ creds = service_account.Credentials.from_service_account_info(creds_json, scopes
 
 service = build(API_NAME, API_VERSION, credentials=creds)
 
-def getIdFromName(folder_id, filename):
+def get_id_from_name(folder_id, filename):
 
     results = service.files().list(
         q=f"'{folder_id}' in parents and name='{filename}' and trashed=false",
@@ -90,14 +92,14 @@ def getIdFromName(folder_id, filename):
         return files[0]['id']
     return ''
 
-def uploadToCloud(folder_id, filename, file_bytes):
+def upload_to_cloud(folder_id, filename, file_bytes, mimetype):
 
     # Check if file already exists
-    file_id = getIdFromName(folder_id, filename)
+    file_id = get_id_from_name(folder_id, filename)
 
     media = MediaIoBaseUpload(
         file_bytes,
-        mimetype='application/octet-stream',
+        mimetype=mimetype,
         resumable=True
     )
 
@@ -124,7 +126,7 @@ def uploadToCloud(folder_id, filename, file_bytes):
     return file
 
 @profile
-def downloadFromCloud(file_id):
+def download_from_cloud(file_id):
 
     request = service.files().get_media(fileId=file_id)
 
@@ -138,7 +140,6 @@ def downloadFromCloud(file_id):
 
     file_stream.seek(0)
     return file_stream.read()
-
 
 # Managing logins
 login_manager = LoginManager()
@@ -189,10 +190,20 @@ class DeleteForm(FlaskForm):
     submit = SubmitField('Delete')
 
 # Filtering STL files
-def is_allowed_file(filename):
+def is_stl(filename):
 
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() == 'stl'
+
+# Filtering CSV files
+def is_csv(filename):
+
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() == 'csv'
+
+def format_timestamp(timestamp):
+    dt = datetime.strptime(str(timestamp), "%Y-%m-%d %H:%M:%S.%f%z")
+    return dt.strftime("%d-%m-%Y %H:%M:%S")
 
 # Login/registration/logout routes
 @app.route('/', methods=['GET', 'POST'])
@@ -244,6 +255,7 @@ def logout():
 @login_required
 def dashboard():
 
+    # potencialne zmenit
     id = session.get('user_id', None)
 
     add_form = AddForm()
@@ -265,15 +277,107 @@ def dashboard():
         Project.query.filter_by(id=project_id).delete()
         db.session.commit()
 
-    projects = Project.query.filter_by(user_id=id)
-    project_list = [p.__dict__ for p in projects]
-
     if request.method == 'POST':
         return redirect(url_for('dashboard'))
 
+    projects = Project.query.filter_by(user_id=id).all()
+    
+    # Format timestamp
+    for project in projects:
+        project.updated_at = format_timestamp(project.updated_at)
+
+
     return render_template('dashboard.html',
-                           projects=project_list,
+                           projects=projects,
                            add_form=add_form,
+                           edit_form=edit_form,
+                           delete_form=delete_form)
+
+@app.route('/templates', methods=['GET', 'POST'])
+@login_required
+def templates():
+
+    edit_form = EditForm()
+    if edit_form.validate_on_submit():
+        try:
+            template_id = int(edit_form.edit_id.data)
+            template = Template.query.filter_by(id=template_id).first()
+            template.name = edit_form.new_name.data
+            db.session.commit()
+
+            print('Template edited!')
+        except:
+            print('Template edit failed!')
+
+        return redirect(request.url)
+
+    delete_form = DeleteForm()
+    if delete_form.validate_on_submit():
+        try:
+            template_id = int(delete_form.delete_id.data)
+
+            filename = f'T{template_id}'
+            file_id = get_id_from_name(TEMPLATE_FOLDER_ID, filename)
+            service.files().delete(fileId=file_id).execute()
+
+            filename = f'{filename}_points'
+            file_id = get_id_from_name(TEMPLATE_FOLDER_ID, filename)
+            service.files().delete(fileId=file_id).execute()
+
+            Template.query.filter_by(id=template_id).delete()
+            db.session.commit()
+
+            print('Template deleted succesfully!')
+        except:
+            print('Template deletion failed!')
+        
+        return redirect(request.url)
+
+    if request.method == 'POST':
+
+        user_id = session.get('user_id', None)
+        user = User.query.filter_by(id=user_id).first()
+        username = user.username
+
+        template_name = request.form['template-name']
+        StlFile = request.files.get('STL')
+        CsvFile = request.files.get('CSV')
+
+        if template_name == '':
+            print('Template must have a name')
+            return redirect(request.url)
+        
+        if (StlFile and is_stl(StlFile.filename)) and (CsvFile and is_csv(CsvFile.filename)):
+            # Pridat jeste overeni na jmeno
+            try:
+                new_template = Template(name=template_name, added_by=username)
+                db.session.add(new_template)
+                db.session.commit()
+                
+                filename = f'T{new_template.id}'
+                template_bytes = io.BytesIO(StlFile.read())
+                upload_to_cloud(TEMPLATE_FOLDER_ID, filename, template_bytes, 'application/octet-stream')
+
+                filename = f'{filename}_points'
+                points_text = io.BytesIO(CsvFile.read())
+                upload_to_cloud(TEMPLATE_FOLDER_ID, filename, points_text, 'text/csv')
+
+                print('Template added succesfully!')
+            except:
+                print('Template addition failed!')
+        else:
+            print('Files were not in STL and CSV format')
+
+        return redirect(request.url)
+
+    all_templates = Template.query.all()
+
+    # Format timestamp
+    for template in all_templates:
+        template.created_at = format_timestamp(template.created_at)
+
+    return render_template('all-templates.html',
+                           all_templates=all_templates,
                            edit_form=edit_form,
                            delete_form=delete_form)
 
@@ -306,45 +410,13 @@ def editor(project_id):
                            all_templates=all_templates,
                            M_distances=M_distances)
 
-# Template routes
-@app.route('/addTemplate', methods=['GET', 'POST'])
-def add_template():
-
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        
-        if file and is_allowed_file(file.filename):
-            # Pridat jeste overeni na jmeno
-            try:
-                template_name = request.form['template-name']
-                new_template = Template(name=template_name)
-                db.session.add(new_template)
-                db.session.commit()
-                
-                filename = f'T{new_template.id}'
-                template_bytes = io.BytesIO(file.read())
-                uploadToCloud(TEMPLATE_FOLDER_ID, filename, template_bytes)
-
-                flash('Template added succesfully!')
-            except:
-                flash('Template addition failed!')
-
-    return render_template('template-load.html')
-
 @app.route('/project/<project_id>/template/<template_id>', methods=['GET'])
 def template(project_id, template_id):
 
     try:
         filename = f'T{template_id}'
-        file_id = getIdFromName(TEMPLATE_FOLDER_ID, filename)
-        file_bytes = downloadFromCloud(file_id)
+        file_id = get_id_from_name(TEMPLATE_FOLDER_ID, filename)
+        file_bytes = download_from_cloud(file_id)
 
         project = Project.query.filter_by(id=project_id).first()
         project.active_template_id = template_id
@@ -390,7 +462,7 @@ def saveModel(project_id):
         filename = f'PM{project_id}'
         model_file = request.files['file']
         model_bytes = io.BytesIO(model_file.read())
-        uploadToCloud(PROJECT_MODELS_FOLDER_ID, filename, model_bytes)
+        upload_to_cloud(PROJECT_MODELS_FOLDER_ID, filename, model_bytes, 'application/octet-stream')
 
         # Reset M distances
         project = Project.query.filter_by(id=project_id)
@@ -404,6 +476,7 @@ def saveModel(project_id):
         project.M8 = 0
         project.M9 = 0
         project.M10 = 0
+        db.session.commit()
 
         return jsonify({"message": "Model saved successfully"}), 200
     except:
@@ -415,8 +488,10 @@ def loadModel(project_id):
 
     try:
         filename = f'PM{project_id}'
-        file_id = getIdFromName(PROJECT_MODELS_FOLDER_ID, filename)
-        file_bytes = downloadFromCloud(file_id)
+        file_id = get_id_from_name(PROJECT_MODELS_FOLDER_ID, filename)
+        if file_id == '':
+            return {}
+        file_bytes = download_from_cloud(file_id)
 
         return jsonify({"model_base64": base64.b64encode(file_bytes).decode('utf-8')})
     except:
@@ -428,20 +503,32 @@ def calculate(project_id):
 
     project = Project.query.filter_by(id=project_id).first()
 
+    # Template bytes
     template_id = project.active_template_id
     template_filename = f'T{template_id}'
-    file_id = getIdFromName(TEMPLATE_FOLDER_ID, template_filename)
-    template_bytes = downloadFromCloud(file_id)
+    file_id = get_id_from_name(TEMPLATE_FOLDER_ID, template_filename)
+    template_bytes = download_from_cloud(file_id)
 
+    # Template points bytes
+    points_filename = f'{template_filename}_points'
+    file_id = get_id_from_name(TEMPLATE_FOLDER_ID, points_filename)
+    points_bytes = download_from_cloud(file_id)
+
+    # Project model bytes
     project_model_filename = f'PM{project_id}'
-    file_id = getIdFromName(PROJECT_MODELS_FOLDER_ID, project_model_filename)
-    model_bytes = downloadFromCloud(file_id)
+    file_id = get_id_from_name(PROJECT_MODELS_FOLDER_ID, project_model_filename)
+    model_bytes = download_from_cloud(file_id)
 
     #try:
-        # Template to STL
+    # Template to STL
     with open(f'{template_filename}.stl', 'wb') as f:
         f.write(template_bytes)
         del template_bytes
+
+    # Points to CSV
+    with open(f'{points_filename}.csv', 'wb') as f:
+        f.write(points_bytes)
+        del points_bytes
 
     # Model to STL
     with open(f'{project_model_filename}.stl', 'wb') as f:

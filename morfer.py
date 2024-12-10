@@ -206,8 +206,7 @@ def morf(project_model_filename, template_filename) -> dict:
     os.remove(f'R_{project_model_filename}_afn_inv.mat')
     os.remove(f'R_{project_model_filename}_warp_fwd.nii.gz')
     os.remove(f'R_{project_model_filename}_warp_inv.nii.gz')
-
-    #os.remove(f'results_{project_id}.csv')
+    os.remove(f'{template_filename}_points.csv')
 
     return results
 

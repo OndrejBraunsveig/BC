@@ -121,9 +121,6 @@ body{
     color: #ffffff;
     border-top: 1px solid #c0c0c0;
 }
-#dashboard-body{
-    background-color: hsl(0, 0%, 15%);
-}
 .blur{
     filter: blur(20px);
 }
@@ -305,6 +302,26 @@ header{
 .popup .danger-button{
     width: 40%;
 }
+table{
+    background-color: hsl(0, 0%, 100%);
+}
+th{
+    background-color: hsl(0, 0%, 65%);;
+}
+td{
+    background-color: hsl(0, 0%, 80%);;
+}
+#template-table{
+    width: 70%;
+    text-align: left;
+    font-size: 16px;
+}
+#template-table th{
+    padding: 5px;
+}
+#template-table td{
+    padding: 5px;
+}
 .hidden-info{
     display: none;
 }
@@ -436,12 +453,10 @@ input[type="color"]{
     margin: 0;
 }
 #results-popup th{
-    background-color: hsl(0, 0%, 65%);
     margin-bottom: 8px;
     padding: 6px;
 }
 #results-popup td{
-    background-color: hsl(0, 0%, 80%);
     padding: 6px;
 }
 #results-popup .terciary-button{

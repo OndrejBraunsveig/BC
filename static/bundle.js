@@ -49584,8 +49584,10 @@ fn main(
               if (!data) {
                   infoDiv.classList.toggle('slidedown');
                   return
-              }            if (Object.keys(data).length == 0) return;
-              var binaryString = atob(data.model_base64);
+              }            if (Object.keys(data).length == 0) {
+                  infoDiv.classList.toggle('slidedown');
+                  return
+              }            var binaryString = atob(data.model_base64);
 
               var bytes = new Uint8Array(binaryString.length);
               for (var i = 0; i < binaryString.length; i++) {
