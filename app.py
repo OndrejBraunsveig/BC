@@ -2,7 +2,8 @@ import os
 import sys
 import io
 import base64
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 import json
 
 from dotenv import load_dotenv
@@ -45,8 +46,8 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(30), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
     base64_image = db.Column(db.String)
     active_template_id = db.Column(db.Integer, nullable=False, default=6)
     M1 = db.Column(db.Float, default=0)
@@ -65,8 +66,8 @@ class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     added_by = db.Column(db.String(20), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
-    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
 
 # Google Drive access
 API_NAME = 'drive'
@@ -208,8 +209,9 @@ def format_timestamp(timestamp):
     return dt.strftime("%d-%m-%Y %H:%M:%S")
 
 def time_difference(change_time):
-    
-    delta = datetime.now() - change_time.replace(tzinfo=None)
+    print(datetime.now(timezone.utc))
+    print(change_time.astimezone(pytz.utc))
+    delta = datetime.now(timezone.utc) - change_time.astimezone(pytz.utc)
     total_seconds = int(delta.total_seconds())
     
     # Determine the time difference dynamically
