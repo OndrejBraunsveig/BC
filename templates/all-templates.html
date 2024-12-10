@@ -39,14 +39,14 @@
             <tr>
                 <th>Name</th>
                 <th>Added by</th>
-                <th>Created at</th>
+                <th>Last modified</th>
                 <th>Action</th>
             </tr>
             {% for template in all_templates %}
                 <tr id="{{ template.id }}">
                     <td class="template-name">{{ template.name }}</td>
                     <td>{{ template.added_by }}</td>
-                    <td>{{ template.created_at }}</td>
+                    <td>{{ template.updated_at }}</td>
                     <td>
                         <svg class="delete-svg" width="24px" height="24px" viewBox="0 0 482.428 482.429" fill="#000000" xmlns="http://www.w3.org/2000/svg">
                             <path d="M381.163,57.799h-75.094C302.323,25.316,274.686,0,241.214,0c-33.471,0-61.104,25.315-64.85,57.799h-75.098

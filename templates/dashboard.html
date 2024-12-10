@@ -41,7 +41,7 @@
                     <img class="project-img" src="../static/images/empty.jpg" alt="editor1" width="200" height="200">
                     <div class="title-card">
                         <h1 class="project-name">{{ project.name }}</h1>
-                        <p>{{ project.updated_at }}</p>
+                        <p>Modified {{ project.updated_at }}</p>
                     </div>
                     <form action="{{ url_for('editor', project_id=project.id)}}">
                         <div class="button-row">

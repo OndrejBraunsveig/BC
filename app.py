@@ -66,6 +66,7 @@ class Template(db.Model):
     name = db.Column(db.String(50), nullable=False)
     added_by = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.now)
+    updated_at = db.Column(db.DateTime(timezone=True), default=datetime.now, onupdate=datetime.now)
 
 # Google Drive access
 API_NAME = 'drive'
@@ -202,8 +203,33 @@ def is_csv(filename):
            filename.rsplit('.', 1)[1].lower() == 'csv'
 
 def format_timestamp(timestamp):
+
     dt = datetime.strptime(str(timestamp), "%Y-%m-%d %H:%M:%S.%f%z")
     return dt.strftime("%d-%m-%Y %H:%M:%S")
+
+def time_difference(change_time):
+    
+    delta = datetime.now() - change_time.replace(tzinfo=None)
+    total_seconds = int(delta.total_seconds())
+    
+    # Determine the time difference dynamically
+    # Less than 1 minute
+    if total_seconds < 60:
+        return f"{total_seconds} seconds ago"
+    
+    # Less than 1 hour
+    if total_seconds < 3600:
+        minutes = total_seconds // 60
+        return f"{minutes} minute{'s' if minutes > 1 else ''} ago"
+    
+    # Less than 1 day
+    if total_seconds < 86400:  # Less than 24 hours
+        hours = total_seconds // 3600
+        return f"{hours} hour{'s' if hours > 1 else ''} ago"
+    
+    # More than 1 day
+    days = total_seconds // 86400
+    return f"{days} day{'s' if days > 1 else ''} ago"
 
 # Login/registration/logout routes
 @app.route('/', methods=['GET', 'POST'])
@@ -280,11 +306,11 @@ def dashboard():
     if request.method == 'POST':
         return redirect(url_for('dashboard'))
 
-    projects = Project.query.filter_by(user_id=id).all()
+    projects = Project.query.filter_by(user_id=id).order_by(Project.updated_at.desc()).all()
     
     # Format timestamp
     for project in projects:
-        project.updated_at = format_timestamp(project.updated_at)
+        project.updated_at = time_difference(project.updated_at)
 
 
     return render_template('dashboard.html',
@@ -370,11 +396,11 @@ def templates():
 
         return redirect(request.url)
 
-    all_templates = Template.query.all()
+    all_templates = Template.query.order_by(Template.name.asc()).all()
 
     # Format timestamp
     for template in all_templates:
-        template.created_at = format_timestamp(template.created_at)
+        template.updated_at = time_difference(template.updated_at)
 
     return render_template('all-templates.html',
                            all_templates=all_templates,
@@ -389,7 +415,7 @@ def editor(project_id):
     project = Project.query.filter_by(id=project_id).first()
     active_template_id = project.active_template_id
     
-    all_templates = Template.query.all()
+    all_templates = Template.query.order_by(Template.name.asc()).all()
 
     M_distances = {
         'M1': project.M1,
