@@ -5,6 +5,7 @@ import base64
 from datetime import datetime, timezone
 import pytz
 import json
+import rdata
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, url_for, redirect, flash, session, jsonify, request, Response
@@ -28,6 +29,7 @@ from rekonstrukce import reconstruction
 from stl_to_mha import STL2Mask
 from warp import warp
 from morfer import morf
+from dsp import dsp
 
 app = Flask(__name__)
 app.config['FLASK_ENV'] = os.getenv('FLASK_ENV')
@@ -50,21 +52,24 @@ class Project(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
     base64_image = db.Column(db.String)
     active_template_id = db.Column(db.Integer, nullable=False, default=6)
-    M1 = db.Column(db.Float, default=0)
-    M2 = db.Column(db.Float, default=0)
-    M3 = db.Column(db.Float, default=0)
-    M4 = db.Column(db.Float, default=0)
-    M5 = db.Column(db.Float, default=0)
-    M6 = db.Column(db.Float, default=0)
-    M7 = db.Column(db.Float, default=0)
-    M8 = db.Column(db.Float, default=0)
-    M9 = db.Column(db.Float, default=0)
-    M10 = db.Column(db.Float, default=0)
+    PUM = db.Column(db.Float, default=0)
+    SPU = db.Column(db.Float, default=0)
+    DCOX = db.Column(db.Float, default=0)
+    IIMT = db.Column(db.Float, default=0)
+    ISMM = db.Column(db.Float, default=0)
+    SCOX = db.Column(db.Float, default=0)
+    SS = db.Column(db.Float, default=0)
+    SA = db.Column(db.Float, default=0)
+    SIS = db.Column(db.Float, default=0)
+    VEAC = db.Column(db.Float, default=0)
+    sex = db.Column(db.String(1), default='?')
+    probM = db.Column(db.Float, default=0.5)
+    probF = db.Column(db.Float, default=0.5)
     
 
 class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(30), nullable=False)
     added_by = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -146,7 +151,7 @@ def download_from_cloud(file_id):
 # Managing logins
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "login"
+login_manager.login_view = ""
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -420,16 +425,19 @@ def editor(project_id):
     all_templates = Template.query.order_by(Template.name.asc()).all()
 
     M_distances = {
-        'M1': project.M1,
-        'M2': project.M2,
-        'M3': project.M3,
-        'M4': project.M4,
-        'M5': project.M5,
-        'M6': project.M6,
-        'M7': project.M7,
-        'M8': project.M8,
-        'M9': project.M9,
-        'M10': project.M10,               
+        'PUM': project.PUM,
+        'SPU': project.SPU,
+        'DCOX': project.DCOX,
+        'IIMT': project.IIMT,
+        'ISMM': project.ISMM,
+        'SCOX': project.SCOX,
+        'SS': project.SS,
+        'SA': project.SA,
+        'SIS': project.SIS,
+        'VEAC': project.VEAC,
+        'sex' : project.sex,
+        'probF' : project.probF,
+        'probM' : project.probM
     }
 
     return render_template('editor.html',
@@ -494,16 +502,19 @@ def saveModel(project_id):
 
         # Reset M distances
         project = Project.query.filter_by(id=project_id)
-        project.M1 = 0
-        project.M2 = 0
-        project.M3 = 0
-        project.M4 = 0
-        project.M5 = 0
-        project.M6 = 0
-        project.M7 = 0
-        project.M8 = 0
-        project.M9 = 0
-        project.M10 = 0
+        project.PUM = 0
+        project.SPU = 0
+        project.DCOX = 0
+        project.IIMT = 0
+        project.ISMM = 0
+        project.SCOX = 0
+        project.SS = 0
+        project.SA = 0
+        project.SIS = 0
+        project.VEAC = 0
+        project.sex = '?'
+        project.probF = 0.5
+        project.probM = 0.5
         db.session.commit()
 
         return jsonify({"message": "Model saved successfully"}), 200
@@ -578,21 +589,56 @@ def calculate(project_id):
     warp(project_model_filename, template_filename)
     results = morf(project_model_filename, template_filename)
 
-    project.M1 = results['M1']
-    project.M2 = results['M2']
-    project.M3 = results['M3']
-    project.M4 = results['M4']
-    project.M5 = results['M5']
-    project.M6 = results['M6']
-    project.M7 = results['M7']
-    project.M8 = results['M8']
-    project.M9 = results['M9']
-    project.M10 = results['M10']
+    project.PUM = results['M1']
+    project.SPU = results['M2']
+    project.DCOX = results['M3']
+    project.IIMT = results['M4']
+    project.ISMM = results['M5']
+    project.SCOX = results['M6']
+    project.SS = results['M7']
+    project.SA = results['M8']
+    project.SIS = results['M9']
+    project.VEAC = results['M10']
+
 
     db.session.commit()
 
+    # Sex estimation
+    results_new = {
+        'PUM': project.PUM,
+        'SPU': project.SPU,
+        'DCOX': project.DCOX,
+        'IIMT': project.IIMT,
+        'ISMM': project.ISMM,
+        'SCOX': project.SCOX,
+        'SS': project.SS,
+        'SA': project.SA,
+        'SIS': project.SIS,
+        'VEAC': project.VEAC,
+    }
 
-    return jsonify({"message": "Vsechno v klidu", "M_distances": results}), 200
+    df_results = pd.DataFrame(results_new, index=[0])
+
+    converted = rdata.read_rda("sysdata.rda")
+    w = converted['W']
+    mu = converted['mu']
+
+    df_w = w.to_pandas()
+    df_mu = mu.to_pandas()
+
+    sex_est = dsp(df_results, df_w, df_mu)
+    print(sex_est)
+
+    project.sex = sex_est['Sex estimate']
+    project.probF = sex_est['ProbF']
+    project.probM = sex_est['ProbM']
+    db.session.commit()
+
+    results_new['sex'] = sex_est['Sex estimate']
+    results_new['probF'] = sex_est['ProbF']
+    results_new['probM'] = sex_est['ProbM']
+    
+    return jsonify({"message": "Vsechno v klidu", "M_distances": results_new}), 200
     #except:
         #return jsonify({"message": "Bohuzel"}), 500
 

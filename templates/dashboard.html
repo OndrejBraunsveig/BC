@@ -19,6 +19,7 @@
             </form>
         </div>
         <div class="header-right">
+            <!-- 
             <div class="search-container">
                 <form action="">
                     <input class="search-field" type="text" placeholder="Search..." name="search">
@@ -29,6 +30,7 @@
                     </svg>
                 </button>
             </div>
+            -->
             <form action="{{ url_for('logout') }}" class="logout-form">
                 <button id="logout-button" class="primary-button">Logout</button>
             </form>
@@ -42,6 +44,9 @@
                     <div class="title-card">
                         <h1 class="project-name">{{ project.name }}</h1>
                         <p>Modified {{ project.updated_at }}</p>
+                        <p>----------------</p>
+                        <p>Sex: {{ project.sex }}</p>
+                        <p>ProbF/ProbM: {{ project.probF }}/{{ project.probM }}</p>
                     </div>
                     <form action="{{ url_for('editor', project_id=project.id)}}">
                         <div class="button-row">

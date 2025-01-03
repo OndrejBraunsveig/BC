@@ -49529,8 +49529,7 @@ fn main(
 
               renderNewModel();
               makeInitialShift();
-
-              infoText.innerHTML = 'Saving...';
+              infoDiv.classList.toggle('slidedown');
               actorToFile();
           };
       }
@@ -49839,6 +49838,10 @@ fn main(
                   keyElement.innerHTML = value;
               });
               console.log(data.message);
+              
+              // Update sex paragraph
+              let sexInfo = document.getElementById('sex-info');
+              sexInfo.innerHTML = 'Sex: ' + MDistances['sex'];
 
               infoDiv.classList.toggle('slidedown');
           });
@@ -49910,7 +49913,10 @@ fn main(
       // Calculate button
       let calculateBtn = document.getElementById('calculate-button');
       calculateBtn.addEventListener('click', () => {
+          let start = Date.now();
           calculate();
+          let deltaSec = (Date.now() - start)/1000;
+          console.log("Calculation took " + deltaSec + " seconds");
       });
 
       // Add annot

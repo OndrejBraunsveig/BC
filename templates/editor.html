@@ -42,7 +42,7 @@
         <p id="info-text">Saving...</p>
     </div>
     <div id="estimate-div">
-        <p>Sex: ?</p>
+        <p id="sex-info">Sex: {{ M_distances['sex'] }}</p>
         <button id="results-button" class="primary-button">Results</button>
         <button id="calculate-button" class="primary-button">Calculate</button>
     </div>
@@ -89,7 +89,7 @@
     <div id="results-popup" class="popup">
         <table>
             <tr>
-                <th>Distance</th>
+                <th>Key</th>
                 <th>Value</th>
             </tr>
             {% for item in M_distances.items() %}
